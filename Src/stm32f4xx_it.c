@@ -38,6 +38,8 @@
 #include "RS485/bsp_usartx_RS485.h"
 #include "BasicTIM/bsp_BasicTIM.h"
 #include "function.h"
+#include "variable.h"
+
 
 /* USER CODE BEGIN 0 */
 
@@ -70,6 +72,8 @@ void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
   printf("HardFault_Handler 异常，导致重启\n");
+  sprintf(ErrorInfo,"HardFault_Handler\n");
+  Log(ErrorInfo);
   Reboot();
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
@@ -88,7 +92,9 @@ void MemManage_Handler(void)
 {
   /* USER CODE BEGIN MemoryManagement_IRQn 0 */
   printf("MemManage_Handler 异常，导致重启\n");
-	Reboot();
+  sprintf(ErrorInfo,"MemManage_Handler\n");
+  Log(ErrorInfo);
+  Reboot();
   /* USER CODE END MemoryManagement_IRQn 0 */
   while (1)
   {
@@ -105,7 +111,9 @@ void BusFault_Handler(void)
 {
   /* USER CODE BEGIN BusFault_IRQn 0 */
   printf("BusFault_Handler 异常，导致重启\n");
-	Reboot();
+  sprintf(ErrorInfo,"BusFault_Handler\n");
+  Log(ErrorInfo);
+  Reboot();
   /* USER CODE END BusFault_IRQn 0 */
   while (1)
   {
@@ -123,10 +131,12 @@ void UsageFault_Handler(void)
   /* USER CODE BEGIN UsageFault_IRQn 0 */
   /* USER CODE END UsageFault_IRQn 0 */
    printf("UsageFault_Handler 异常，导致重启\n");
-	Reboot();
-  while (1)
-  {
-  }
+   sprintf(ErrorInfo,"UsageFault_Handler\n");
+   Log(ErrorInfo);
+   Reboot();
+   while (1)
+   {
+   }
   /* USER CODE BEGIN UsageFault_IRQn 1 */
 
   /* USER CODE END UsageFault_IRQn 1 */
@@ -162,8 +172,7 @@ void DebugMon_Handler(void)
 void PendSV_Handler(void)
 {
   /* USER CODE BEGIN PendSV_IRQn 0 */
-  printf("MemManage_Handler 异常，导致重启\n");
-	Reboot();
+
   /* USER CODE END PendSV_IRQn 0 */
   /* USER CODE BEGIN PendSV_IRQn 1 */
 
@@ -289,6 +298,8 @@ void EXTI9_5_IRQHandler(void)
 
   /* USER CODE END EXTI0_IRQn 1 */
 }
+
+/* USER CODE BEGIN 1 */
 
 
 

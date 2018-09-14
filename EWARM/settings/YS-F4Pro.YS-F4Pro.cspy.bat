@@ -25,7 +25,7 @@ if not "%~1" == "" goto debugFile
 
 @echo on 
 
-"E:\IAR Systems\Embedded Workbench 7.3\common\bin\cspybat" -f "F:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev - 副本\EWARM\settings\YS-F4Pro.YS-F4Pro.general.xcl" --backend -f "F:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev - 副本\EWARM\settings\YS-F4Pro.YS-F4Pro.driver.xcl" 
+"D:\XiongXia\Software\IAR Systems\Embedded Workbench 7.3\common\bin\cspybat" -f "D:\XiongXia\产品资料\智涂云单片机版-整理版 - 修改版\EWARM\settings\YS-F4Pro.YS-F4Pro.general.xcl" --backend -f "D:\XiongXia\产品资料\智涂云单片机版-整理版 - 修改版\EWARM\settings\YS-F4Pro.YS-F4Pro.driver.xcl" 
 
 @echo off 
 goto end 
@@ -34,7 +34,7 @@ goto end
 
 @echo on 
 
-"E:\IAR Systems\Embedded Workbench 7.3\common\bin\cspybat" -f "F:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev - 副本\EWARM\settings\YS-F4Pro.YS-F4Pro.general.xcl" "--debug_file=%~1" --backend -f "F:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev - 副本\EWARM\settings\YS-F4Pro.YS-F4Pro.driver.xcl" 
+"D:\XiongXia\Software\IAR Systems\Embedded Workbench 7.3\common\bin\cspybat" -f "D:\XiongXia\产品资料\智涂云单片机版-整理版 - 修改版\EWARM\settings\YS-F4Pro.YS-F4Pro.general.xcl" "--debug_file=%~1" --backend -f "D:\XiongXia\产品资料\智涂云单片机版-整理版 - 修改版\EWARM\settings\YS-F4Pro.YS-F4Pro.driver.xcl" 
 
 @echo off 
 :end

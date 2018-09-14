@@ -19,18 +19,18 @@ float WEIGHT_Low = 0; //重量 kg
 float WEIGHT_High = 10000;
 
 //******************其他变量********************
-uint16_t RevComplete = 0;  //接收完成标志位
+__IO uint16_t RevComplete = 0;  //接收完成标志位
 uint8_t Sensor_Cfg_Mode = 0;//串口接收传感器配置文件标志
 uint8_t Delay_Cfg_Mode = 0;//继电器配置文件标志
  
 //传感器配置
 Data sensor_data[7];//上传数据
 Sensor_data sensor_array[7];
-uint8_t RS485_Rx_buf[50];
-char Android_Rx_buf[1000];
+uint8_t RS485_Rx_buf[64];
+char Android_Rx_buf[1024];
 
-uint16_t Android_Rx_Count = 0;
-uint16_t RS485_Rx_Count = 0;
+__IO uint16_t Android_Rx_Count = 0;
+__IO uint16_t RS485_Rx_Count = 0;
 uint16_t RS485_Rx_Count_Old = 1;
 
 uint8_t Sample_flag = 0;//采集标志
@@ -42,13 +42,15 @@ char alarm_Clock[50] = "0";
 
 int contral_time = 0;//控制时间  单位分
 
-int SCM_state = SCM_RUN;//1:run 0:stop   系统状态
-uint8_t Save_flag = 0;//备份状态
-uint8_t YiYe_pump_flag = 0;//移液泵状态
-uint8_t YiYe_pump_control_flag = 0;//移液泵控制状态
-uint8_t Reboot_flag = 0;
-uint8_t Error_flag = 0;
-uint8_t RTC_Config_flag = 0;
+__IO int SCM_state = SCM_RUN;//1:run 0:stop   系统状态
+__IO uint8_t Save_flag = 0;//备份状态，主要用来开关状态保存
+__IO uint8_t YiYe_pump_flag = 0;//移液泵状态
+__IO uint8_t YiYe_pump_control_flag = 0;//移液泵控制状态
+__IO uint8_t Reboot_flag = 0;
+__IO uint8_t Error_flag = 0;
+__IO uint8_t RTC_Config_flag = 0;
+uint8_t delayContorlFlag = 0;
+__IO uint8_t ManualContorlFlag = 0;
 uint8_t index_time_control_flag_assist = 0;
 __IO uint32_t time_num = 0;
 __IO uint16_t warn_timer_count = 0;
@@ -56,6 +58,7 @@ __IO uint16_t warn_timer_count = 0;
 uint8_t saveRS485Adder = 0x00;
 int overWeightNum = 0;
 float overWeightNumSave = 0.0;
+char ErrorInfo[100] = {0};
 
 uint8_t ErrorNum = 0;
 /*
@@ -70,6 +73,8 @@ D1
 开：01 05 00 11 FF 00 DC 3F
 关：01 05 00 11 00 00 9D CF
 */
+
+uint8_t selectStateCommand[8] = {0x01,0x02,0x00,0x00,0x00,0x02,0x8D,0xFF};
 
 uint8_t D0_Open[8] = {0x01,0x05,0x00,0x10,0xFF,0x00,0x8D,0xFF};
 uint8_t D0_Close[8] = {0x01,0x05,0x00,0x10,0x00,0x00,0xCC,0x0F};
@@ -156,14 +161,12 @@ D7
 开：01 05 00 17 FF 00 3C 3E
 关：01 05 00 17 00 00 7D CE
 */
-char Data_Anroid[100] = {0};
 
 
-uint8_t clear_flag = 0;
-uint8_t FLAG = 0;
+__IO uint8_t clear_flag = 0;
+__IO uint8_t FLAG = 0;
 uint8_t FLAG_REC = 0;
 uint8_t index_time_control_flag = 0;
-uint8_t save_data_flag = 0;
 
 
 

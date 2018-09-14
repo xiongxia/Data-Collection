@@ -36,6 +36,9 @@
 #define  FLASH_ReadAddress      FLASH_WriteAddress
 #define  FLASH_SectorToErase    FLASH_WriteAddress
 
+#define  FLASH_CRC_CODE     0x00002000
+#define  FLASH_CRC_CODE_SectorToErase     FLASH_CRC_CODE
+
 /* ¿©’π±‰¡ø ------------------------------------------------------------------*/
 extern SPI_HandleTypeDef hspiflash;
 

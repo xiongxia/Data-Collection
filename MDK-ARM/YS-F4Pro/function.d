@@ -8,7 +8,7 @@
 .\ys-f4pro\function.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 .\ys-f4pro\function.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h
 .\ys-f4pro\function.o: ../Drivers/CMSIS/Include/core_cm4.h
-.\ys-f4pro\function.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\ys-f4pro\function.o: D:\XiongXia\Software\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\ys-f4pro\function.o: ../Drivers/CMSIS/Include/core_cmInstr.h
 .\ys-f4pro\function.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 .\ys-f4pro\function.o: ../Drivers/CMSIS/Include/core_cmFunc.h
@@ -16,7 +16,7 @@
 .\ys-f4pro\function.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 .\ys-f4pro\function.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 .\ys-f4pro\function.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-.\ys-f4pro\function.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\ys-f4pro\function.o: D:\XiongXia\Software\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\ys-f4pro\function.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
 .\ys-f4pro\function.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
 .\ys-f4pro\function.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h
@@ -79,9 +79,9 @@
 .\ys-f4pro\function.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dfsdm.h
 .\ys-f4pro\function.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_lptim.h
 .\ys-f4pro\function.o: ../Inc/variable.h
-.\ys-f4pro\function.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\ys-f4pro\function.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-.\ys-f4pro\function.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\ys-f4pro\function.o: D:\XiongXia\Software\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\ys-f4pro\function.o: D:\XiongXia\Software\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\ys-f4pro\function.o: D:\XiongXia\Software\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\ys-f4pro\function.o: ../Inc/sample.h
 .\ys-f4pro\function.o: ../Inc/crc16.h
 .\ys-f4pro\function.o: ..\Inc\bsp\usart/bsp_debug_usart.h
@@ -90,3 +90,4 @@
 .\ys-f4pro\function.o: ..\Inc\bsp\rtc/bsp_rtc.h
 .\ys-f4pro\function.o: ..\Inc\bsp\spiflash/bsp_spiflash.h
 .\ys-f4pro\function.o: ..\Inc\bsp\led/bsp_led.h
+.\ys-f4pro\function.o: D:\XiongXia\Software\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h

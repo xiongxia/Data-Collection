@@ -9,6 +9,7 @@
   */
 /* 包含头文件 ----------------------------------------------------------------*/  
 #include "usart/bsp_debug_usart.h"
+#include "stm32f4xx.h"                  // Device header
 #include "RS485/bsp_usartx_RS485.h"
 #include "string.h"
 

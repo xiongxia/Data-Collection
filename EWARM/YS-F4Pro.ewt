@@ -1087,6 +1087,9 @@
       <name>$PROJ_DIR$\..\Src\bsp\gpio\bsp_gpio.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\Src\bsp\iwdg\bsp_iwdg.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\Src\bsp\led\bsp_led.c</name>
     </file>
     <file>

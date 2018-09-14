@@ -8,7 +8,7 @@
 /* 类型定义 ------------------------------------------------------------------*/
 /* 宏定义 --------------------------------------------------------------------*/
 #define DEBUG_USARTx                                 USART1
-#define DEBUG_USARTx_BAUDRATE                        4800
+#define DEBUG_USARTx_BAUDRATE                        115200
 #define DEBUG_USART_RCC_CLK_ENABLE()                 __HAL_RCC_USART1_CLK_ENABLE()
 #define DEBUG_USART_RCC_CLK_DISABLE()                __HAL_RCC_USART1_CLK_DISABLE()
 

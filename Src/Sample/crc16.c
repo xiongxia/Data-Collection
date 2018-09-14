@@ -76,7 +76,8 @@ unsigned short CRC16_MODBUS(unsigned char *puchMsg, unsigned int usDataLen)
         }  
     }  
     InvertUint16(&wCRCin, &wCRCin);  
-    return (wCRCin) ;  
+   // printf("%d,%x",wCRCin,wCRCin);
+    return wCRCin ;  
 } 
 
 

@@ -28,38 +28,6 @@ int split(char dst[][80], char* str, const char* spl)
 }
 
 /**
-  * 函数功能: 将十六进制的字符串转换成整数 
-  * 输入参数: 十六进制字节组s 
-  * 返 回 值: 转换结果 
-  * 说    明：无
-  */ 
- 
-int htoi(char s[])  
-{  
-    int i = 0;  
-    int n = 0;  
-    if (s[0] == '0' && (s[1]=='x' || s[1]=='X'))  
-    {  
-        i = 2;  
-    }  
-    else  
-    {  
-        i = 0;  
-    }  
-    for (; (s[i] >= '0' && s[i] <= '9') || (s[i] >= 'a' && s[i] <= 'z') || (s[i] >='A' && s[i] <= 'Z');++i)  
-    {  
-        if (tolower(s[i]) > '9')  
-        {  
-            n = 16 * n + (10 + tolower(s[i]) - 'a');  
-        }  
-        else  
-        {  
-            n = 16 * n + (tolower(s[i]) - '0');  
-        }  
-    }  
-    return n;  
-} 
-/**
   * 函数功能: 采集数据
   * 输入参数: 无
   * 返 回 值: 无
@@ -84,7 +52,6 @@ void Sample_RS485(void)
     p = sensor_array[i].frist_node;
     while(p)
     {
-         printf("Sample_RS485:collection cmd:%s!\n",p->command);
          RS485_Rx_Count = 0;
          memset(command,'\0',50);
          if(strlen(p->command)>5)
@@ -119,6 +86,3 @@ void Sample_RS485(void)
   
   return;
 }
-
-
-

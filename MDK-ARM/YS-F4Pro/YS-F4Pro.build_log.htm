@@ -5,11 +5,11 @@
 <h2>Tool Versions:</h2>
 IDE-Version: μVision V5.25.2.0
 Copyright (C) 2018 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: xx xx, xx, LIC=6XJRA-1ESS7-BW32G-V679J-Z4PUN-5KSAE
+License Information: xx xx, xx, LIC=IC930-B9KAS-RFKIZ-J3JZZ-5EIBF-JIHIL
  
 Tool Versions:
 Toolchain:       MDK-ARM Professional  Version: 5.25.2.0
-Toolchain Path:  E:\Keil_v5\ARM\ARMCC\Bin
+Toolchain Path:  D:\XiongXia\Software\Keil_v5\ARM\ARMCC\Bin
 C Compiler:      Armcc.exe V5.06 update 6 (build 750)
 Assembler:       Armasm.exe V5.06 update 6 (build 750)
 Linker/Locator:  ArmLink.exe V5.06 update 6 (build 750)
@@ -21,94 +21,104 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.1.0
 Dialog DLL:      TCM.DLL V1.35.1.0
  
 <h2>Project:</h2>
-F:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev - 副本\MDK-ARM\YS-F4Pro.uvprojx
-Project File Date:  01/15/2019
+D:\XiongXia\产品资料\智涂云单片机版-整理版 - 修改版\MDK-ARM\YS-F4Pro.uvprojx
+Project File Date:  02/28/2019
 
 <h2>Output:</h2>
-*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'E:\Keil_v5\ARM\ARMCC\Bin'
+*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\XiongXia\Software\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'YS-F4Pro'
 assembling startup_stm32f407xx.s...
 compiling main.c...
 ..\Inc\bsp\RS485/bsp_usartx_RS485.h(40): warning:  #1295-D: Deprecated declaration RS485_Receive_Data - give arg types
   uint16_t RS485_Receive_Data();
-../Inc/function.h(6): warning:  #1295-D: Deprecated declaration Backups_Data - give arg types
-  void Backups_Data();
-../Inc/function.h(14): warning:  #1295-D: Deprecated declaration Clear_RS485Buf - give arg types
+../Inc/function.h(11): warning:  #1295-D: Deprecated declaration Log - give arg types
+  void Log();
+../Inc/function.h(13): warning:  #1295-D: Deprecated declaration Clear_RS485Buf - give arg types
   void Clear_RS485Buf();
-../Inc/function.h(17): warning:  #1295-D: Deprecated declaration Save_Data - give arg types
+../Inc/function.h(15): warning:  #1295-D: Deprecated declaration Save_Data - give arg types
   void Save_Data();
-../Inc/function.h(19): warning:  #1295-D: Deprecated declaration UpData - give arg types
+../Inc/function.h(16): warning:  #1295-D: Deprecated declaration UpData - give arg types
   void UpData();
-../Inc/function.h(20): warning:  #1295-D: Deprecated declaration Get_Average - give arg types
+../Inc/function.h(17): warning:  #1295-D: Deprecated declaration Get_Average - give arg types
   void Get_Average();
-../Inc/function.h(22): warning:  #1295-D: Deprecated declaration Detection - give arg types
+../Inc/function.h(18): warning:  #1295-D: Deprecated declaration Detection - give arg types
   void Detection();
-../Inc/function.h(23): warning:  #1295-D: Deprecated declaration Control - give arg types
+../Inc/function.h(19): warning:  #1295-D: Deprecated declaration Control - give arg types
   void Control();
-../Inc/function.h(31): warning:  #1295-D: Deprecated declaration Save_Device_Data - give arg types
-  void Save_Device_Data();
-../Inc/function.h(34): warning:  #1295-D: Deprecated declaration Reboot - give arg types
+../Inc/function.h(23): warning:  #1295-D: Deprecated declaration Reboot - give arg types
   void Reboot();
-../Inc/function.h(35): warning:  #1295-D: Deprecated declaration Open_Beep - give arg types
+../Inc/function.h(24): warning:  #1295-D: Deprecated declaration Open_Beep - give arg types
   void Open_Beep();
-../Inc/function.h(36): warning:  #1295-D: Deprecated declaration Close_Beep - give arg types
+../Inc/function.h(27): warning:  #1295-D: Deprecated declaration Close_Beep - give arg types
   void Close_Beep();
-../Inc/function.h(37): warning:  #1295-D: Deprecated declaration Open_Light - give arg types
+../Inc/function.h(30): warning:  #1295-D: Deprecated declaration Open_Light - give arg types
   void Open_Light();
-../Inc/function.h(38): warning:  #1295-D: Deprecated declaration Close_Light - give arg types
+../Inc/function.h(31): warning:  #1295-D: Deprecated declaration Close_Light - give arg types
   void Close_Light();
-../Inc/function.h(39): warning:  #1295-D: Deprecated declaration Open_YiYe_pupm - give arg types
+../Inc/function.h(32): warning:  #1295-D: Deprecated declaration Open_YiYe_pupm - give arg types
   void Open_YiYe_pupm();
-../Inc/function.h(40): warning:  #1295-D: Deprecated declaration Close_YiYe_pupm - give arg types
+../Inc/function.h(33): warning:  #1295-D: Deprecated declaration Close_YiYe_pupm - give arg types
   void Close_YiYe_pupm();
-../Inc/function.h(41): warning:  #1295-D: Deprecated declaration Alarm - give arg types
-  void Alarm();
-../Inc/function.h(44): warning:  #1295-D: Deprecated declaration Clear_FLASH_Data - give arg types
+../Inc/function.h(36): warning:  #1295-D: Deprecated declaration Clear_FLASH_Data - give arg types
   void Clear_FLASH_Data();
-../Src/main.c(90): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
-      sprintf(info,"|26");
-../Src/main.c(274): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
+../Inc/function.h(37): warning:  #1295-D: Deprecated declaration closeManualContorl - give arg types
+  void closeManualContorl();
+../Inc/function.h(38): warning:  #1295-D: Deprecated declaration openManualContorl - give arg types
+  void openManualContorl();
+../Inc/function.h(40): warning:  #1295-D: Deprecated declaration Save_Device_Data - give arg types
+  void Save_Device_Data();
+../Inc/function.h(43): warning:  #1295-D: Deprecated declaration Alarm - give arg types
+  void Alarm();
+../Src/main.c(92): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
+      sprintf(info,"|46");
+../Src/main.c(297): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+              SPI_FLASH_BufferWrite(Android_Rx_buf, FLASH_CRC_CODE, 4);
+../Src/main.c(341): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
                   sprintf(info,"@%d",SCM_state);
-../Src/main.c: 20 warnings, 0 errors
+../Src/main.c: 23 warnings, 0 errors
 compiling stm32f4xx_hal_msp.c...
 compiling stm32f4xx_it.c...
 ..\Inc\bsp\RS485/bsp_usartx_RS485.h(40): warning:  #1295-D: Deprecated declaration RS485_Receive_Data - give arg types
   uint16_t RS485_Receive_Data();
-../Inc/function.h(6): warning:  #1295-D: Deprecated declaration Backups_Data - give arg types
-  void Backups_Data();
-../Inc/function.h(14): warning:  #1295-D: Deprecated declaration Clear_RS485Buf - give arg types
+../Inc/function.h(11): warning:  #1295-D: Deprecated declaration Log - give arg types
+  void Log();
+../Inc/function.h(13): warning:  #1295-D: Deprecated declaration Clear_RS485Buf - give arg types
   void Clear_RS485Buf();
-../Inc/function.h(17): warning:  #1295-D: Deprecated declaration Save_Data - give arg types
+../Inc/function.h(15): warning:  #1295-D: Deprecated declaration Save_Data - give arg types
   void Save_Data();
-../Inc/function.h(19): warning:  #1295-D: Deprecated declaration UpData - give arg types
+../Inc/function.h(16): warning:  #1295-D: Deprecated declaration UpData - give arg types
   void UpData();
-../Inc/function.h(20): warning:  #1295-D: Deprecated declaration Get_Average - give arg types
+../Inc/function.h(17): warning:  #1295-D: Deprecated declaration Get_Average - give arg types
   void Get_Average();
-../Inc/function.h(22): warning:  #1295-D: Deprecated declaration Detection - give arg types
+../Inc/function.h(18): warning:  #1295-D: Deprecated declaration Detection - give arg types
   void Detection();
-../Inc/function.h(23): warning:  #1295-D: Deprecated declaration Control - give arg types
+../Inc/function.h(19): warning:  #1295-D: Deprecated declaration Control - give arg types
   void Control();
-../Inc/function.h(31): warning:  #1295-D: Deprecated declaration Save_Device_Data - give arg types
-  void Save_Device_Data();
-../Inc/function.h(34): warning:  #1295-D: Deprecated declaration Reboot - give arg types
+../Inc/function.h(23): warning:  #1295-D: Deprecated declaration Reboot - give arg types
   void Reboot();
-../Inc/function.h(35): warning:  #1295-D: Deprecated declaration Open_Beep - give arg types
+../Inc/function.h(24): warning:  #1295-D: Deprecated declaration Open_Beep - give arg types
   void Open_Beep();
-../Inc/function.h(36): warning:  #1295-D: Deprecated declaration Close_Beep - give arg types
+../Inc/function.h(27): warning:  #1295-D: Deprecated declaration Close_Beep - give arg types
   void Close_Beep();
-../Inc/function.h(37): warning:  #1295-D: Deprecated declaration Open_Light - give arg types
+../Inc/function.h(30): warning:  #1295-D: Deprecated declaration Open_Light - give arg types
   void Open_Light();
-../Inc/function.h(38): warning:  #1295-D: Deprecated declaration Close_Light - give arg types
+../Inc/function.h(31): warning:  #1295-D: Deprecated declaration Close_Light - give arg types
   void Close_Light();
-../Inc/function.h(39): warning:  #1295-D: Deprecated declaration Open_YiYe_pupm - give arg types
+../Inc/function.h(32): warning:  #1295-D: Deprecated declaration Open_YiYe_pupm - give arg types
   void Open_YiYe_pupm();
-../Inc/function.h(40): warning:  #1295-D: Deprecated declaration Close_YiYe_pupm - give arg types
+../Inc/function.h(33): warning:  #1295-D: Deprecated declaration Close_YiYe_pupm - give arg types
   void Close_YiYe_pupm();
-../Inc/function.h(41): warning:  #1295-D: Deprecated declaration Alarm - give arg types
-  void Alarm();
-../Inc/function.h(44): warning:  #1295-D: Deprecated declaration Clear_FLASH_Data - give arg types
+../Inc/function.h(36): warning:  #1295-D: Deprecated declaration Clear_FLASH_Data - give arg types
   void Clear_FLASH_Data();
-../Src/stm32f4xx_it.c: 18 warnings, 0 errors
+../Inc/function.h(37): warning:  #1295-D: Deprecated declaration closeManualContorl - give arg types
+  void closeManualContorl();
+../Inc/function.h(38): warning:  #1295-D: Deprecated declaration openManualContorl - give arg types
+  void openManualContorl();
+../Inc/function.h(40): warning:  #1295-D: Deprecated declaration Save_Device_Data - give arg types
+  void Save_Device_Data();
+../Inc/function.h(43): warning:  #1295-D: Deprecated declaration Alarm - give arg types
+  void Alarm();
+../Src/stm32f4xx_it.c: 20 warnings, 0 errors
 compiling stm32f4xx_assert.c...
 compiling variable.c...
 compiling stm32f4xx_hal_flash_ramfunc.c...
@@ -204,179 +214,207 @@ compiling bsp_debug_usart.c...
 compiling bsp_usartx_RS485.c...
 ..\Inc\bsp\RS485/bsp_usartx_RS485.h(40): warning:  #1295-D: Deprecated declaration RS485_Receive_Data - give arg types
   uint16_t RS485_Receive_Data();
-../Inc/function.h(6): warning:  #1295-D: Deprecated declaration Backups_Data - give arg types
-  void Backups_Data();
-../Inc/function.h(14): warning:  #1295-D: Deprecated declaration Clear_RS485Buf - give arg types
+../Inc/function.h(11): warning:  #1295-D: Deprecated declaration Log - give arg types
+  void Log();
+../Inc/function.h(13): warning:  #1295-D: Deprecated declaration Clear_RS485Buf - give arg types
   void Clear_RS485Buf();
-../Inc/function.h(17): warning:  #1295-D: Deprecated declaration Save_Data - give arg types
+../Inc/function.h(15): warning:  #1295-D: Deprecated declaration Save_Data - give arg types
   void Save_Data();
-../Inc/function.h(19): warning:  #1295-D: Deprecated declaration UpData - give arg types
+../Inc/function.h(16): warning:  #1295-D: Deprecated declaration UpData - give arg types
   void UpData();
-../Inc/function.h(20): warning:  #1295-D: Deprecated declaration Get_Average - give arg types
+../Inc/function.h(17): warning:  #1295-D: Deprecated declaration Get_Average - give arg types
   void Get_Average();
-../Inc/function.h(22): warning:  #1295-D: Deprecated declaration Detection - give arg types
+../Inc/function.h(18): warning:  #1295-D: Deprecated declaration Detection - give arg types
   void Detection();
-../Inc/function.h(23): warning:  #1295-D: Deprecated declaration Control - give arg types
+../Inc/function.h(19): warning:  #1295-D: Deprecated declaration Control - give arg types
   void Control();
-../Inc/function.h(31): warning:  #1295-D: Deprecated declaration Save_Device_Data - give arg types
-  void Save_Device_Data();
-../Inc/function.h(34): warning:  #1295-D: Deprecated declaration Reboot - give arg types
+../Inc/function.h(23): warning:  #1295-D: Deprecated declaration Reboot - give arg types
   void Reboot();
-../Inc/function.h(35): warning:  #1295-D: Deprecated declaration Open_Beep - give arg types
+../Inc/function.h(24): warning:  #1295-D: Deprecated declaration Open_Beep - give arg types
   void Open_Beep();
-../Inc/function.h(36): warning:  #1295-D: Deprecated declaration Close_Beep - give arg types
+../Inc/function.h(27): warning:  #1295-D: Deprecated declaration Close_Beep - give arg types
   void Close_Beep();
-../Inc/function.h(37): warning:  #1295-D: Deprecated declaration Open_Light - give arg types
+../Inc/function.h(30): warning:  #1295-D: Deprecated declaration Open_Light - give arg types
   void Open_Light();
-../Inc/function.h(38): warning:  #1295-D: Deprecated declaration Close_Light - give arg types
+../Inc/function.h(31): warning:  #1295-D: Deprecated declaration Close_Light - give arg types
   void Close_Light();
-../Inc/function.h(39): warning:  #1295-D: Deprecated declaration Open_YiYe_pupm - give arg types
+../Inc/function.h(32): warning:  #1295-D: Deprecated declaration Open_YiYe_pupm - give arg types
   void Open_YiYe_pupm();
-../Inc/function.h(40): warning:  #1295-D: Deprecated declaration Close_YiYe_pupm - give arg types
+../Inc/function.h(33): warning:  #1295-D: Deprecated declaration Close_YiYe_pupm - give arg types
   void Close_YiYe_pupm();
-../Inc/function.h(41): warning:  #1295-D: Deprecated declaration Alarm - give arg types
-  void Alarm();
-../Inc/function.h(44): warning:  #1295-D: Deprecated declaration Clear_FLASH_Data - give arg types
+../Inc/function.h(36): warning:  #1295-D: Deprecated declaration Clear_FLASH_Data - give arg types
   void Clear_FLASH_Data();
+../Inc/function.h(37): warning:  #1295-D: Deprecated declaration closeManualContorl - give arg types
+  void closeManualContorl();
+../Inc/function.h(38): warning:  #1295-D: Deprecated declaration openManualContorl - give arg types
+  void openManualContorl();
+../Inc/function.h(40): warning:  #1295-D: Deprecated declaration Save_Device_Data - give arg types
+  void Save_Device_Data();
+../Inc/function.h(43): warning:  #1295-D: Deprecated declaration Alarm - give arg types
+  void Alarm();
 ..\Src\bsp\RS485\bsp_usartx_RS485.c(22): warning:  #177-D: variable "h"  was declared but never referenced
   int static h = 0;
-..\Src\bsp\RS485\bsp_usartx_RS485.c: 19 warnings, 0 errors
+..\Src\bsp\RS485\bsp_usartx_RS485.c: 21 warnings, 0 errors
 compiling function.c...
-../Inc/function.h(6): warning:  #1295-D: Deprecated declaration Backups_Data - give arg types
-  void Backups_Data();
-../Inc/function.h(14): warning:  #1295-D: Deprecated declaration Clear_RS485Buf - give arg types
+../Inc/function.h(11): warning:  #1295-D: Deprecated declaration Log - give arg types
+  void Log();
+../Inc/function.h(13): warning:  #1295-D: Deprecated declaration Clear_RS485Buf - give arg types
   void Clear_RS485Buf();
-../Inc/function.h(17): warning:  #1295-D: Deprecated declaration Save_Data - give arg types
+../Inc/function.h(15): warning:  #1295-D: Deprecated declaration Save_Data - give arg types
   void Save_Data();
-../Inc/function.h(19): warning:  #1295-D: Deprecated declaration UpData - give arg types
+../Inc/function.h(16): warning:  #1295-D: Deprecated declaration UpData - give arg types
   void UpData();
-../Inc/function.h(20): warning:  #1295-D: Deprecated declaration Get_Average - give arg types
+../Inc/function.h(17): warning:  #1295-D: Deprecated declaration Get_Average - give arg types
   void Get_Average();
-../Inc/function.h(22): warning:  #1295-D: Deprecated declaration Detection - give arg types
+../Inc/function.h(18): warning:  #1295-D: Deprecated declaration Detection - give arg types
   void Detection();
-../Inc/function.h(23): warning:  #1295-D: Deprecated declaration Control - give arg types
+../Inc/function.h(19): warning:  #1295-D: Deprecated declaration Control - give arg types
   void Control();
-../Inc/function.h(31): warning:  #1295-D: Deprecated declaration Save_Device_Data - give arg types
-  void Save_Device_Data();
-../Inc/function.h(34): warning:  #1295-D: Deprecated declaration Reboot - give arg types
+../Inc/function.h(23): warning:  #1295-D: Deprecated declaration Reboot - give arg types
   void Reboot();
-../Inc/function.h(35): warning:  #1295-D: Deprecated declaration Open_Beep - give arg types
+../Inc/function.h(24): warning:  #1295-D: Deprecated declaration Open_Beep - give arg types
   void Open_Beep();
-../Inc/function.h(36): warning:  #1295-D: Deprecated declaration Close_Beep - give arg types
+../Inc/function.h(27): warning:  #1295-D: Deprecated declaration Close_Beep - give arg types
   void Close_Beep();
-../Inc/function.h(37): warning:  #1295-D: Deprecated declaration Open_Light - give arg types
+../Inc/function.h(30): warning:  #1295-D: Deprecated declaration Open_Light - give arg types
   void Open_Light();
-../Inc/function.h(38): warning:  #1295-D: Deprecated declaration Close_Light - give arg types
+../Inc/function.h(31): warning:  #1295-D: Deprecated declaration Close_Light - give arg types
   void Close_Light();
-../Inc/function.h(39): warning:  #1295-D: Deprecated declaration Open_YiYe_pupm - give arg types
+../Inc/function.h(32): warning:  #1295-D: Deprecated declaration Open_YiYe_pupm - give arg types
   void Open_YiYe_pupm();
-../Inc/function.h(40): warning:  #1295-D: Deprecated declaration Close_YiYe_pupm - give arg types
+../Inc/function.h(33): warning:  #1295-D: Deprecated declaration Close_YiYe_pupm - give arg types
   void Close_YiYe_pupm();
-../Inc/function.h(41): warning:  #1295-D: Deprecated declaration Alarm - give arg types
-  void Alarm();
-../Inc/function.h(44): warning:  #1295-D: Deprecated declaration Clear_FLASH_Data - give arg types
+../Inc/function.h(36): warning:  #1295-D: Deprecated declaration Clear_FLASH_Data - give arg types
   void Clear_FLASH_Data();
+../Inc/function.h(37): warning:  #1295-D: Deprecated declaration closeManualContorl - give arg types
+  void closeManualContorl();
+../Inc/function.h(38): warning:  #1295-D: Deprecated declaration openManualContorl - give arg types
+  void openManualContorl();
+../Inc/function.h(40): warning:  #1295-D: Deprecated declaration Save_Device_Data - give arg types
+  void Save_Device_Data();
+../Inc/function.h(43): warning:  #1295-D: Deprecated declaration Alarm - give arg types
+  void Alarm();
 ..\Inc\bsp\RS485/bsp_usartx_RS485.h(40): warning:  #1295-D: Deprecated declaration RS485_Receive_Data - give arg types
   uint16_t RS485_Receive_Data();
-..\Src\Sample\function.c(297): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
-        sprintf(data,"%.2f,%d;",value,type);
-..\Src\Sample\function.c(322): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
-          sprintf(data,"%.2f,%d,%s;",value,type,devicesID);
-..\Src\Sample\function.c(374): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
-                HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
-..\Src\Sample\function.c(405): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          if(p->value > 0.0)
-..\Src\Sample\function.c(834): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
-      HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
-..\Src\Sample\function.c(925): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
-        HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
-..\Src\Sample\function.c(1047): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
-        HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
-..\Src\Sample\function.c(1514): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-        f = f * 0.1;
-..\Src\Sample\function.c(1517): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          f = f * 0.01;
-..\Src\Sample\function.c(1520): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          f = f * 0.001;
-..\Src\Sample\function.c(1523): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          f = f * 0.0001;
-..\Src\Sample\function.c(1526): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          f = f * 0.00001;
-..\Src\Sample\function.c(1529): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          f = f * 0.000001;
-..\Src\Sample\function.c(1532): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          f = f * 0.0000001;
-..\Src\Sample\function.c(1535): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          f = f * 0.00000001;
-..\Src\Sample\function.c(1538): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          f = f * 0.000000001;
-..\Src\Sample\function.c(1639): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-       value = f / 20000.0;
-..\Src\Sample\function.c(1817): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-      jie = jie * 2.;
-..\Src\Sample\function.c(1819): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          jie += 1.;
-..\Src\Sample\function.c(1821): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-      jie -= 127.;
-..\Src\Sample\function.c(1874): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
+..\Src\Sample\function.c(71): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
       strcpy(buffer,Android_Rx_buf);
-..\Src\Sample\function.c(1888): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+..\Src\Sample\function.c(84): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
       SPI_FLASH_BufferWrite(c, FLASH_WriteAddress+10,strlen(c));
-..\Src\Sample\function.c(1889): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+..\Src\Sample\function.c(85): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
       SPI_FLASH_BufferWrite(buffer, FLASH_WriteAddress+20,strlen(buffer));
-..\Src\Sample\function.c(1896): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+..\Src\Sample\function.c(92): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
       int n = atoi(sizeRead);
-..\Src\Sample\function.c(1961): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
-    n = atoi(size);
-..\Src\Sample\function.c(1990): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *restrict"
-      strcpy(buf,buffer);
-..\Src\Sample\function.c(2030): warning:  #177-D: variable "len"  was declared but never referenced
-    int len = 0;
-..\Src\Sample\function.c(2047): warning:  #177-D: variable "len"  was declared but never referenced
-     int len = 0;
-..\Src\Sample\function.c: 46 warnings, 0 errors
+..\Src\Sample\function.c(152): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      jie = jie * 2.;
+..\Src\Sample\function.c(154): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          jie += 1.;
+..\Src\Sample\function.c(156): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      jie -= 127.;
+..\Src\Sample\function.c(534): warning:  #186-D: pointless comparison of unsigned integer with zero
+      if (sensor_array[type].num < 0 || sensor_array[type].num > 10)
+..\Src\Sample\function.c(605): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
+             n = htoi(tempData);
+..\Src\Sample\function.c(882): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+      HAL_UART_Transmit(&husart_debug,Data,strlen((char *)Data),1000);
+..\Src\Sample\function.c(925): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+                          HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
+..\Src\Sample\function.c(965): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+                  if(p->value > 0.0)
+..\Src\Sample\function.c(1118): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+          HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
+..\Src\Sample\function.c(1199): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+              HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
+..\Src\Sample\function.c(1212): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+              HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
+..\Src\Sample\function.c(1331): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+              HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
+..\Src\Sample\function.c(1346): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+              HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
+..\Src\Sample\function.c(1459): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
+                      strcat(data,"]");
+..\Src\Sample\function.c(1460): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
+                      strcat(data,&delay[i].port);
+..\Src\Sample\function.c(1461): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
+                      strcat(data,",");
+..\Src\Sample\function.c(1462): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
+                      strcat(data,delay[i].devices);
+..\Src\Sample\function.c(1463): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+                      HAL_UART_Transmit(&husart_debug,data,strlen(data),1000);
+..\Src\Sample\function.c(1924): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+            f = f * 0.1;
+..\Src\Sample\function.c(1927): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              f = f * 0.01;
+..\Src\Sample\function.c(1930): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              f = f * 0.001;
+..\Src\Sample\function.c(1933): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              f = f * 0.0001;
+..\Src\Sample\function.c(1936): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              f = f * 0.00001;
+..\Src\Sample\function.c(1939): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              f = f * 0.000001;
+..\Src\Sample\function.c(1942): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              f = f * 0.0000001;
+..\Src\Sample\function.c(1945): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              f = f * 0.00000001;
+..\Src\Sample\function.c(1948): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+              f = f * 0.000000001;
+..\Src\Sample\function.c(2069): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          value = fTemp / 20000.0;
+..\Src\Sample\function.c(2234): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+      n = atoi(size);
+..\Src\Sample\function.c(2265): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *restrict"
+          strcpy(buf,buffer);
+..\Src\Sample\function.c(2389): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+      HAL_UART_Transmit(&husart_debug,log,strlen((char *)log),1000);
+..\Src\Sample\function.c: 55 warnings, 0 errors
 compiling sample.c...
-../Inc/function.h(6): warning:  #1295-D: Deprecated declaration Backups_Data - give arg types
-  void Backups_Data();
-../Inc/function.h(14): warning:  #1295-D: Deprecated declaration Clear_RS485Buf - give arg types
+../Inc/function.h(11): warning:  #1295-D: Deprecated declaration Log - give arg types
+  void Log();
+../Inc/function.h(13): warning:  #1295-D: Deprecated declaration Clear_RS485Buf - give arg types
   void Clear_RS485Buf();
-../Inc/function.h(17): warning:  #1295-D: Deprecated declaration Save_Data - give arg types
+../Inc/function.h(15): warning:  #1295-D: Deprecated declaration Save_Data - give arg types
   void Save_Data();
-../Inc/function.h(19): warning:  #1295-D: Deprecated declaration UpData - give arg types
+../Inc/function.h(16): warning:  #1295-D: Deprecated declaration UpData - give arg types
   void UpData();
-../Inc/function.h(20): warning:  #1295-D: Deprecated declaration Get_Average - give arg types
+../Inc/function.h(17): warning:  #1295-D: Deprecated declaration Get_Average - give arg types
   void Get_Average();
-../Inc/function.h(22): warning:  #1295-D: Deprecated declaration Detection - give arg types
+../Inc/function.h(18): warning:  #1295-D: Deprecated declaration Detection - give arg types
   void Detection();
-../Inc/function.h(23): warning:  #1295-D: Deprecated declaration Control - give arg types
+../Inc/function.h(19): warning:  #1295-D: Deprecated declaration Control - give arg types
   void Control();
-../Inc/function.h(31): warning:  #1295-D: Deprecated declaration Save_Device_Data - give arg types
-  void Save_Device_Data();
-../Inc/function.h(34): warning:  #1295-D: Deprecated declaration Reboot - give arg types
+../Inc/function.h(23): warning:  #1295-D: Deprecated declaration Reboot - give arg types
   void Reboot();
-../Inc/function.h(35): warning:  #1295-D: Deprecated declaration Open_Beep - give arg types
+../Inc/function.h(24): warning:  #1295-D: Deprecated declaration Open_Beep - give arg types
   void Open_Beep();
-../Inc/function.h(36): warning:  #1295-D: Deprecated declaration Close_Beep - give arg types
+../Inc/function.h(27): warning:  #1295-D: Deprecated declaration Close_Beep - give arg types
   void Close_Beep();
-../Inc/function.h(37): warning:  #1295-D: Deprecated declaration Open_Light - give arg types
+../Inc/function.h(30): warning:  #1295-D: Deprecated declaration Open_Light - give arg types
   void Open_Light();
-../Inc/function.h(38): warning:  #1295-D: Deprecated declaration Close_Light - give arg types
+../Inc/function.h(31): warning:  #1295-D: Deprecated declaration Close_Light - give arg types
   void Close_Light();
-../Inc/function.h(39): warning:  #1295-D: Deprecated declaration Open_YiYe_pupm - give arg types
+../Inc/function.h(32): warning:  #1295-D: Deprecated declaration Open_YiYe_pupm - give arg types
   void Open_YiYe_pupm();
-../Inc/function.h(40): warning:  #1295-D: Deprecated declaration Close_YiYe_pupm - give arg types
+../Inc/function.h(33): warning:  #1295-D: Deprecated declaration Close_YiYe_pupm - give arg types
   void Close_YiYe_pupm();
-../Inc/function.h(41): warning:  #1295-D: Deprecated declaration Alarm - give arg types
-  void Alarm();
-../Inc/function.h(44): warning:  #1295-D: Deprecated declaration Clear_FLASH_Data - give arg types
+../Inc/function.h(36): warning:  #1295-D: Deprecated declaration Clear_FLASH_Data - give arg types
   void Clear_FLASH_Data();
+../Inc/function.h(37): warning:  #1295-D: Deprecated declaration closeManualContorl - give arg types
+  void closeManualContorl();
+../Inc/function.h(38): warning:  #1295-D: Deprecated declaration openManualContorl - give arg types
+  void openManualContorl();
+../Inc/function.h(40): warning:  #1295-D: Deprecated declaration Save_Device_Data - give arg types
+  void Save_Device_Data();
+../Inc/function.h(43): warning:  #1295-D: Deprecated declaration Alarm - give arg types
+  void Alarm();
 ..\Inc\bsp\RS485/bsp_usartx_RS485.h(40): warning:  #1295-D: Deprecated declaration RS485_Receive_Data - give arg types
   uint16_t RS485_Receive_Data();
-..\Src\Sample\sample.c(92): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
+..\Src\Sample\sample.c(59): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
                 strcpy(command,p->command);
-..\Src\Sample\sample.c(93): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
+..\Src\Sample\sample.c(60): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *"
                 cnt = split(dst,command, ".");
-..\Src\Sample\sample.c: 20 warnings, 0 errors
+..\Src\Sample\sample.c(88): warning:  #1-D: last line of file ends without a newline
+  }
+..\Src\Sample\sample.c: 23 warnings, 0 errors
 compiling bsp_BasicTIM.c...
 compiling bsp_led.c...
 compiling crc16.c...
@@ -388,11 +426,12 @@ compiling bsp_rtc.c...
 ..\Src\bsp\rtc\bsp_rtc.c(79): warning:  #223-D: function "Show_Data" declared implicitly
     Show_Data(out,7); 
 ..\Src\bsp\rtc\bsp_rtc.c: 2 warnings, 0 errors
+compiling bsp_iwdg.c...
 linking...
-Program Size: Code=39612 RO-data=800 RW-data=272 ZI-data=16376  
+Program Size: Code=43704 RO-data=1820 RW-data=284 ZI-data=16548  
 FromELF: creating hex file...
-After Build - User command #1: E:\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin -o YCXZ26.bin  YS-F4Pro\YS-F4Pro.axf
-".\YS-F4Pro\YS-F4Pro.axf" - 0 Error(s), 126 Warning(s).
+After Build - User command #1: D:\XiongXia\Software\Keil_v5\ARM\ARMCC\bin\fromelf.exe  --bin -o YCXZ46.bin  YS-F4Pro\YS-F4Pro.axf
+".\YS-F4Pro\YS-F4Pro.axf" - 0 Error(s), 145 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -403,10 +442,10 @@ Package Vendor: Keil
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_YS-F4Pro
-  E:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+  D:\XiongXia\Software\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:03:16
+Build Time Elapsed:  00:03:40
 </pre>
 </body>
 </html>

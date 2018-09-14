@@ -10,10 +10,10 @@ LimitSize=0
 ByteLimit=50
 [StLinkDriver]
 CStepIntDis=_ 0
-stlinkserialNo=A7D81CEE
+stlinkserialNo=352E0AFA
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=68759812
+Checksum=1383141644
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -123,11 +123,10 @@ mode=0
 Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\YS-F4Pro\Exe}.123.1" 0 0 1 "" 0 "" 0
 Bp1=_ 0 "EMUL_CODE" "{$PROJ_DIR$\YS-F4Pro\Exe}.123.1" 0 0 1 "" 0 "" 0
 Bp2=_ 1 "EMUL_DATA" "Save_Data" 0 0 0 0 4294967295
-Bp3=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\variable.c}.170.1" 0 0 1 "" 0 "" 0
+Bp3=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\variable.c}.173.1" 0 0 1 "" 0 "" 0
 Bp4=_ 1 "EMUL_DATA" "Control" 0 0 0 0 4294967295
 Bp5=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\..\..\工具}.571.3" 0 0 1 "" 0 "" 0
-Bp6=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\bsp\RS485\bsp_usartx_RS485.c}.78.3" 0 0 1 "" 0 "" 0
-Count=7
+Count=6
 [Aliases]
 A0=_ "C:\Users\admin\Desktop\RS485-主机端\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c" ""
 A1=_ "C:\Users\admin\Desktop\RS485-主机端\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma.c" ""
@@ -135,11 +134,13 @@ A2=_ "C:\Users\admin\Desktop\RS485-主机端\Src\bsp\usart\bsp_debug_usart.c" ""
 A3=_ "E:\STM32F407-RS485数据采集-V2\RS485-主机端\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c" ""
 A4=_ "F:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c" ""
 A5=_ "F:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c" ""
-A6=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c" ""
-A7=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma.c" ""
-A8=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_spi.c" ""
-A9=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c" ""
-A10=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Src\bsp\BasicTIM\bsp_BasicTIM.c" ""
-A11=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Src\bsp\usart\bsp_debug_usart.c" ""
-Count=12
+A6=_ "F:\STM32F407-RS485数据采集-V2\智涂云单片机版-整理版 - 修改版\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c" ""
+A7=_ "F:\STM32F407-RS485数据采集-V2\智涂云单片机版-整理版 - 修改版\Src\main.c" ""
+A8=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c" ""
+A9=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma.c" ""
+A10=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_spi.c" ""
+A11=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c" ""
+A12=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Src\bsp\BasicTIM\bsp_BasicTIM.c" ""
+A13=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Src\bsp\usart\bsp_debug_usart.c" ""
+Count=14
 SuppressDialog=1
