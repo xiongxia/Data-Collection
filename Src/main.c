@@ -26,7 +26,7 @@
 #include "gpio/bsp_gpio.h"
 #include "variable.h"
 #include "rtc/bsp_rtc.h"
-
+#include "spiflash/bsp_spiflash.h"
 
     
 /* 私有类型定义 --------------------------------------------------------------*/
@@ -105,7 +105,6 @@ int main(void)
 {
   
     int i =0;
-    uint8_t txbuf[50];
     char start_time[20];
     RTC_TimeTypeDef stimestructureget;
     
@@ -120,6 +119,7 @@ int main(void)
   /* 初始化串口并配置串口中断优先级 */
   MX_USARTx_Init();
   
+  MX_SPIFlash_Init();
   
   /* 初始化RTC实时时钟 */
   MX_RTC_Init();
@@ -151,10 +151,19 @@ int main(void)
   LED2_ON;
   
   RTC_CalendarShow();
+  //获取配置
+  Get_Device_Data();
+  Save_Data();
+  
   while (1)
   {
     if(RevDevicesData){
+        if(Debug_flag)
+            Save_Device_Data(RS232_Rx_buf);
+        else
+            Save_Device_Data(Android_Rx_buf);
         Save_Data();
+        
         RevDevicesData= 0;
     }
     if(RevCommand){

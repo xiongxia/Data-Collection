@@ -13,6 +13,7 @@
 #include "rtc/bsp_rtc.h"
 #include "rtc/bsp_calendar.h"
 #include <conio.h>
+#include "spiflash/bsp_spiflash.h"
 
 /**
   * 函数功能: 串口接收命令
@@ -1075,5 +1076,29 @@ void Show_Data(uint8_t *bit,int len){
     printf("\n");
 }
 
+/**
+  * 函数功能: 保存配置信息
+  * 输入参数: 字节组
+  * 返 回 值: 无
+  * 说    明：无
+  */
+void Save_Device_Data(){
+  
+  SPI_FLASH_BufferWrite(Flash_Buffer, FLASH_WriteAddress, 1000);
+  printf("保存配置：%s\n"，Flash_Buffer);
+ 
+}
+/**
+  * 函数功能: 获取配置信息
+  * 输入参数: 无
+  * 返 回 值: 无
+  * 说    明：无
+  */
+void Get_Device_Data(char* buf){
+  
+  SPI_FLASH_BufferRead(buf, FLASH_WriteAddress, 1000);
+  printf("获取配置：%s\n"，buf);
+ 
+}
 
 

@@ -1011,6 +1011,9 @@
       <name>$PROJ_DIR$\..\Src\bsp\rtc\bsp_rtc.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\Src\bsp\spiflash\bsp_spiflash.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\Src\bsp\RS485\bsp_usartx_RS485.c</name>
     </file>
   </group>

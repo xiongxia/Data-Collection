@@ -31,5 +31,7 @@ void Control_max_from_min(int i);
 void Control_temer(int i);
 void Control_sys_temer(int i);
 void Chang_Start_time(int i);
+void Save_Device_Data();
+void Get_Device_Data(char buf)
 
 #endif
