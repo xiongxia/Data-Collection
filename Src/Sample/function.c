@@ -422,18 +422,26 @@ void Open_Delay(char port){
     case '1':
       OUTPUT1_GPIO_ON;
       delay[0].state = 1;
+      sprintf(data,"%s,1,%d",delay[0].devices,delay[0].state);
+      HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
       break;
     case '2':
       OUTPUT2_GPIO_ON;
       delay[1].state = 1;
+      sprintf(data,"%s,2,%d",delay[1].devices,delay[1].state);
+      HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
       break;
     case '3':
       OUTPUT3_GPIO_ON;
       delay[2].state = 1;
+      sprintf(data,"%s,3,%d",delay[2].devices,delay[2].state);
+      HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
       break;
     case '4':
       OUTPUT4_GPIO_ON;
       delay[3].state = 1;
+      sprintf(data,"%s,4,%d",delay[3].devices,delay[3].state);
+      HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
       break;
     default:
       break;
@@ -496,24 +504,34 @@ void Chang_Start_time(int i){
   * 说    明：无
   */
 void Close_Delay(char port){
+  char data[50];
+  
   printf("关闭继电器:%c\n",port);
   RTC_CalendarShow();
     switch(port){
     case '1':
       OUTPUT1_GPIO_OFF; 
       delay[0].state = 0;
+      sprintf(data,"%s,1,%d",delay[0].devices,delay[0].state);
+      HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
       break;
     case '2':
       OUTPUT2_GPIO_OFF; 
       delay[1].state = 0;
+      sprintf(data,"%s,2,%d",delay[1].devices,delay[1].state);
+      HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
       break;
     case '3':
       OUTPUT3_GPIO_OFF;
       delay[2].state = 0;
+      sprintf(data,"%s,3,%d",delay[2].devices,delay[2].state);
+      HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
       break;
     case '4':
       OUTPUT4_GPIO_OFF; 
       delay[4].state = 0;
+      sprintf(data,"%s,4,%d",delay[3].devices,delay[3].state);
+      HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
       break;
     default:
       break;

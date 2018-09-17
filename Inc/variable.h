@@ -39,7 +39,7 @@ typedef struct Delay_node{
     char port;//端口(1：端口1)
     int state;//状态
     int num;//控制指标数量
-    int type[5];//监控类型
+    int type[5];//监控类型(0表示PH)
     int control;//控制类型
     char start_time[10];//开始时间
     char sustain_time[10];//持续时间
