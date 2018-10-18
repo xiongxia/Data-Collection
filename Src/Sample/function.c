@@ -2,8 +2,8 @@
 #include "variable.h"
 #include "variable.h" 
 #include "string.h"
-#include "stdio.h"
-#include "stdlib.h"
+# include "stdio.h"
+# include "stdlib.h"
 #include "math.h"
 #include "sample.h"
 #include "crc16.h"
@@ -12,7 +12,6 @@
 #include "gpio/bsp_gpio.h"
 #include "rtc/bsp_rtc.h"
 #include "rtc/bsp_calendar.h"
-#include <conio.h>
 #include "spiflash/bsp_spiflash.h"
 
 /**
@@ -23,7 +22,7 @@
   */
 void Command_Data(){
   
-  printf("开始执行命令\n");
+  printf("Command_Data：开始执行命令\n");
   char *port = NULL;
   char *cmd = NULL;
   
@@ -43,7 +42,7 @@ void Command_Data(){
     Open_Delay(port[0]);
   }
   else{
-    printf("命令错误!!!\n");
+    printf("Command_Data：命令错误!!!\n");
   }
 }
 /**
@@ -54,10 +53,11 @@ void Command_Data(){
   */
 void Save_Data(){
   
-  printf("开始保存配置信息\n");
-  char temp[6][50] = {0};//暂存信息
+  printf("Save_Data：开始保存配置信息\n");
+  char temp[6][200] = {0};//暂存信息
   char *p = NULL;
-  uint8_t i = 0;
+  uint8_t s,n = 0;
+  int i;
   //切分数据
   if(Debug_flag){
     p = strtok(RS232_Rx_buf, ";");
@@ -68,60 +68,72 @@ void Save_Data(){
   }
   while (p != NULL) {
   //  printf("ptr=%s\n", p);
-    strcpy(temp[i],p);
-    i++;
+    strcpy(temp[n],p);
+    n++;
     p = strtok(NULL, ";");
   }
+  i = n;
+  Clean_Data(0);
+  Clean_Data(1);
+  Clean_Data(2);
+  Clean_Data(3);
+  Clean_Data(4);
+  Clean_Data(5);
   //分析信息
-  for(uint8_t j=0;j<i;j++){
-    char a = temp[j][0];
-
+  for(s=0;s<i;s++){
+    char a = temp[s][0];
+    
     switch(a)
     {
         case '0':
             //PH
-            Clean_Data(0);
-            Get_Data(0,temp[j]);
+            //Clean_Data(0);
+            Get_Data(0,temp[s]);
            // Sensor_Cfg_Mode = 1;//串口接收传感器配置文件标志
             break;
         case '1':
             //电导率
-            Clean_Data(1);
-            Get_Data(1,temp[j]);
+           // Clean_Data(1);
+            Get_Data(1,temp[s]);
            // Sensor_Cfg_Mode = 1;//串口接收传感器配置文件标志
             break;
         case '2':
             //温度
-            Clean_Data(2);
-            Get_Data(2,temp[j]);
+            //Clean_Data(2);
+            Get_Data(2,temp[s]);
            // Sensor_Cfg_Mode = 1;//串口接收传感器配置文件标志
             break;
         case '3':
             //压力
-            Clean_Data(3);
-            Get_Data(3,temp[j]);
+           // Clean_Data(3);
+            Get_Data(3,temp[s]);
            // Sensor_Cfg_Mode = 1;//串口接收传感器配置文件标志
             break;
         case '4':
             //液位
-            Clean_Data(4);
-            Get_Data(4,temp[j]);
+           // Clean_Data(4);
+            Get_Data(4,temp[s]);
            // Sensor_Cfg_Mode = 1;//串口接收传感器配置文件标志
             break;
         case '5':
             //继电器
-            Clean_Data(5);
-            Get_Data(5,temp[j]);
+            //Clean_Data(5);
+            Get_Data(5,temp[s]);
             Delay_Cfg_Mode = 1;//继电器配置文件标志
             break;
         default:
         //错误
-            printf("配置信息错误!!!\n");
+            printf("Save_Data：%d 配置信息错误!!!\n",a);
             break;
     }
-    //只要有配置信息就设置标志位
-    Sensor_Cfg_Mode = 1;//串口接收传感器配置文件标志
+   
   }
+  printf("Save_Data：配置信息完成!!!");
+
+  
+  if(n > 0)
+   //只要有配置信息就设置标志位
+    Sensor_Cfg_Mode = 1;//串口接收传感器配置文件标志
  
 }
 /**
@@ -162,7 +174,8 @@ void Clean_Data(int type){
     sensor_array[type].min = 0;
     sensor_array[type].num = 0;
     sensor_array[type].frist_node = NULL;
-    printf("传感器信息清除完毕\n");
+    printf("%d 传感器信息清除完毕\n",type);
+    return;
 }
 /**
   * 函数功能: 上传传感器数据
@@ -172,7 +185,7 @@ void Clean_Data(int type){
   */
 void UpData(){
   
-  printf("开始上传数据\n");
+  printf("UpData：开始上传数据\n");
   char devicesID[20];
   float value;
   int type,i,j;
@@ -185,14 +198,14 @@ void UpData(){
     p = sensor_array[i].frist_node;
     type = sensor_data[i].type;
     value = sensor_data[i].value;
-    sprintf(data,"%.2f,%d\n",value,type);
-    printf("上传数据：%.2f,%d\n",value,type);
+    sprintf(data,"%.2f,%d;",value,type);
+    printf("UpData：上传数据：%.2f,%d\n",value,type);
     HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
     for(j=0;j<sensor_array[i].num;j++){
         value = p->value;
         strcpy(devicesID,p->devices);
-        sprintf(data,"%.2f,%d,%s\n",value,type,devicesID);
-        printf("上传数据：%.2f,%d,%s\n",value,type,devicesID);
+        sprintf(data,"%.2f,%d,%s;",value,type,devicesID);
+        printf("UpData：上传数据：%.2f,%d,%s\n",value,type,devicesID);
         HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
          //清除数据
         p->error = 0;
@@ -200,9 +213,12 @@ void UpData(){
         p->value = 0;
         p = p->next;
     }
+ 
+   
    } 
   }
-  printf("上传数据完成\n");
+  HAL_UART_Transmit(&husart_debug,"#",1,1000);
+  printf("UpData：上传数据完成\n");
 }
 /**
   * 函数功能: 计算传感器数据（平均值），判断异常,保证每次上传显示数据稳定
@@ -212,7 +228,7 @@ void UpData(){
   */
 void Get_Average(){
   
-  printf("开始计算数据均值\n");
+  printf("Get_Average：开始计算数据均值\n");
   Sensor *p = NULL,*q = NULL;//q记录error次数最大的传感器
   float temp_value = 0;//暂存数据
   int e = 0,error = 0;//e记录最大错误次数,error为累加错误次数
@@ -267,7 +283,7 @@ void Get_Data(int type,char * data){
     char *result = NULL;
     Sensor *p = NULL;
     char temp_data[20][50];
-    int i = 0;//计数
+    int i,num = 0;//计数
     double min,max;
     
     result = strtok(data,",");
@@ -275,10 +291,16 @@ void Get_Data(int type,char * data){
     //提取数据
     while( result != NULL ) {
        result = strtok( NULL,",");
-       strcpy(temp_data[i],result);
-       i++;
+       strcpy(temp_data[num],result);
+       num++;
     }
   
+    if(num<10 && type != 5){
+      printf("Get_Data:%d 配置信息错误!!\n",type);
+ 
+      return;
+    }
+    
     if(type == 5){
         //继电器
         int n = atoi(temp_data[0]);
@@ -418,6 +440,7 @@ void Open_Delay(char port){
   
   printf("打开继电器:%c\n",port);
   RTC_CalendarShow();
+  char data[50];
   switch(port){
     case '1':
       OUTPUT1_GPIO_ON;
@@ -529,7 +552,7 @@ void Close_Delay(char port){
       break;
     case '4':
       OUTPUT4_GPIO_OFF; 
-      delay[4].state = 0;
+      delay[3].state = 0;
       sprintf(data,"%s,4,%d",delay[3].devices,delay[3].state);
       HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
       break;
@@ -547,7 +570,7 @@ void Close_Delay(char port){
   */
 void RTC_CalendarShow(void)
 {
-  uint8_t str[30]; // 字符串暂存  
+  //uint8_t str[30]; // 字符串暂存  
 
   
   RTC_DateTypeDef sdatestructureget;
@@ -661,7 +684,7 @@ void Control_temer(int i){
     }
      
     if(n == 0){
-      printf("输入异常!\n");
+      printf("Control_temer：输入异常!\n");
       return;
     }
     delay[i].counter = ((atoi(temp_data[0])) * 60 + atoi(temp_data[1]))*60000;
@@ -695,7 +718,7 @@ void Control_sys_temer(int i){
     }
      
     if(n == 0){
-      printf("输入异常!\n");
+      printf("Control_sys_temer：输入异常!\n");
       return;
     }
     
@@ -712,7 +735,7 @@ void Control_sys_temer(int i){
   * 说    明：检测配置好了的继电器，判断devices是否为0，0表示没有配置信息
   */
 void Control(){
-  int i,j,n,type;
+  int i,n;
   for(i=0;i<5;i++){
     if(delay[i].devices[0] != '0'){
       //有配置
@@ -771,7 +794,7 @@ void Clear_RS485Buf(){
   */
 float movedigit(const int n,const int num)
 {
-	float f = (float)n;
+    float f = (float)n;
     printf("......%.2f\n",f);
     switch(num)	
 	{
@@ -806,11 +829,11 @@ float movedigit(const int n,const int num)
 			f = f * 0.000000001;
 			break;
 		default:
-			printf("num erro!\n");
+			printf("movedigit：num erro!\n");
 			break;
 
 	}
-   
+        printf("......%.2f\n",f);
 	return f;
 
 }
@@ -826,17 +849,17 @@ void Modbusprocess(uint8_t * data,Sensor *sensor,int type)
   
    uint8_t temp[20]={0x00,0x00,0x00,0x00};
 
-   float value;
-   float vaule_float,vaule;
-   int vaule_int;
-   char buf[10];
+   float value = 0.0;
+   float value_float = 0.0;
+   int value_int = 0;
+  // char buf[10];
    
    if(CRC16_MODBUS(RS485_Rx_buf,RS485_Rx_Count_Old) == 0){
-        printf("传感器接收数据正确\n");
+        printf("Modbusprocess：传感器接收数据正确\n");
         //验证通过
    }
    else{
-        printf("传感器接收数据错误\n");
+        printf("Modbusprocess：传感器接收数据错误\n");
         sensor->error++;
         Clear_RS485Buf();
         return;
@@ -872,12 +895,12 @@ void Modbusprocess(uint8_t * data,Sensor *sensor,int type)
                 temp[1] = 0x00;
 			}
 		}
-		vaule_float = BitToFloat(temp);	
-        sensor->value += vaule_float;
-        //sprintf(buf, "%.2f", vaule_float);
+		value_float = BitToFloat(temp);	
+                sensor->value += value_float;
+        //sprintf(buf, "%.2f", value_float);
 
 		//save_data
-         printf("\nvaule-float:%.2f\n",vaule_float);
+         printf("\nvalue-float:%.2f\n",value_float);
    }
    else if(!strcmp(sensor->parsetype,"Integer")){
         if(sensor->datanum == 2){
@@ -885,26 +908,26 @@ void Modbusprocess(uint8_t * data,Sensor *sensor,int type)
             temp[1] = 0x00;
             temp[2] = data[sensor->startadder - 1];
             temp[3] = data[sensor->startadder];
-		}
-		else{
+	}
+	else{
             temp[0] = data[sensor->startadder-1];
             temp[1] = data[sensor->startadder];
             temp[2] = data[sensor->startadder + 1];
             temp[3] = data[sensor->startadder + 2];
-		}
-		vaule_int = BitToInt(temp);
-		vaule = movedigit(vaule_int,sensor->keep);
+	}
+	value_int = BitToInt(temp);
+	value = movedigit(value_int,sensor->keep);
 					
-		printf("\nvaule-int:%d\n",vaule_int);
-		printf("\nvaule-int:%.2f\n",vaule);
-		//sprintf(buf, "%.2f", vaule);
+	printf("\nvalue-int:%d\n",value_int);
+	printf("\nvalue-float:%.2f\n",value);
+	//sprintf(buf, "%.2f", value);
 					
 	}
-	else{
+   else{
         printf("\nNOt compatibility\n");
         //continue;
         return;
-	}
+   }
    switch(type){
         case 0:
             //PH
@@ -925,6 +948,7 @@ void Modbusprocess(uint8_t * data,Sensor *sensor,int type)
               if(WCOND_Low <= value && WCOND_High >= value)
               {
                 sensor->value = sensor->value + value;
+      
                 sensor->amount++;
               }
               else
@@ -1100,12 +1124,53 @@ void Show_Data(uint8_t *bit,int len){
   * 返 回 值: 无
   * 说    明：无
   */
-void Save_Device_Data(){
+void Save_Device_Data(char* buf){
   
-  SPI_FLASH_BufferWrite(Flash_Buffer, FLASH_WriteAddress, 1000);
-  printf("保存配置：%s\n"，Flash_Buffer);
+  int size = strlen(buf);
+  size = size + 1;
+  char c[20];
+  
+  itoa(size,c);
+
+  buf[size - 1] = '#';
+  buf[size] = '\0';
+    /* 擦除SPI的扇区以写入 */
+  SPI_FLASH_SectorErase(FLASH_SectorToErase);	
+ 
+  SPI_FLASH_BufferWrite(c, FLASH_WriteAddress,strlen(c));
+  SPI_FLASH_BufferWrite(buf, FLASH_WriteAddress+10,strlen(buf));
+  
+  printf("Save_Device_Data：保存配置：%s  \n大小：%d\n",buf,size);
+  
  
 }
+
+/**
+  * 函数功能: 整数转字符串
+  * 输入参数: 无
+  * 返 回 值: 无
+  * 说    明：最大10位数
+  */
+void itoa (int n,char s[]){
+  
+    int i,j,sign;
+    char temp[10];
+    if((sign = n) < 0)//记录符号
+        n = -n;//使n成为正数
+    i = 0;
+    do{
+       temp[i++] = n % 10 + '0';//取下一个数字
+    }
+    while ((n /= 10) > 0);//删除该数字
+    if(sign<0)
+        temp[i++]='-';
+    temp[i]='\0';
+    
+    for(j=i;j>=0;j--)//生成的数字是逆序的，所以要逆序输出
+      s[i-j] = temp[j-1];
+   // printf("aaaaaaaaaaaaaa%s\n",s);
+} 
+
 /**
   * 函数功能: 获取配置信息
   * 输入参数: 无
@@ -1114,9 +1179,25 @@ void Save_Device_Data(){
   */
 void Get_Device_Data(char* buf){
   
-  SPI_FLASH_BufferRead(buf, FLASH_WriteAddress, 1000);
-  printf("获取配置：%s\n"，buf);
+  int n;
+  char size[10];
+
+  SPI_FLASH_BufferRead(size, FLASH_WriteAddress,10);
+  n = atoi(size);
+  
+  SPI_FLASH_BufferRead(buf, FLASH_WriteAddress+10,n);
  
+  
+  if(buf[n-1] == '#'){
+    buf[n-1] = '\0';
+    printf("获取配置：%s\n",buf);
+    Save_Data();
+  }
+  else
+    printf("Get_Device_Data：本地获取配置失败\n");
 }
+
+
+
 
 

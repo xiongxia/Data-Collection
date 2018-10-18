@@ -173,28 +173,6 @@ void SPI_FLASH_SectorErase(uint32_t SectorAddr)
   SPI_FLASH_WaitForWriteEnd();
 }
 
-/**
-  * 函数功能: 擦除整片
-  * 输入参数: 无
-  * 返 回 值: 无
-  * 说    明：擦除串行Flash整片空间
-  */
-void SPI_FLASH_BulkErase(void)
-{
- /* 发送FLASH写使能命令 */
-  SPI_FLASH_WriteEnable();
-
-  /* 整片擦除 Erase */
-  /* 选择串行FLASH: CS低电平 */
-  FLASH_SPI_CS_ENABLE();
-  /* 发送整片擦除指令*/
-  SPI_FLASH_SendByte(W25X_ChipErase);
-  /* 禁用串行FLASH: CS高电平 */
-  FLASH_SPI_CS_DISABLE();
-
-  /* 等待擦除完毕*/
-  SPI_FLASH_WaitForWriteEnd();
-}
 
 /**
   * 函数功能: 往串行FLASH按页写入数据，调用本函数写入数据前需要先擦除扇区
@@ -356,97 +334,6 @@ void SPI_FLASH_BufferRead(uint8_t* pBuffer, uint32_t ReadAddr, uint16_t NumByteT
   FLASH_SPI_CS_DISABLE();
 }
 
-/**
-  * 函数功能: 读取串行Flash型号的ID
-  * 输入参数: 无
-  * 返 回 值: uint32_t：串行Flash的型号ID
-  * 说    明：  FLASH_ID      IC型号      存储空间大小         
-                0xEF3015      W25X16        2M byte
-                0xEF4015	    W25Q16        4M byte
-                0XEF4017      W25Q64        8M byte
-                0XEF4018      W25Q128       16M byte  (YS-F1Pro开发板默认配置)
-  */
-uint32_t SPI_FLASH_ReadID(void)
-{
-  uint32_t Temp = 0, Temp0 = 0, Temp1 = 0, Temp2 = 0;
-
-  /* 选择串行FLASH: CS低电平 */
-  FLASH_SPI_CS_ENABLE();
-
-  /* 发送命令：读取芯片型号ID */
-  SPI_FLASH_SendByte(W25X_JedecDeviceID);
-
-  /* 从串行Flash读取一个字节数据 */
-  Temp0 = SPI_FLASH_SendByte(Dummy_Byte);
-
-  /* 从串行Flash读取一个字节数据 */
-  Temp1 = SPI_FLASH_SendByte(Dummy_Byte);
-
-  /* 从串行Flash读取一个字节数据 */
-  Temp2 = SPI_FLASH_SendByte(Dummy_Byte);
-
-  /* 禁用串行Flash：CS高电平 */
-  FLASH_SPI_CS_DISABLE();
-  
-  Temp = (Temp0 << 16) | (Temp1 << 8) | Temp2;
-  return Temp;
-}
-
-/**
-  * 函数功能: 读取串行Flash设备ID
-  * 输入参数: 无
-  * 返 回 值: uint32_t：串行Flash的设备ID
-  * 说    明：
-  */
-uint32_t SPI_FLASH_ReadDeviceID(void)
-{
-  uint32_t Temp = 0;
-
-  /* 选择串行FLASH: CS低电平 */
-  FLASH_SPI_CS_ENABLE();
-
-  /* 发送命令：读取芯片设备ID * */
-  SPI_FLASH_SendByte(W25X_DeviceID);
-  SPI_FLASH_SendByte(Dummy_Byte);
-  SPI_FLASH_SendByte(Dummy_Byte);
-  SPI_FLASH_SendByte(Dummy_Byte);
-  
-  /* 从串行Flash读取一个字节数据 */
-  Temp = SPI_FLASH_SendByte(Dummy_Byte);
-
-  /* 禁用串行Flash：CS高电平 */
-  FLASH_SPI_CS_DISABLE();
-
-  return Temp;
-}
-
-/**
-  * 函数功能: 启动连续读取数据串
-  * 输入参数: ReadAddr：读取地址
-  * 返 回 值: 无
-  * 说    明：Initiates a read data byte (READ) sequence from the Flash.
-  *           This is done by driving the /CS line low to select the device,
-  *           then the READ instruction is transmitted followed by 3 bytes
-  *           address. This function exit and keep the /CS line low, so the
-  *           Flash still being selected. With this technique the whole
-  *           content of the Flash is read with a single READ instruction.
-  */
-void SPI_FLASH_StartReadSequence(uint32_t ReadAddr)
-{
-  /* Select the FLASH: Chip Select low */
-  FLASH_SPI_CS_ENABLE();
-
-  /* Send "Read from Memory " instruction */
-  SPI_FLASH_SendByte(W25X_ReadData);
-
-  /* Send the 24-bit address of the address to read from -----------------------*/
-  /* Send ReadAddr high nibble address byte */
-  SPI_FLASH_SendByte((ReadAddr & 0xFF0000) >> 16);
-  /* Send ReadAddr medium nibble address byte */
-  SPI_FLASH_SendByte((ReadAddr& 0xFF00) >> 8);
-  /* Send ReadAddr low nibble address byte */
-  SPI_FLASH_SendByte(ReadAddr & 0xFF);
-}
 
 /**
   * 函数功能: 从串行Flash读取一个字节数据

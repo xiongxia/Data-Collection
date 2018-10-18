@@ -50,7 +50,7 @@ float STREES_High = 200; //压力(kpa)
 float WPH_Low = 1; //PH
 float WPH_High = 14; //PH
 float WCOND_Low = 0.0; //电导率
-float WCOND_High = 200.0; //电导率(m)
+float WCOND_High = 20000.0; //电导率(m)
 float TEMP_Low = -20; //温度
 float TEMP_High = 100; //温度
 
@@ -104,13 +104,13 @@ Data sensor_data[5];//上传数据
 Sensor_data sensor_array[5];
 uint8_t RS485_Rx_buf[500];
 uint8_t RS232_Rx_buf[500];//串口缓存
-uint8_t Android_Rx_buf[500];
+uint8_t Android_Rx_buf[1000];
 
-uint8_t Android_Rx_Count = 0;
+uint16_t Android_Rx_Count = 0;
 
-uint8_t RS485_Rx_Count = 0;
-uint8_t RS485_Rx_Count_Old = -1;
-uint8_t RS232_Rx_Count = 0;
+uint16_t RS485_Rx_Count = 0;
+uint16_t RS485_Rx_Count_Old = -1;
+uint16_t RS232_Rx_Count = 0;
 
 
 uint8_t Sample_flag = 0;//采集标志

@@ -54,12 +54,12 @@ extern Data sensor_data[5];//上传数据，type与下标对应
 extern Sensor_data sensor_array[5];
 extern uint8_t RS485_Rx_buf[500];
 extern uint8_t RS232_Rx_buf[500];//串口缓存
-extern uint8_t Android_Rx_buf[500];
+extern uint8_t Android_Rx_buf[1000];
 
-extern uint8_t Android_Rx_Count;
-extern uint8_t RS485_Rx_Count;
-extern uint8_t RS485_Rx_Count_Old;
-extern uint8_t RS232_Rx_Count;
+extern uint16_t Android_Rx_Count;
+extern uint16_t RS485_Rx_Count;
+extern uint16_t RS485_Rx_Count_Old;
+extern uint16_t RS232_Rx_Count;
 extern uint8_t Sample_flag;//采集标志
 extern uint8_t UpData_flag;//上传数据标志
 extern uint8_t Debug_flag;//调试标志

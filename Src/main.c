@@ -37,6 +37,7 @@ __IO uint16_t second_timer_count = 0;//秒
 __IO uint16_t count = 0;
 
 /* 私有宏定义 ----------------------------------------------------------------*/
+
 /* 私有变量 ------------------------------------------------------------------*/
 
 uint8_t aRxBuffer = 0;
@@ -151,17 +152,20 @@ int main(void)
   LED2_ON;
   
   RTC_CalendarShow();
+ 
   //获取配置
-  Get_Device_Data();
-  Save_Data();
+  Get_Device_Data(Android_Rx_buf);
   
   while (1)
   {
     if(RevDevicesData){
-        if(Debug_flag)
+      if(Debug_flag){
+
             Save_Device_Data(RS232_Rx_buf);
-        else
+      }
+      else{
             Save_Device_Data(Android_Rx_buf);
+      }
         Save_Data();
         
         RevDevicesData= 0;
@@ -176,6 +180,7 @@ int main(void)
         Sample_flag = 0;
     }
     if(UpData_flag){
+        //Get_Device_Data(Android_Rx_buf);
         RTC_CalendarShow();
         Get_Average();
         UpData();
@@ -285,8 +290,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
   else if(UartHandle->Instance == DEBUG_USARTx){
    // printf("adada");
    // HAL_UART_Transmit(&husartx,&aRxBuffer,1,0);
-    Android_Rx_buf[Android_Rx_Count] = aRxBuffer;
-    Android_Rx_Count ++;
+
+    if(Android_Rx_Count != 0 || aRxBuffer != 0x20){
+          Android_Rx_buf[Android_Rx_Count] = aRxBuffer;
+          //printf("aaaaaaaaaa\n%d  %c  %02x\n",Android_Rx_Count,aRxBuffer,aRxBuffer);
+          Android_Rx_Count ++;
+    }
     //接收完成
     if(aRxBuffer == '#'){
         printf("安卓配置信息：接收完成\n");
@@ -301,6 +310,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
         Android_Rx_buf[Android_Rx_Count-1] = '\0';
         printf("%s\n",Android_Rx_buf);
         Android_Rx_Count = 0;
+        
        // Command_Data();
         RevCommand = 1;
     }
