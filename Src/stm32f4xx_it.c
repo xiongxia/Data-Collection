@@ -37,6 +37,7 @@
 #include "usart/bsp_debug_usart.h"
 #include "RS485/bsp_usartx_RS485.h"
 #include "BasicTIM/bsp_BasicTIM.h"
+#include "StepMotor/bsp_STEPMOTOR.h" 
 
 /* USER CODE BEGIN 0 */
 
@@ -261,7 +262,10 @@ void BASIC_TIM_INT_FUN(void)
 }
 /* USER CODE END 1 */
 
-
+void STEPMOTOR_TIMx_IRQHandler(void)
+{
+  HAL_TIM_IRQHandler(&htimx_STEPMOTOR);
+}
 
 
 

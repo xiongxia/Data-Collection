@@ -13,6 +13,7 @@
 #include "rtc/bsp_rtc.h"
 #include "rtc/bsp_calendar.h"
 #include "spiflash/bsp_spiflash.h"
+#include "StepMotor/bsp_STEPMOTOR.h"
 
 /**
   * 函数功能: 串口接收命令
@@ -1196,8 +1197,158 @@ void Get_Device_Data(char* buf){
   else
     printf("Get_Device_Data：本地获取配置失败\n");
 }
+/**
+  * 函数功能: 打开步进电机
+  * 输入参数: int dir (1:正向 0:反向)
+  * 返 回 值: 无
+  * 说    明：无
+  */
+void Open_Motor(int ori){
+  
+  //SetSpeed(200);
+  if(ena == 1){
+    STEPMOTOR_OUTPUT_ENABLE();  
+    TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_TIM_CHANNEL_x,TIM_CCx_ENABLE);
+    ena = 0;
+  }
+  
+  if(ori == 1){
+    dir = 1;
+    STEPMOTOR_DIR_REVERSAL();
+    printf("Open_Motor：逆时针打开步进电机\n");
 
+  }
+  else if(ori == 0){
+    dir = 0;
+    STEPMOTOR_DIR_FORWARD(); 
+    printf("Open_Motor：顺时针打开步进电机\n");
 
+  }
+  else{
+    printf("Open_Motor：参数错误!!!!!!!!!\n");
+  }
+}
+/**
+  * 函数功能: 关闭步进电机
+  * 输入参数: 无
+  * 返 回 值: 无
+  * 说    明：无
+  */
+void Close_Motor(){
+  
+  if(ena == 0){
+    ena = 1;
+    STEPMOTOR_OUTPUT_DISABLE(); 
+    TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_TIM_CHANNEL_x,TIM_CCx_DISABLE);
+    printf("Close_Motor：关闭步进电机成功\n");
+  }
+  else{
+    printf("Close_Motor：步进电机已经关闭\n");
+    //STEPMOTOR_OUTPUT_DISABLE(); 
+  }
+}
+/**
+  * 函数功能: 反转电机方向
+  * 输入参数: 无
+  * 返 回 值: 无
+  * 说    明：无
+  */
+void Reversed_Motor(){
+  
+   if(dir == 1){
+    dir = 0;
+    STEPMOTOR_DIR_FORWARD(); 
+    printf("Reversed_Motor：步进电机方向反转为顺时针\n");
 
+  }
+  else if(dir == 0){
+    dir = 1;
+    STEPMOTOR_DIR_REVERSAL();
+    printf("Reversed_Motor：步进电机方向反转为逆时针\n");
 
+  }
+  else{
+    printf("Open_Motor：参数错误!!!!!!!!!\n");
+  
+  }
+}
+/**
+  * 函数功能: 设置步进电机速度
+  * 输入参数: 速度值 单位（rpm）
+  * 返 回 值: 无
+  * 说    明：公式 speed = (120 * Toggle_Pulse * STEPMOTOR_MICRO_STEP * FSPR)/T1_FREQ   (ps:T1_FREQ = 系统时钟频率  eg:168MHZ / 6 = 28MHZ）
+  */
+void SetSpeed(float Speed)
+{
+  int i = 0;    
+  float tmp_Pulse = 0.0; 
+  if(Speed == Speed_Motor){
+    printf("SetSpeed:速度不需要改变！\n");
+    return;
+  }
+  if(Speed != 0) 
+  {
+    tmp_Pulse = (T1_FREQ * Speed)/(120 * STEPMOTOR_MICRO_STEP * FSPR);
+    if( tmp_Pulse >= 65535.0f )   // 数据溢出
+      tmp_Pulse = 65535.0f;
+  }
+  else{
+    printf("SetSpeed:速度设置为0,电机停止工作\n");
+  }
+  /* 速度小于0,反向 */
+  if(Speed < 0)
+  {
+    dir = 1;
+    Speed = fabs(Speed);
+    STEPMOTOR_DIR_REVERSAL();
+  }
+  else 
+  {
+    dir = 0;
+    STEPMOTOR_DIR_FORWARD();
+  }
+  //加速
+  if(Speed > Speed_Motor){
+    while(1){
+      Toggle_Pulse -= 10;
+      //HAL_Delay();
+      if(Toggle_Pulse >= tmp_Pulse)
+        break;
+    }
+    printf("SetSpeed:电机速度由%.2f加速到%.2f\n",Speed_Motor,Speed);
+    Speed_Motor = Speed;
+  
+  }
+  else{
+      while(1){
+      Toggle_Pulse += 10;
+      //HAL_Delay();
+      if(Toggle_Pulse >= tmp_Pulse)
+        break;
+      }
+      printf("SetSpeed:电机速度由%.2f加速到%.2f\n",Speed_Motor,Speed);
+      Speed_Motor = Speed;
+  
+  }
+  
+}
+/**
+  * 函数功能: 模拟模式采集液位值
+  * 输入参数: 端口（<13）
+  * 返 回 值: 返回1 没有检测液位  返回0 检测液位
+  * 说    明：无
+  */
+int Simulation_Level(int port){
+  
+    if(INPUT_StateRead(port) == High)
+    {
+      printf("Simulation_Level:检测到液位\n");
+      return 0;
+    } 
+    else{
+      printf("Simulation_Level:没有检测到液位\n");
+      return 1;
+    }
 
+   
+}

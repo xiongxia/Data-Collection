@@ -53,7 +53,7 @@ float WCOND_Low = 0.0; //电导率
 float WCOND_High = 20000.0; //电导率(m)
 float TEMP_Low = -20; //温度
 float TEMP_High = 100; //温度
-
+int LEVEL = 0;//0 感应到液体  1没有感应
 
 /*******************************************************
 const unsigned int Sensor_Enable_Address = Address_Offset+0;
@@ -129,4 +129,12 @@ int contral_time = 0;//控制时间  单位分
 int dosage_sum = 0;//总加药量
 int dosing_frequency = 9;//每小时加药量 每小时9L
 int dosage = 1;//默认1L
+
+uint8_t dir = 0; // 0 ：顺时针   1：逆时针 
+uint8_t ena = 1; // 0 ：正常运行 1：停机
+
+float Speed_Motor = 92.16;//电机速度
+
+
+//液位（12个）
 

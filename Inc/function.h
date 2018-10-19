@@ -34,5 +34,10 @@ void Chang_Start_time(int i);
 void Save_Device_Data(char* buf);
 void Get_Device_Data(char* buf);
 void itoa (int n,char s[]);
+void SetSpeed(float Speed);
+void Reversed_Motor();
+void Close_Motor();
+void Open_Motor(int ori);
+int Simulation_Level(int port);
 
 #endif

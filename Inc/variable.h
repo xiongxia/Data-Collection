@@ -3,6 +3,10 @@
 
 #include "stm32f4xx_hal.h"
 
+
+extern uint8_t dir; // 0 ：顺时针   1：逆时针 
+extern uint8_t ena; // 0 ：正常运行 1：停机
+
 //传感器数据结构(0:PH，1:电导率，2:温度，3:液位，4:压力)
 typedef struct sensor_info{
     int num; //传感器数量
@@ -107,6 +111,8 @@ extern float WCOND_Low; //电导率
 extern float WCOND_High; //电导率
 extern float TEMP_Low; //温度
 extern float TEMP_High; //温度
+extern int LEVEL;
+
 
 
 //******************其他变量********************
@@ -127,4 +133,8 @@ extern char alarm_Clock[50];
 extern int dosage_sum;//总加药量
 extern int dosing_frequency;//每小时加药量 每小时9L
 extern int dosage;//默认1L
+
+
+extern float Speed_Motor;
+
 #endif

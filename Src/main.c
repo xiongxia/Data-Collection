@@ -27,7 +27,8 @@
 #include "variable.h"
 #include "rtc/bsp_rtc.h"
 #include "spiflash/bsp_spiflash.h"
-
+#include "StepMotor/bsp_STEPMOTOR.h"
+#include <stdlib.h>
     
 /* 私有类型定义 --------------------------------------------------------------*/
 
@@ -44,8 +45,20 @@ uint8_t aRxBuffer = 0;
 uint8_t frist = 0;
 uint8_t RevDevicesData = 0;
 uint8_t RevCommand = 0;
-
+__IO uint32_t pulse_count = 0; /*  脉冲计数，一个完整的脉冲会增加2 */
 /* 扩展变量 ------------------------------------------------------------------*/
+
+/*
+*    当步进电机驱动器细分设置为1时，每200个脉冲步进电机旋转一周
+*                          为32时，每6400个脉冲步进电机旋转一周
+*    下面以设置为32时为例讲解：
+*    pulse_count用于记录输出脉冲数量，pulse_count为脉冲数的两倍，
+*    比如当pulse_count=12800时，实际输出6400个完整脉冲。
+*    这样可以非常方便步进电机的实际转动圈数，就任意角度都有办法控制输出。
+*    如果步进电机驱动器的细分设置为其它值，pulse_count也要做相应处理
+*
+*/
+
 /* 私有函数原形 --------------------------------------------------------------*/
 /* 函数体 --------------------------------------------------------------------*/
 /**
@@ -130,8 +143,18 @@ int main(void)
   LED_GPIO_Init();
     /* 板子输出初始化 */
   OUTPUT_GPIO_Init();
+  //输入初始化
+  INPUT_GPIO_Init();
+  /* 高级控制定时器初始化并配置PWM输出功能 */
+  STEPMOTOR_TIMx_Init();
+  /* 确定定时器 */
+  HAL_TIM_Base_Start(&htimx_STEPMOTOR);
   
+  /* 使能中断 关闭比较输出*/
   
+  HAL_TIM_OC_Start_IT(&htimx_STEPMOTOR,STEPMOTOR_TIM_CHANNEL_x);
+  TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_TIM_CHANNEL_x,TIM_CCx_DISABLE);
+  Close_Motor();
   
   /* 基本定时器初始化：1ms中断一次 */
   BASIC_TIMx_Init();
@@ -156,8 +179,11 @@ int main(void)
   //获取配置
   Get_Device_Data(Android_Rx_buf);
   
+  Open_Motor(0);
+  
   while (1)
   {
+    
     if(RevDevicesData){
       if(Debug_flag){
 
@@ -240,11 +266,13 @@ int main(void)
   */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
 {
+    //printf("232  %c",aRxBuffer);
    //232接收
   if(UartHandle->Instance == USARTx){
    
     RS232_Rx_buf[RS232_Rx_Count] = aRxBuffer;
     RS232_Rx_Count ++;
+  
     //接收完成
     if(aRxBuffer == '#'){
         printf("RS232配置信息：接收完成\n");
@@ -261,6 +289,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
         printf("RS232命令信息：接收完成\n");
         RS232_Rx_buf[RS232_Rx_Count-1] = '\0';
         RS232_Rx_Count = 0;
+        Reversed_Motor();
         //Command_Data();
        // Sensor_Cfg_Mode = 1;
         Debug_flag = 1;
@@ -268,11 +297,22 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
         RevComplete = 1;
       //  Sample_RS485();
     }
+    //预留测试使用
        if(aRxBuffer == '?'){
-        printf("RS232：接收完成\n");
-        RS485_Send_Data(BHZY_Conductivity,8);
-        Debug_flag = 1;
-        Sample_flag = 1;
+        printf("\nRS232：接收完成\n");
+        printf("%s  %d\n",RS232_Rx_buf,strlen(RS232_Rx_buf));
+        if(strlen(RS232_Rx_buf) == 1){
+          Close_Motor();
+        }
+        float f = strtod(RS232_Rx_buf,NULL);
+        printf("%.2f\n",f);
+        SetSpeed(f);
+        RS232_Rx_buf[RS232_Rx_Count-1] = '\0';
+        RS232_Rx_Count = 0;
+
+        //RS485_Send_Data(BHZY_Conductivity,8);
+        //Debug_flag = 1;
+        //Sample_flag = 1;
         
     }
     HAL_UART_Receive_IT(&husartx,&aRxBuffer,1);
@@ -336,12 +376,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     
     
     //1s钟采集一次
-    LED1_TOGGLE;
+   // LED1_TOGGLE;
     if(second_timer_count == 2567)
     {
         second_timer_count = 0;
      
-        LED2_TOGGLE;
+        //LED2_TOGGLE;
       
         //有配置信息采集
         if(Sensor_Cfg_Mode){
@@ -359,7 +399,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
      if(minute_timer_count == 60000)
      {
         
-        LED3_TOGGLE;
+       // LED3_TOGGLE;
         minute_timer_count = 0;
             //有配置信息采集
         if(Sensor_Cfg_Mode){
@@ -376,6 +416,20 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     }
     
 }
-
+/**
+  * 函数功能: 定时器比较输出中断回调函数
+  * 输入参数: htim：定时器句柄指针
+  * 返 回 值: 无
+  * 说    明: 无
+  */
+void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  __IO uint32_t count;
+  __IO uint32_t tmp;
+  count =__HAL_TIM_GET_COUNTER(&htimx_STEPMOTOR);
+  tmp = STEPMOTOR_TIM_PERIOD & (count+Toggle_Pulse);
+  __HAL_TIM_SET_COMPARE(&htimx_STEPMOTOR,STEPMOTOR_TIM_CHANNEL_x,tmp);
+  pulse_count++;
+}
 
 /******************* (C) COPYRIGHT 2015-2020 硬石嵌入式开发团队 *****END OF FILE****/

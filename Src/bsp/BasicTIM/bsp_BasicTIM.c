@@ -17,7 +17,7 @@
 /* 包含头文件 ----------------------------------------------------------------*/
 #include "BasicTIM/bsp_BasicTIM.h" 
     
-
+#include "StepMotor/bsp_STEPMOTOR.h" 
 /* 私有类型定义 --------------------------------------------------------------*/
 /* 私有宏定义 ----------------------------------------------------------------*/
 /* 私有变量 ------------------------------------------------------------------*/
@@ -66,6 +66,11 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
     HAL_NVIC_SetPriority(BASIC_TIM_IRQ, 1, 0);
     HAL_NVIC_EnableIRQ(BASIC_TIM_IRQ);
   }
+  else if(htim_base->Instance==STEPMOTOR_TIMx)
+  {
+    /* 基本定时器外设时钟使能 */
+    STEPMOTOR_TIM_RCC_CLK_ENABLE();
+  }
   
   
 }
@@ -86,6 +91,16 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* htim_base)
 
     /* 关闭外设中断 */
     HAL_NVIC_DisableIRQ(BASIC_TIM_IRQ);
+  }
+  else if(htim_base->Instance==STEPMOTOR_TIMx)
+  {
+    /* 基本定时器外设时钟禁用 */
+    STEPMOTOR_TIM_RCC_CLK_DISABLE();
+    HAL_GPIO_DeInit(STEPMOTOR_TIM_PUL_PORT,STEPMOTOR_TIM_PUL_PIN);
+    HAL_GPIO_DeInit(STEPMOTOR_DIR_PORT,STEPMOTOR_DIR_PIN);
+    HAL_GPIO_DeInit(STEPMOTOR_ENA_PORT,STEPMOTOR_ENA_PIN);
+    
+    HAL_NVIC_DisableIRQ(STEPMOTOR_TIMx_IRQn);
   }
   
 } 

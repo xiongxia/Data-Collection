@@ -69,7 +69,7 @@ void Sample_RS485(void)
 {
   char dst[20][80];
   int n,i,j,e;
-  int cnt;
+  int cnt,t;
   unsigned char command[50] = {0};
   Sensor *p;
   uint8_t len;
@@ -78,6 +78,9 @@ void Sample_RS485(void)
   for(i=0;i<5;i++){
     //有传感器
    // if(sensor_array[i].num > 0){
+    //采集的时候判断液位，采集模式（液位采集模式分为模拟采集和数字采集）
+    //根据功能码判断，如果为30则为模拟采集
+
     p = sensor_array[i].frist_node;
     for(j=0;j<sensor_array[i].num;j++){
         printf("\ncollection cmd:%s\n",p->command);
@@ -90,16 +93,34 @@ void Sample_RS485(void)
                // Bit.i = n;
                 command[e] = (char)n;
             }
-             RS485_Send_Data(command,cnt);
-             printf("\nSend num:%d\n ",cnt);
-             RS485_Receive_Data(&len);
-             if(len > 0){
+            if(i == 3){
+            //液位        
+              if(command[1] == 0x30){
+                //模拟采集
+                t = (int)command[0];
+                if(Simulation_Level(t)){
+                  p->amount++;
+                  p->value++;
+                  
+                }
+                else{
+                  p->error++;
+                }
+                
+                continue;
+              }
+    
+            }
+            RS485_Send_Data(command,cnt);
+            printf("\nSend num:%d\n ",cnt);
+            RS485_Receive_Data(&len);
+            if(len > 0){
               //处理数据
                 Modbusprocess(RS485_Rx_buf,p,sensor_array[i].type);
-             }
-             else{
+            }
+            else{
                 p->error++;
-             }
+            }
         
         }//if
         p = p->next; 
