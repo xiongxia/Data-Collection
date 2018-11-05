@@ -5,6 +5,8 @@
 //全局标志位***************************************************************************************************
 Delay delay[4];
 
+speedRampData Stepper_Motor[4];//步进电机
+
 long Invalid_Value = -10000; 
 
 //传感器命令
@@ -92,7 +94,7 @@ unsigned int Sensor_data_Address = Address_Offset+0x3000;
 
 
 //******************其他变量********************
-uint16_t	RevComplete = 0;					//接收完成标志位
+uint16_t RevComplete = 0;					//接收完成标志位
 
 
 uint8_t Sensor_Cfg_Mode = 0;//串口接收传感器配置文件标志
@@ -105,6 +107,8 @@ Sensor_data sensor_array[5];
 uint8_t RS485_Rx_buf[500];
 uint8_t RS232_Rx_buf[500];//串口缓存
 uint8_t Android_Rx_buf[1000];
+uint8_t Rx_buf[1000];//掉电保持最新数据
+
 
 uint16_t Android_Rx_Count = 0;
 
@@ -130,11 +134,11 @@ int dosage_sum = 0;//总加药量
 int dosing_frequency = 9;//每小时加药量 每小时9L
 int dosage = 1;//默认1L
 
-uint8_t dir = 0; // 0 ：顺时针   1：逆时针 
-uint8_t ena = 1; // 0 ：正常运行 1：停机
+//uint8_t dir = 0; // 0 ：顺时针   1：逆时针 
+//uint8_t ena = 1; // 0 ：正常运行 1：停机
 
-float Speed_Motor = 92.16;//电机速度
 
+int SCM_state = SCM_RUN;//1:run 0:stop   系统状态
 
 //液位（12个）
 

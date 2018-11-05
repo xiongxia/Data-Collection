@@ -1,6 +1,5 @@
 #include "function.h"
 #include "variable.h"
-#include "variable.h" 
 #include "string.h"
 # include "stdio.h"
 # include "stdlib.h"
@@ -1120,7 +1119,7 @@ void Show_Data(uint8_t *bit,int len){
 }
 
 /**
-  * 函数功能: 保存配置信息
+  * 函数功能: 保存配置信息(掉电保持)
   * 输入参数: 字节组
   * 返 回 值: 无
   * 说    明：无
@@ -1130,20 +1129,36 @@ void Save_Device_Data(char* buf){
   int size = strlen(buf);
   size = size + 1;
   char c[20];
+    
+  uint8_t buffer[1000];
   
   itoa(size,c);
 
-  buf[size - 1] = '#';
-  buf[size] = '\0';
+  strcpy(Rx_buf,buf);
+  strcpy(buffer,buf);
+  
+  
+  
+  buffer[size - 1] = '#';
+  if(SCM_state == SCM_RUN)
+    buffer[size] = '1';
+  else
+    buffer[size] = '0';
+  
+  buffer[size + 1] = '\0';
+  
+   size++;
+  
     /* 擦除SPI的扇区以写入 */
   SPI_FLASH_SectorErase(FLASH_SectorToErase);	
  
   SPI_FLASH_BufferWrite(c, FLASH_WriteAddress,strlen(c));
-  SPI_FLASH_BufferWrite(buf, FLASH_WriteAddress+10,strlen(buf));
+
+  SPI_FLASH_BufferWrite(buffer, FLASH_WriteAddress+10,strlen(buffer));
   
-  printf("Save_Device_Data：保存配置：%s  \n大小：%d\n",buf,size);
+  printf("Save_Device_Data：保存配置：%s  \n大小：%d\n",buffer,size);
+
   
- 
 }
 
 /**
@@ -1182,16 +1197,40 @@ void Get_Device_Data(char* buf){
   
   int n;
   char size[10];
+  uint8_t buffer[1000];
 
   SPI_FLASH_BufferRead(size, FLASH_WriteAddress,10);
   n = atoi(size);
+  n++;
+  SPI_FLASH_BufferRead(buffer, FLASH_WriteAddress+10,n);
+  /*
+  printf("aaa获取配置：%c\n",buffer[n]);
+  printf("aaa获取配置：%c\n",buffer[n-1]);
+  printf("aaa获取配置：%s\n",buffer);
+*/
+   //printf("aaa获取配置：%02x\n",buffer[n-1]);
+  //strcpy(buf,buffer);
   
-  SPI_FLASH_BufferRead(buf, FLASH_WriteAddress+10,n);
- 
   
-  if(buf[n-1] == '#'){
-    buf[n-1] = '\0';
-    printf("获取配置：%s\n",buf);
+  if(buffer[n-1] == '0'){
+    SCM_state = SCM_STOP;
+    printf("系统当前状态stop\n");
+  }
+  else if(buffer[n-1] == '1'){
+    SCM_state = SCM_RUN;
+    printf("系统当前状态run\n");
+
+  }
+  else{
+    SCM_state = SCM_STOP;
+    printf("读取系统状态失败，系统处于停止状态\n");
+  }
+  
+  if(buffer[n-2] == '#'){
+    buffer[n-2] = '\0';
+    strcpy(buf,buffer);
+    printf("获取配置：%s\n",Android_Rx_buf);
+    printf("获取配置：%s\n",buffer);
     Save_Data();
   }
   else
@@ -1199,85 +1238,193 @@ void Get_Device_Data(char* buf){
 }
 /**
   * 函数功能: 打开步进电机
-  * 输入参数: int dir (1:正向 0:反向)
+  * 输入参数: int 电机编号（1-4）
   * 返 回 值: 无
-  * 说    明：无
+  * 说    明：
+      0 ：顺时针   1：逆时针 
+      0 ：正常运行 1：停机
   */
-void Open_Motor(int ori){
+void Open_Motor(int id){
   
   //SetSpeed(200);
-  if(ena == 1){
-    STEPMOTOR_OUTPUT_ENABLE();  
-    TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_TIM_CHANNEL_x,TIM_CCx_ENABLE);
-    ena = 0;
-  }
-  
-  if(ori == 1){
-    dir = 1;
-    STEPMOTOR_DIR_REVERSAL();
-    printf("Open_Motor：逆时针打开步进电机\n");
 
+  switch(id){
+    case 1 :
+      if(Stepper_Motor[0].run_state == STOP){
+          STEPMOTOR_OUTPUT1_ENABLE();  
+          TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_NO1_TIM_CHANNEL_x,TIM_CCx_ENABLE);
+          Stepper_Motor[0].run_state = RUN;
+          printf("Open_Motor：打开1号通道步进电机\n");
+      }
+      else{
+          printf("Open_Motor：1号通道步进电机已经打开\n");
+      }
+      break;
+    case 2 :
+      if(Stepper_Motor[1].run_state == STOP){
+          STEPMOTOR_OUTPUT2_ENABLE();  
+          TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_NO2_TIM_CHANNEL_x,TIM_CCx_ENABLE);
+          Stepper_Motor[1].run_state = RUN;
+          printf("Open_Motor：打开2号通道步进电机\n");
+      }
+      else{
+          printf("Open_Motor：2号通道步进电机已经打开\n");
+      }      
+      break;  
+    case 3 :
+      if(Stepper_Motor[2].run_state == STOP){
+          STEPMOTOR_OUTPUT3_ENABLE();  
+          TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_NO3_TIM_CHANNEL_x,TIM_CCx_ENABLE);
+          Stepper_Motor[2].run_state = RUN;
+          printf("Open_Motor：打开3号通道步进电机\n");
+      }
+      else{
+          printf("Open_Motor：3号通道步进电机已经打开\n");
+      }
+      break;
+    case 4 :
+      if(Stepper_Motor[3].run_state == STOP){
+          STEPMOTOR_OUTPUT4_ENABLE();  
+          TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_NO4_TIM_CHANNEL_x,TIM_CCx_ENABLE);
+          Stepper_Motor[3].run_state = RUN;
+          printf("Open_Motor：打开4号通道步进电机\n");
+      }
+      else{
+          printf("Open_Motor：4号通道步进电机已经打开\n");
+      }      
+      break;
+    default:
+      printf("Open_Motor：参数错误!!!!!!!!!\n");
+      break;
   }
-  else if(ori == 0){
-    dir = 0;
-    STEPMOTOR_DIR_FORWARD(); 
-    printf("Open_Motor：顺时针打开步进电机\n");
 
-  }
-  else{
-    printf("Open_Motor：参数错误!!!!!!!!!\n");
-  }
 }
 /**
   * 函数功能: 关闭步进电机
-  * 输入参数: 无
+  * 输入参数: int 电机编号（1-4）
   * 返 回 值: 无
   * 说    明：无
   */
-void Close_Motor(){
+void Close_Motor(int id){
   
-  if(ena == 0){
-    ena = 1;
-    STEPMOTOR_OUTPUT_DISABLE(); 
-    TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_TIM_CHANNEL_x,TIM_CCx_DISABLE);
-    printf("Close_Motor：关闭步进电机成功\n");
+    switch(id){
+    case 1 :
+      if(Stepper_Motor[0].run_state == RUN){
+          STEPMOTOR_OUTPUT1_DISABLE(); 
+          TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_NO1_TIM_CHANNEL_x,TIM_CCx_DISABLE);
+          Stepper_Motor[0].run_state = STOP;
+          printf("Close_Motor：关闭1号通道步进电机\n");
+      }
+      else{
+          printf("Close_Motor：1号通道步进电机已经关闭\n");
+      }
+      break;
+    case 2 :
+      if(Stepper_Motor[1].run_state == RUN){
+          STEPMOTOR_OUTPUT2_DISABLE(); 
+          TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_NO2_TIM_CHANNEL_x,TIM_CCx_DISABLE);
+          Stepper_Motor[1].run_state = STOP;
+          printf("Close_Motor：关闭2号通道步进电机\n");
+      }
+      else{
+          printf("Close_Motor：2号通道步进电机已经关闭\n");
+      }
+    case 3 :
+      if(Stepper_Motor[2].run_state == RUN){
+          STEPMOTOR_OUTPUT3_DISABLE(); 
+          TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_NO3_TIM_CHANNEL_x,TIM_CCx_DISABLE);
+          Stepper_Motor[2].run_state = STOP;
+          printf("Close_Motor：关闭3号通道步进电机\n");
+      }
+      else{
+          printf("Close_Motor：3号通道步进电机已经关闭\n");
+      }
+    case 4 :
+      if(Stepper_Motor[3].run_state == RUN){
+          STEPMOTOR_OUTPUT4_DISABLE(); 
+          TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_NO4_TIM_CHANNEL_x,TIM_CCx_DISABLE);
+          Stepper_Motor[3].run_state = STOP;
+          printf("Close_Motor：关闭4号通道步进电机\n");
+      }
+      else{
+          printf("Close_Motor：4号通道步进电机已经关闭\n");
+      }
+    default:
+      printf("Close_Motor：参数错误!!!!!!!!!\n");
+      break;
   }
-  else{
-    printf("Close_Motor：步进电机已经关闭\n");
-    //STEPMOTOR_OUTPUT_DISABLE(); 
-  }
+  //初始化
+  Step_Motor_Init(id);
 }
 /**
   * 函数功能: 反转电机方向
-  * 输入参数: 无
-  * 返 回 值: 无
+  * 输入参数: int 电机编号（1-4）
+  * 返 回 值: CW 顺时针  CCW 逆时针
   * 说    明：无
   */
-void Reversed_Motor(){
+void Reversed_Motor(int id){
   
-   if(dir == 1){
-    dir = 0;
-    STEPMOTOR_DIR_FORWARD(); 
-    printf("Reversed_Motor：步进电机方向反转为顺时针\n");
-
+  switch(id){
+    case 1 :
+      if(Stepper_Motor[0].dir == CW){
+        Stepper_Motor[0].dir = CCW;
+        STEPMOTOR_DIR1_FORWARD();
+        printf("Reversed_Motor：1号通道步进电机方向反转为顺时针\n");
+      }
+      else{
+        Stepper_Motor[0].dir = CW;
+        STEPMOTOR_DIR1_REVERSAL();
+        printf("Reversed_Motor：1号通道步进电机方向反转为逆时针\n");
+      }
+      break;
+    case 2 :
+      if(Stepper_Motor[1].dir == CW){
+        Stepper_Motor[1].dir = CCW;
+        STEPMOTOR_DIR2_FORWARD();
+        printf("Reversed_Motor：2号通道步进电机方向反转为顺时针\n");
+      }
+      else{
+        Stepper_Motor[1].dir = CW;
+        STEPMOTOR_DIR2_REVERSAL();
+        printf("Reversed_Motor：2号通道步进电机方向反转为逆时针\n");
+      }
+      break;
+    case 3 :
+      if(Stepper_Motor[2].dir == CW){
+        Stepper_Motor[2].dir = CCW;
+        STEPMOTOR_DIR3_FORWARD();
+        printf("Reversed_Motor：3号通道步进电机方向反转为顺时针\n");
+      }
+      else{
+        Stepper_Motor[2].dir = CW;
+        STEPMOTOR_DIR3_REVERSAL();
+        printf("Reversed_Motor：3号通道步进电机方向反转为逆时针\n");
+      }
+      break;
+    case 4 :
+      if(Stepper_Motor[3].dir == CW){
+        Stepper_Motor[3].dir = CCW;
+        STEPMOTOR_DIR4_FORWARD();
+        printf("Reversed_Motor：4号通道步进电机方向反转为顺时针\n");
+      }
+      else{
+        Stepper_Motor[3].dir = CW;
+        STEPMOTOR_DIR1_REVERSAL();
+        printf("Reversed_Motor：4号通道步进电机方向反转为逆时针\n");
+      }
+      break;
+    default:
+      printf("Reversed_Motor：参数错误!!!!!!!!!\n");
+      break;
   }
-  else if(dir == 0){
-    dir = 1;
-    STEPMOTOR_DIR_REVERSAL();
-    printf("Reversed_Motor：步进电机方向反转为逆时针\n");
-
-  }
-  else{
-    printf("Open_Motor：参数错误!!!!!!!!!\n");
   
-  }
 }
 /**
   * 函数功能: 设置步进电机速度
   * 输入参数: 速度值 单位（rpm）
   * 返 回 值: 无
   * 说    明：公式 speed = (120 * Toggle_Pulse * STEPMOTOR_MICRO_STEP * FSPR)/T1_FREQ   (ps:T1_FREQ = 系统时钟频率  eg:168MHZ / 6 = 28MHZ）
-  */
+  
 void SetSpeed(float Speed)
 {
   int i = 0;    
@@ -1295,7 +1442,7 @@ void SetSpeed(float Speed)
   else{
     printf("SetSpeed:速度设置为0,电机停止工作\n");
   }
-  /* 速度小于0,反向 */
+   速度小于0,反向 
   if(Speed < 0)
   {
     dir = 1;
@@ -1332,6 +1479,8 @@ void SetSpeed(float Speed)
   }
   
 }
+*/
+
 /**
   * 函数功能: 模拟模式采集液位值
   * 输入参数: 端口（<13）

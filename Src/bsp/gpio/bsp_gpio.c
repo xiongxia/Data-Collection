@@ -29,6 +29,8 @@
   * 返 回 值: 无
   * 说    明：使用宏定义方法代替具体引脚号，方便程序移植，只要简单修改bsp_key.h
   *           文件相关宏定义就可以方便修改引脚。
+    
+    11和12是中断模式用于按键，其他是轮询模式
   */
 void INPUT_GPIO_Init(void)
 {
@@ -100,21 +102,26 @@ void INPUT_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(INPUT10_GPIO, &GPIO_InitStruct);  
   
+  
+  /* 配置INPUT GPIO:输入上拉模式 */
   GPIO_InitStruct.Pin = INPUT11_GPIO_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  HAL_GPIO_Init(INPUT11_GPIO, &GPIO_InitStruct);  
+  HAL_GPIO_Init(INPUT11_GPIO, &GPIO_InitStruct);   
   
+  /* 配置INPUT GPIO:输入上拉模式 */
   GPIO_InitStruct.Pin = INPUT12_GPIO_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  HAL_GPIO_Init(INPUT1_GPIO, &GPIO_InitStruct);  
+  HAL_GPIO_Init(INPUT12_GPIO, &GPIO_InitStruct);   
   
-  GPIO_InitStruct.Pin = INPUT1_GPIO_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  HAL_GPIO_Init(INPUT12_GPIO, &GPIO_InitStruct);  
- 
+    /* 配置中断优先级 */
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 1, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+
+    /* 配置中断优先级 */
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 1);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
   
 }
 /**

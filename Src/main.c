@@ -150,18 +150,20 @@ int main(void)
   /* 确定定时器 */
   HAL_TIM_Base_Start(&htimx_STEPMOTOR);
   
-  /* 使能中断 关闭比较输出*/
-  
-  HAL_TIM_OC_Start_IT(&htimx_STEPMOTOR,STEPMOTOR_TIM_CHANNEL_x);
-  TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_TIM_CHANNEL_x,TIM_CCx_DISABLE);
-  Close_Motor();
+ /* 使能中断 关闭比较输出*/
+  HAL_TIM_OC_Start_IT(&htimx_STEPMOTOR,STEPMOTOR_NO1_TIM_CHANNEL_x);
+  HAL_TIM_OC_Start_IT(&htimx_STEPMOTOR,STEPMOTOR_NO2_TIM_CHANNEL_x);
+  HAL_TIM_OC_Start_IT(&htimx_STEPMOTOR,STEPMOTOR_NO3_TIM_CHANNEL_x);
+  HAL_TIM_OC_Start_IT(&htimx_STEPMOTOR,STEPMOTOR_NO4_TIM_CHANNEL_x);
+  TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_NO1_TIM_CHANNEL_x,TIM_CCx_DISABLE);
+  TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_NO2_TIM_CHANNEL_x,TIM_CCx_DISABLE);
+  TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_NO3_TIM_CHANNEL_x,TIM_CCx_DISABLE);
+  TIM_CCxChannelCmd(STEPMOTOR_TIMx,STEPMOTOR_NO4_TIM_CHANNEL_x,TIM_CCx_DISABLE);
   
   /* 基本定时器初始化：1ms中断一次 */
   BASIC_TIMx_Init();
   
-  /* 在中断模式下启动定时器 */
-  HAL_TIM_Base_Start_IT(&htimx);
- 
+
   
   printf("测试\n");
   
@@ -178,7 +180,15 @@ int main(void)
  
   //获取配置
   Get_Device_Data(Android_Rx_buf);
-  
+  strcpy(Rx_buf,Android_Rx_buf);
+  if(SCM_state == SCM_RUN){
+    /* 在中断模式下启动定时器 */
+    HAL_TIM_Base_Start_IT(&htimx);
+
+  }
+  else{
+    HAL_TIM_Base_Stop(&htimx);
+  }
   Open_Motor(0);
   
   while (1)
@@ -186,10 +196,10 @@ int main(void)
     
     if(RevDevicesData){
       if(Debug_flag){
-
             Save_Device_Data(RS232_Rx_buf);
       }
       else{
+        
             Save_Device_Data(Android_Rx_buf);
       }
         Save_Data();
@@ -203,7 +213,7 @@ int main(void)
    if(Sample_flag){
         
        Sample_RS485();
-        Sample_flag = 0;
+       Sample_flag = 0;
     }
     if(UpData_flag){
         //Get_Device_Data(Android_Rx_buf);
@@ -302,17 +312,19 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
         printf("\nRS232：接收完成\n");
         printf("%s  %d\n",RS232_Rx_buf,strlen(RS232_Rx_buf));
         if(strlen(RS232_Rx_buf) == 1){
-          Close_Motor();
+          Close_Motor(1);
         }
         float f = strtod(RS232_Rx_buf,NULL);
         printf("%.2f\n",f);
-        SetSpeed(f);
+       // SetSpeed(f);
+        int id = (int)f;
+        Open_Motor(id);
         RS232_Rx_buf[RS232_Rx_Count-1] = '\0';
         RS232_Rx_Count = 0;
 
         //RS485_Send_Data(BHZY_Conductivity,8);
         //Debug_flag = 1;
-        //Sample_flag = 1;
+        //Sample_flag = 1;*/
         
     }
     HAL_UART_Receive_IT(&husartx,&aRxBuffer,1);
@@ -345,7 +357,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
         //Save_Data();
         RevDevicesData = 1;
     }
-      if(aRxBuffer == '!'){
+    if(aRxBuffer == '!'){
         printf("安卓命令信息：接收完成\n");
         Android_Rx_buf[Android_Rx_Count-1] = '\0';
         printf("%s\n",Android_Rx_buf);
@@ -354,6 +366,28 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
        // Command_Data();
         RevCommand = 1;
     }
+    //预留测试使用
+    if(aRxBuffer == '?'){
+        printf("\n安卓测试信息：接收完成\n");
+        printf("%s  %d\n",Android_Rx_buf,strlen(Android_Rx_buf));
+        if(strlen(Android_Rx_buf) == 1){
+          Close_Motor(1);
+        }
+        float f = strtod(Android_Rx_buf,NULL);
+        printf("%.2f\n",f);
+        //SetSpeed(f);
+        int id = (int)f;
+        Open_Motor(id);
+        Android_Rx_buf[RS232_Rx_Count-1] = '\0';
+        Android_Rx_Count = 0;
+
+        //RS485_Send_Data(BHZY_Conductivity,8);
+        //Debug_flag = 1;
+        //Sample_flag = 1;*/
+        
+    }
+    
+    
     HAL_UART_Receive_IT(&husart_debug,&aRxBuffer,1);
   }
  
@@ -369,6 +403,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 
     int i;
+    char data[5];
     //采集定时
     second_timer_count++;
   
@@ -392,8 +427,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
             }
         }
+        //一秒发送一次心跳
+        
+       /* printf("发送心跳\n");
+        sprintf(data,"@%d",SCM_state);
+        HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
+*/
         
     }
+                   
  
     //1分钟上传一次
      if(minute_timer_count == 60000)
@@ -425,11 +467,79 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
 {
   __IO uint32_t count;
-  __IO uint32_t tmp;
+  //__IO uint32_t tmp;
   count =__HAL_TIM_GET_COUNTER(&htimx_STEPMOTOR);
-  tmp = STEPMOTOR_TIM_PERIOD & (count+Toggle_Pulse);
-  __HAL_TIM_SET_COMPARE(&htimx_STEPMOTOR,STEPMOTOR_TIM_CHANNEL_x,tmp);
-  pulse_count++;
+  if(htim->Channel==HAL_TIM_ACTIVE_CHANNEL_1)
+  {
+    __HAL_TIM_SET_COMPARE(&htimx_STEPMOTOR,STEPMOTOR_NO1_TIM_CHANNEL_x,count+Stepper_Motor[0].Toggle_Pulse);
+    Stepper_Motor[0].step++;
+  }
+  if(htim->Channel==HAL_TIM_ACTIVE_CHANNEL_2)
+  {
+    __HAL_TIM_SET_COMPARE(&htimx_STEPMOTOR,STEPMOTOR_NO2_TIM_CHANNEL_x,count+Stepper_Motor[1].Toggle_Pulse);
+    Stepper_Motor[1].step++;
+  }
+  if(htim->Channel==HAL_TIM_ACTIVE_CHANNEL_3)
+  {
+    __HAL_TIM_SET_COMPARE(&htimx_STEPMOTOR,STEPMOTOR_NO3_TIM_CHANNEL_x,count+Stepper_Motor[2].Toggle_Pulse);
+    Stepper_Motor[2].step++;
+  }
+  if(htim->Channel==HAL_TIM_ACTIVE_CHANNEL_4)
+  {
+    __HAL_TIM_SET_COMPARE(&htimx_STEPMOTOR,STEPMOTOR_NO4_TIM_CHANNEL_x,count+Stepper_Motor[3].Toggle_Pulse);
+    Stepper_Motor[3].step++;
+  }
+  
 }
+
+
+/**
+  * 函数功能: 按键外部中断服务函数
+  * 输入参数: GPIO_Pin：中断引脚
+  * 返 回 值: 无
+  * 说    明: 无
+  */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  if(GPIO_Pin==INPUT11_GPIO_PIN)//开
+  {
+    HAL_Delay(20);/* 延时一小段时间，消除抖动 */
+    if(HAL_GPIO_ReadPin(INPUT11_GPIO,INPUT11_GPIO_PIN)==INPUT11_DOWN_LEVEL)
+    {
+      
+      LED1_ON;
+      LED2_ON;
+      LED3_ON;
+      
+      SCM_state = SCM_RUN;
+      HAL_TIM_Base_Start_IT(&htimx);
+    }
+    __HAL_GPIO_EXTI_CLEAR_IT(INPUT11_GPIO_PIN);
+  }
+  else if(GPIO_Pin==INPUT12_GPIO_PIN)//关
+  {
+    HAL_Delay(20);/* 延时一小段时间，消除抖动 */
+    if(HAL_GPIO_ReadPin(INPUT12_GPIO,INPUT12_GPIO_PIN)==INPUT12_DOWN_LEVEL)
+    {
+      
+      LED1_OFF;
+      LED2_OFF;
+      LED3_OFF;
+      
+      SCM_state = SCM_STOP;
+      HAL_TIM_Base_Stop(&htimx);
+   
+    }
+    __HAL_GPIO_EXTI_CLEAR_IT(INPUT12_GPIO_PIN);
+  }
+  
+  Save_Device_Data(Rx_buf);
+  
+  
+}
+
+
+
+
 
 /******************* (C) COPYRIGHT 2015-2020 硬石嵌入式开发团队 *****END OF FILE****/

@@ -267,6 +267,20 @@ void STEPMOTOR_TIMx_IRQHandler(void)
   HAL_TIM_IRQHandler(&htimx_STEPMOTOR);
 }
 
+void EXTI15_10_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI0_IRQn 0 */
+
+  /* USER CODE END EXTI0_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_10);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_15);
+  /* USER CODE BEGIN EXTI0_IRQn 1 */
+
+  /* USER CODE END EXTI0_IRQn 1 */
+}
+
+
+
 
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

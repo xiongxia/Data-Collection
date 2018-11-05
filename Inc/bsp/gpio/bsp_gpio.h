@@ -64,11 +64,16 @@ typedef enum
 #define INPUT11_RCC_CLK_ENABLE           __HAL_RCC_GPIOG_CLK_ENABLE
 #define INPUT11_GPIO_PIN                 GPIO_PIN_10
 #define INPUT11_GPIO                     GPIOG
+#define INPUT11_DOWN_LEVEL               1  /* 根据原理图设计，INPUT引脚为高电平时表示检测到输入，所以这里设置为1 */
 
 
 #define INPUT12_RCC_CLK_ENABLE           __HAL_RCC_GPIOG_CLK_ENABLE
 #define INPUT12_GPIO_PIN                 GPIO_PIN_15
 #define INPUT12_GPIO                     GPIOG
+#define INPUT12_DOWN_LEVEL               1  /* 根据原理图设计，INPUT引脚为高电平时表示检测到输入，所以这里设置为1 */
+
+
+
 
 #define OUTPUT1_RCC_CLK_ENABLE           __HAL_RCC_GPIOF_CLK_ENABLE
 #define OUTPUT1_GPIO_PIN                 GPIO_PIN_12
