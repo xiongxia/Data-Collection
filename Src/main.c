@@ -163,7 +163,6 @@ int main(void)
   /* 基本定时器初始化：1ms中断一次 */
   BASIC_TIMx_Init();
   
-
   
   printf("测试\n");
   
@@ -181,6 +180,7 @@ int main(void)
   //获取配置
   Get_Device_Data(Android_Rx_buf);
   strcpy(Rx_buf,Android_Rx_buf);
+ // SCM_state = SCM_RUN;
   if(SCM_state == SCM_RUN){
     /* 在中断模式下启动定时器 */
     HAL_TIM_Base_Start_IT(&htimx);
@@ -190,7 +190,8 @@ int main(void)
     HAL_TIM_Base_Stop(&htimx);
   }
   Open_Motor(0);
-  
+  SCM_state == SCM_RUN;
+  int l = 0;
   while (1)
   {
     
@@ -211,7 +212,7 @@ int main(void)
         RevCommand= 1;
     }
    if(Sample_flag){
-        
+       l++; 
        Sample_RS485();
        Sample_flag = 0;
     }
@@ -220,6 +221,7 @@ int main(void)
         RTC_CalendarShow();
         Get_Average();
         UpData();
+        Detection();
         UpData_flag = 0;
     }
     if(Control_flag && frist){
@@ -330,9 +332,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
     HAL_UART_Receive_IT(&husartx,&aRxBuffer,1);
   }
   //485接收
-  else if(UartHandle->Instance == RS485_USARTx && Sample_flag == 1){
-//  else if(UartHandle->Instance == USARTx){
-   // printf("RS485:%02x\n",aRxBuffer);
+  //else if(UartHandle->Instance == RS485_USARTx && Sample_flag == 1){
+  else if(UartHandle->Instance == RS485_USARTx){
+    //printf("RS485:%02x\n",aRxBuffer);
     RS485_Rx_buf[RS485_Rx_Count] = aRxBuffer;
     RS485_Rx_Count ++;
     //printf("\n%d %d\n",aRxBuffer,Rx_Count); 

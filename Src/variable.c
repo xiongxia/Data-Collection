@@ -46,9 +46,9 @@ uint8_t TEMP_Type = 2; //温度
 
 //传感器量程****************************************************************************************************
 float LEVEL_Low = 0; //液位   cm
-float LEVEL_High = 100;
+float LEVEL_High = 500;
 float STREES_Low = 0; //压力  
-float STREES_High = 200; //压力(kpa)
+float STREES_High = 400; //压力(kpa)
 float WPH_Low = 1; //PH
 float WPH_High = 14; //PH
 float WCOND_Low = 0.0; //电导率

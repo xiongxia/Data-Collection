@@ -63,7 +63,7 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
     BASIC_TIM_RCC_CLK_ENABLE();
 
     /* ÍâÉèÖÐ¶ÏÅäÖÃ */
-    HAL_NVIC_SetPriority(BASIC_TIM_IRQ, 1, 0);
+    HAL_NVIC_SetPriority(BASIC_TIM_IRQ, 1,1);
     HAL_NVIC_EnableIRQ(BASIC_TIM_IRQ);
   }
   else if(htim_base->Instance==STEPMOTOR_TIMx)

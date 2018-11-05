@@ -1081,6 +1081,9 @@
       <name>$PROJ_DIR$\..\Src\bsp\BasicTIM\bsp_BasicTIM.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\Src\bsp\beep\bsp_beep.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\Src\bsp\rtc\bsp_calendar.c</name>
     </file>
     <file>

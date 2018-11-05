@@ -103,7 +103,7 @@ void RS485_Receive_Data(uint8_t *len){
     //if(Sample_flag == 1){
    // while(1){
         printf("数据采集中\n");
-        HAL_Delay(100);//20ms接收
+        HAL_Delay(500);//20ms接收
         //if(RS485_Rx_Count == RS485_Rx_Count_Old){
         printf("传感器接收完成\n");
         Show_Data(RS485_Rx_buf,20);  

@@ -53,7 +53,9 @@ typedef struct sensor_info{
     int num; //传感器数量
     int type;//类型
     float value;
-    double min,max;//控制信息
+    double min,max;//控制指标信息
+    double up,down;//控制告警的正常范围
+    int warn;//发出告警传感器的数量
     struct sensor_node *frist_node;//第一个传感器
 }Sensor_data;   //传感器
 typedef struct sensor_node{

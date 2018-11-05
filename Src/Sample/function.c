@@ -13,6 +13,7 @@
 #include "rtc/bsp_calendar.h"
 #include "spiflash/bsp_spiflash.h"
 #include "StepMotor/bsp_STEPMOTOR.h"
+#include "beep/bsp_beep.h"
 
 /**
   * 函数功能: 串口接收命令
@@ -173,6 +174,9 @@ void Clean_Data(int type){
     sensor_array[type].max = 0;
     sensor_array[type].min = 0;
     sensor_array[type].num = 0;
+    sensor_array[type].warn= 0;
+    sensor_array[type].up = 0;
+    sensor_array[type].down = 0;
     sensor_array[type].frist_node = NULL;
     printf("%d 传感器信息清除完毕\n",type);
     return;
@@ -207,14 +211,8 @@ void UpData(){
         sprintf(data,"%.2f,%d,%s;",value,type,devicesID);
         printf("UpData：上传数据：%.2f,%d,%s\n",value,type,devicesID);
         HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
-         //清除数据
-        p->error = 0;
-        p->amount = 0;
-        p->value = 0;
-        p = p->next;
+
     }
- 
-   
    } 
   }
   HAL_UART_Transmit(&husart_debug,"#",1,1000);
@@ -242,6 +240,7 @@ void Get_Average(){
       //考虑全错的情况,全错的设备不进行平均值计算或者错误次数过多
         if(p->amount == 0 || p->error >30){
             p->value = 0;
+            printf("%d号传感器%s错误\n",i,p->devices);
         }
         else{
             p->value = (float)p->value / p->amount;
@@ -284,7 +283,7 @@ void Get_Data(int type,char * data){
     Sensor *p = NULL;
     char temp_data[20][50];
     int i,num = 0;//计数
-    double min,max;
+    double min,max,up,down;
     
     result = strtok(data,",");
     //result = strtok( NULL,",");
@@ -339,18 +338,24 @@ void Get_Data(int type,char * data){
     max = strtod(temp_data[2],NULL);
     sensor_array[type].min = min;
     sensor_array[type].max = max;
+    
+    up = strtod(temp_data[4],NULL);
+    down = strtod(temp_data[3],NULL);
+    sensor_array[type].up = up;
+    sensor_array[type].down = down;
+    sensor_array[type].warn = 0;
     sensor_array[type].frist_node = NULL;
     //建立传感器链表
     for(i=0;i<sensor_array[type].num;i++){
        // printf("%s %c %c\n",temp_data[3*i+3],temp_data[3*i+4][0],temp_data[3*i+5][0]);
         p = (Sensor *)malloc(sizeof(Sensor));
-        strcpy(p->devices,temp_data[7*i+3]);
-        strcpy(p->command,temp_data[7*i+4]);
-        strcpy(p->parsetype,temp_data[7*i+5]);
-        p->startadder =  atoi(temp_data[7*i+6]);
-        p->datanum = atoi(temp_data[7*i+7]);
-        p->keep = atoi(temp_data[7*i+8]);
-        strcpy(p->mode,temp_data[7*i+9]);
+        strcpy(p->devices,temp_data[7*i+5]);
+        strcpy(p->command,temp_data[7*i+6]);
+        strcpy(p->parsetype,temp_data[7*i+7]);
+        p->startadder =  atoi(temp_data[7*i+8]);
+        p->datanum = atoi(temp_data[7*i+9]);
+        p->keep = atoi(temp_data[7*i+10]);
+        strcpy(p->mode,temp_data[7*i+11]);
         p->error = 0;
         p->value = 0;
         p->amount = 0;
@@ -382,13 +387,31 @@ void Detection(){
   for(i=0;i<5;i++){
     p = sensor_array[i].frist_node;
     while(p){
-      if(p->error > 30){
+      if(p->error > 20){
+        //告警
         sprintf(data,"!%s",p->devices);
         HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
       }
+      //判断是否超出正常范围，进行蜂鸣器报警
+  
+      if(p->value > sensor_array[i].up || p->value < sensor_array[i].down)
+            sensor_array[i].warn++;
+            //清除数据
+      p->error = 0;
+      p->amount = 0;
+      p->value = 0;
       p = p->next;
     }
-  
+    
+    if(sensor_array[i].warn == sensor_array[i].num && sensor_array[i].num != 0){
+      //发出告警
+      printf("%d号传感器发出告警\n",i);
+      sensor_array[i].warn = 0;
+      BEEP_ON;
+      HAL_Delay(5000); 
+      BEEP_OFF;
+    }
+      
   }
   
 
@@ -738,7 +761,7 @@ void Control(){
   int i,n;
   for(i=0;i<5;i++){
     if(delay[i].devices[0] != '0'){
-      //有配置
+      //有配置，根据不同传感器选择控制方式
         n = delay[i].control;
         switch(n){
             case 1:
@@ -852,7 +875,9 @@ void Modbusprocess(uint8_t * data,Sensor *sensor,int type)
    float value = 0.0;
    float value_float = 0.0;
    int value_int = 0;
-  // char buf[10];
+   uint8_t buf[50];
+   for(int i=0;i<RS485_Rx_Count_Old;i++)
+      buf[i] = RS485_Rx_buf[i];
    
    if(CRC16_MODBUS(RS485_Rx_buf,RS485_Rx_Count_Old) == 0){
         printf("Modbusprocess：传感器接收数据正确\n");
@@ -868,52 +893,51 @@ void Modbusprocess(uint8_t * data,Sensor *sensor,int type)
    if(!strcmp(sensor->parsetype,"Float")){
         if(!strcmp(sensor->mode,"big")){
             if(sensor->datanum == 4){
-                temp[2] = data[sensor->startadder-1];
-                temp[3] = data[sensor->startadder];
-                temp[0] = data[sensor->startadder + 1];
-                temp[1] = data[sensor->startadder + 2];
+                temp[2] = buf[sensor->startadder-1];
+                temp[3] = buf[sensor->startadder];
+                temp[0] = buf[sensor->startadder + 1];
+                temp[1] = buf[sensor->startadder + 2];
             }
-			else{
-                temp[2] = data[sensor->startadder];
-                temp[3] = data[sensor->startadder-1];
+            else{
+                temp[2] = buf[sensor->startadder];
+                temp[3] = buf[sensor->startadder-1];
                 temp[0] = 0x00;
                 temp[1] = 0x00;
             }
 
         }
-		else{
+	else{
             if(sensor->datanum == 4){
-                temp[0] = data[sensor->startadder-1];
-                temp[1] = data[sensor->startadder];
-                temp[2] = data[sensor->startadder + 1];
-                temp[3] = data[sensor->startadder + 2];
+                temp[0] = buf[sensor->startadder-1];
+                temp[1] = buf[sensor->startadder];
+                temp[2] = buf[sensor->startadder + 1];
+                temp[3] = buf[sensor->startadder + 2];
             }
             else{
-                temp[2] = data[sensor->startadder-1];
-                temp[3] = data[sensor->startadder];
+                temp[2] = buf[sensor->startadder-1];
+                temp[3] = buf[sensor->startadder];
                 temp[0] = 0x00;
                 temp[1] = 0x00;
 			}
-		}
-		value_float = BitToFloat(temp);	
-                sensor->value += value_float;
+        }
+        value_float = BitToFloat(temp);	
+        sensor->value += value_float;
         //sprintf(buf, "%.2f", value_float);
-
 		//save_data
-         printf("\nvalue-float:%.2f\n",value_float);
+        printf("\nvalue-float:%.2f\n",value_float);
    }
    else if(!strcmp(sensor->parsetype,"Integer")){
         if(sensor->datanum == 2){
             temp[0] = 0x00;
             temp[1] = 0x00;
-            temp[2] = data[sensor->startadder - 1];
-            temp[3] = data[sensor->startadder];
+            temp[2] = buf[sensor->startadder - 1];
+            temp[3] = buf[sensor->startadder];
 	}
 	else{
-            temp[0] = data[sensor->startadder-1];
-            temp[1] = data[sensor->startadder];
-            temp[2] = data[sensor->startadder + 1];
-            temp[3] = data[sensor->startadder + 2];
+            temp[0] = buf[sensor->startadder-1];
+            temp[1] = buf[sensor->startadder];
+            temp[2] = buf[sensor->startadder + 1];
+            temp[3] = buf[sensor->startadder + 2];
 	}
 	value_int = BitToInt(temp);
 	value = movedigit(value_int,sensor->keep);
@@ -922,13 +946,13 @@ void Modbusprocess(uint8_t * data,Sensor *sensor,int type)
 	printf("\nvalue-float:%.2f\n",value);
 	//sprintf(buf, "%.2f", value);
 					
-	}
-   else{
-        printf("\nNOt compatibility\n");
+    }
+    else{
+        printf("\nNot compatibility\n");
         //continue;
         return;
-   }
-   switch(type){
+    }
+    switch(type){
         case 0:
             //PH
               //判断是否在正常范围
@@ -948,7 +972,6 @@ void Modbusprocess(uint8_t * data,Sensor *sensor,int type)
               if(WCOND_Low <= value && WCOND_High >= value)
               {
                 sensor->value = sensor->value + value;
-      
                 sensor->amount++;
               }
               else
@@ -1001,7 +1024,8 @@ void Modbusprocess(uint8_t * data,Sensor *sensor,int type)
             break;
         default:
         //错误
-            break;
+          printf("传感器参数错误！\n");
+          break;
     }//switch
    Clear_RS485Buf();
 
