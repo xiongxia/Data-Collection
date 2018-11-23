@@ -31,4 +31,4 @@ extern TIM_HandleTypeDef htimx;
 void BASIC_TIMx_Init(void);
 
 #endif	/* __BASIC_TIM_H__ */
-/******************* (C) COPYRIGHT 2015-2020 硬石嵌入式开发团队 *****END OF FILE****/
+

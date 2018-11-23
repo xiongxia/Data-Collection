@@ -13,7 +13,7 @@ CStepIntDis=_ 0
 stlinkserialNo=A7D81CEE
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=1586948739
+Checksum=-1210789864
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -100,6 +100,13 @@ ShowTimeLog=1
 SumEnabled=0
 ShowTimeSum=1
 SumSortOrder=0
+[Log file]
+LoggingEnabled=_ 0
+LogFile=_ ""
+Category=_ 0
+[TermIOLog]
+LoggingEnabled=_ 0
+LogFile=_ ""
 [DriverProfiling]
 Enabled=0
 Mode=3
@@ -116,23 +123,19 @@ mode=0
 Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\YS-F4Pro\Exe}.123.1" 0 0 1 "" 0 "" 0
 Bp1=_ 0 "EMUL_CODE" "{$PROJ_DIR$\YS-F4Pro\Exe}.123.1" 0 0 1 "" 0 "" 0
 Bp2=_ 1 "EMUL_DATA" "Save_Data" 0 0 0 0 4294967295
-Bp3=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\Sample\function.c}.1527.1" 0 0 1 "" 0 "" 0
-Bp4=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\variable.c}.35.1" 0 0 1 "" 0 "" 0
-Bp5=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.548.1" 0 0 1 "" 0 "" 0
-Bp6=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.548.1" 0 0 1 "" 0 "" 0
-Bp7=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.548.1" 0 0 1 "" 0 "" 0
-Bp8=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.548.1" 0 0 1 "" 0 "" 0
-Bp9=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.548.1" 0 0 1 "" 0 "" 0
-Bp10=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.548.1" 0 0 1 "" 0 "" 0
-Bp11=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\Sample\function.c}.522.8" 0 0 1 "" 0 "" 0
-Bp12=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\Sample\function.c}.1289.11" 0 0 1 "" 0 "" 0
-Bp13=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.516.7" 0 0 1 "" 0 "" 0
-Bp14=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.546.1" 0 0 1 "" 0 "" 0
+Bp3=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\variable.c}.7.1" 0 0 1 "" 0 "" 0
+Bp4=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.406.1" 0 0 1 "" 0 "" 0
+Bp5=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.406.1" 0 0 1 "" 0 "" 0
+Bp6=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.406.1" 0 0 1 "" 0 "" 0
+Bp7=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.406.1" 0 0 1 "" 0 "" 0
+Bp8=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.406.1" 0 0 1 "" 0 "" 0
+Bp9=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.406.1" 0 0 1 "" 0 "" 0
+Bp10=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\Sample\function.c}.1283.1" 0 0 1 "" 0 "" 0
+Bp11=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.404.1" 0 0 1 "" 0 "" 0
+Bp12=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\Sample\function.c}.1283.8" 0 0 1 "" 0 "" 0
+Bp13=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\Sample\function.c}.922.7" 0 0 1 "" 0 "" 0
+Bp14=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\Sample\function.c}.994.7" 0 0 1 "" 0 "" 0
 Count=15
-[Log file]
-LoggingEnabled=_ 0
-LogFile=_ ""
-Category=_ 0
 [Aliases]
 A0=_ "C:\Users\admin\Desktop\RS485-主机端\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c" ""
 A1=_ "C:\Users\admin\Desktop\RS485-主机端\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma.c" ""
@@ -140,6 +143,3 @@ A2=_ "C:\Users\admin\Desktop\RS485-主机端\Src\bsp\usart\bsp_debug_usart.c" ""
 A3=_ "E:\STM32F407-RS485数据采集-V2\RS485-主机端\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c" ""
 Count=4
 SuppressDialog=1
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""

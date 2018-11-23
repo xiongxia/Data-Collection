@@ -50,4 +50,4 @@ void MX_USARTx_Init(void);
 
 #endif  /* __BSP_DEBUG_USART_H__ */
 
-/******************* (C) COPYRIGHT 2015-2020 硬石嵌入式开发团队 *****END OF FILE****/
+

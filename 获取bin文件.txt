@@ -1,0 +1,9 @@
+将编译的 .axf 文件转换成 .bin 文件：
+命令形式：“fromelf.exe”所在路径             --bin -o  “.bin”文件存放路径 “.axf”文件所在路径        
+
+示例：
+C:\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin -o YS-F4Pro.bin  YS-F4Pro\YS-F4Pro.axf
+
+
+修改system_stm32f4xx.c文件
+#define VECT_TAB_OFFSET  0x10000

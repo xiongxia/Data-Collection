@@ -37,7 +37,7 @@
 #include "usart/bsp_debug_usart.h"
 #include "RS485/bsp_usartx_RS485.h"
 #include "BasicTIM/bsp_BasicTIM.h"
-#include "StepMotor/bsp_STEPMOTOR.h" 
+#include "function.h"
 
 /* USER CODE BEGIN 0 */
 
@@ -57,6 +57,7 @@ void NMI_Handler(void)
   /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
 
   /* USER CODE END NonMaskableInt_IRQn 0 */
+	Reboot();
   /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
 
   /* USER CODE END NonMaskableInt_IRQn 1 */
@@ -68,10 +69,11 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
-
+	Reboot();
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
   {
+			
   }
   /* USER CODE BEGIN HardFault_IRQn 1 */
 
@@ -84,7 +86,7 @@ void HardFault_Handler(void)
 void MemManage_Handler(void)
 {
   /* USER CODE BEGIN MemoryManagement_IRQn 0 */
-
+	Reboot();
   /* USER CODE END MemoryManagement_IRQn 0 */
   while (1)
   {
@@ -100,7 +102,7 @@ void MemManage_Handler(void)
 void BusFault_Handler(void)
 {
   /* USER CODE BEGIN BusFault_IRQn 0 */
-
+	Reboot();
   /* USER CODE END BusFault_IRQn 0 */
   while (1)
   {
@@ -116,7 +118,7 @@ void BusFault_Handler(void)
 void UsageFault_Handler(void)
 {
   /* USER CODE BEGIN UsageFault_IRQn 0 */
-
+	Reboot();
   /* USER CODE END UsageFault_IRQn 0 */
   while (1)
   {
@@ -132,7 +134,7 @@ void UsageFault_Handler(void)
 void SVC_Handler(void)
 {
   /* USER CODE BEGIN SVCall_IRQn 0 */
-
+	Reboot();
   /* USER CODE END SVCall_IRQn 0 */
   /* USER CODE BEGIN SVCall_IRQn 1 */
 
@@ -145,7 +147,7 @@ void SVC_Handler(void)
 void DebugMon_Handler(void)
 {
   /* USER CODE BEGIN DebugMonitor_IRQn 0 */
-
+	Reboot();
   /* USER CODE END DebugMonitor_IRQn 0 */
   /* USER CODE BEGIN DebugMonitor_IRQn 1 */
 
@@ -158,7 +160,7 @@ void DebugMon_Handler(void)
 void PendSV_Handler(void)
 {
   /* USER CODE BEGIN PendSV_IRQn 0 */
-
+	Reboot();
   /* USER CODE END PendSV_IRQn 0 */
   /* USER CODE BEGIN PendSV_IRQn 1 */
 
@@ -260,12 +262,6 @@ void BASIC_TIM_INT_FUN(void)
 
   /* USER CODE END TIM6_IRQn 1 */
 }
-/* USER CODE END 1 */
-
-void STEPMOTOR_TIMx_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&htimx_STEPMOTOR);
-}
 
 void EXTI15_10_IRQHandler(void)
 {
@@ -274,6 +270,17 @@ void EXTI15_10_IRQHandler(void)
   /* USER CODE END EXTI0_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_10);
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_15);
+  /* USER CODE BEGIN EXTI0_IRQn 1 */
+
+  /* USER CODE END EXTI0_IRQn 1 */
+}
+void EXTI9_5_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI0_IRQn 0 */
+
+  /* USER CODE END EXTI0_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_8);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_9);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
 
   /* USER CODE END EXTI0_IRQn 1 */

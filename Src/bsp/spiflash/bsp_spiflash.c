@@ -6,13 +6,6 @@
   * 编写日期: 2017-03-30
   * 功    能: 板载串行Flash底层驱动实现
   ******************************************************************************
-  * 说明：
-  * 本例程配套硬石stm32开发板YS-F4Pro使用。
-  * 
-  * 淘宝：
-  * 论坛：http://www.ing10bbs.com
-  * 版权归硬石嵌入式开发团队所有，请勿商用。
-  ******************************************************************************
   */
 
 /* 包含头文件 ----------------------------------------------------------------*/
@@ -43,8 +36,6 @@
 #define WIP_Flag                        0x01  /* Write In Progress (WIP) flag */
 
 #define Dummy_Byte                      0xFF
-
-
 
 /* 私有变量 ------------------------------------------------------------------*/
 SPI_HandleTypeDef hspiflash;
@@ -142,7 +133,6 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* hspi)
     HAL_GPIO_DeInit(FLASH_SPI_MISO_PORT, FLASH_SPI_MISO_PIN);
   }
 } 
-
 
 /**
   * 函数功能: 擦除扇区
@@ -452,5 +442,5 @@ void SPI_Flash_WAKEUP(void)
   FLASH_SPI_CS_DISABLE(); 
 }   
    
-/******************* (C) COPYRIGHT 2015-2020 硬石嵌入式开发团队 *****END OF FILE****/
+
 

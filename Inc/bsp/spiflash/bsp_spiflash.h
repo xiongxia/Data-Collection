@@ -29,7 +29,7 @@
 #define FLASH_SPI_MISO_PORT                        GPIOC
 #define FLASH_SPI_MISO_PIN                         GPIO_PIN_2
 
-#define  FLASH_WriteAddress     0x00000
+#define  FLASH_WriteAddress     0x80FFF00
 #define  FLASH_ReadAddress      FLASH_WriteAddress
 #define  FLASH_SectorToErase    FLASH_WriteAddress
 
@@ -53,4 +53,3 @@ void SPI_FLASH_WaitForWriteEnd(void);
 
 #endif  /* __BSP_SPIFLASH_H__ */
 
-/******************* (C) COPYRIGHT 2015-2020 硬石嵌入式开发团队 *****END OF FILE****/

@@ -1,17 +1,10 @@
 /**
   ******************************************************************************
-  * 文件名程: main.c 
-  * 作    者: 硬石嵌入式开发团队
+  * 文件名程: bsp_gpio.c 
+  * 作    者: 
   * 版    本: V1.0
   * 编写日期: 2017-3-30
   * 功    能: GPIO-输入检测
-  ******************************************************************************
-  * 说明：
-  * 本例程配套硬石stm32开发板YS-F4Pro使用。
-  * 
-  * 淘宝：
-  * 论坛：http://www.ing10bbs.com
-  * 版权归硬石嵌入式开发团队所有，请勿商用。
   ******************************************************************************
   */
 /* 包含头文件 ----------------------------------------------------------------*/
@@ -30,7 +23,7 @@
   * 说    明：使用宏定义方法代替具体引脚号，方便程序移植，只要简单修改bsp_key.h
   *           文件相关宏定义就可以方便修改引脚。
     
-    11和12是中断模式用于按键，其他是轮询模式
+    9,10,11和12是中断模式用于按键，其他是轮询模式
   */
 void INPUT_GPIO_Init(void)
 {
@@ -93,12 +86,12 @@ void INPUT_GPIO_Init(void)
   HAL_GPIO_Init(INPUT8_GPIO, &GPIO_InitStruct);  
   
   GPIO_InitStruct.Pin = INPUT9_GPIO_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(INPUT9_GPIO, &GPIO_InitStruct);  
   
   GPIO_InitStruct.Pin = INPUT10_GPIO_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(INPUT10_GPIO, &GPIO_InitStruct);  
   
@@ -116,9 +109,12 @@ void INPUT_GPIO_Init(void)
   HAL_GPIO_Init(INPUT12_GPIO, &GPIO_InitStruct);   
   
     /* 配置中断优先级 */
-  HAL_NVIC_SetPriority(EXTI15_10_IRQn,0,0);
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn,0,1);
   HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
+    /* 配置中断优先级 */
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
   
 }
@@ -249,5 +245,3 @@ void OUTPUT_GPIO_Init(void)
 }
 
 
-
-/******************* (C) COPYRIGHT 2015-2020 硬石嵌入式开发团队 *****END OF FILE****/

@@ -996,12 +996,6 @@
       <name>$PROJ_DIR$\..\Src\bsp\BasicTIM\bsp_BasicTIM.c</name>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\Src\bsp\beep\bsp_beep.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\Src\bsp\rtc\bsp_calendar.c</name>
-    </file>
-    <file>
       <name>$PROJ_DIR$\..\Src\bsp\usart\bsp_debug_usart.c</name>
     </file>
     <file>
@@ -1015,9 +1009,6 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\Src\bsp\spiflash\bsp_spiflash.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\Src\bsp\StepMotor\bsp_STEPMOTOR.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\Src\bsp\RS485\bsp_usartx_RS485.c</name>

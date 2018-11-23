@@ -36,7 +36,7 @@ int split(char dst[][80], char* str, const char* spl)
  
 int htoi(char s[])  
 {  
-    int i;  
+    int i = 0;  
     int n = 0;  
     if (s[0] == '0' && (s[1]=='x' || s[1]=='X'))  
     {  
@@ -67,12 +67,12 @@ int htoi(char s[])
   */
 void Sample_RS485(void)
 {
-  char dst[20][80];
-  int n,i,j,e;
-  int cnt,t;
+  char dst[20][80] = {0};
+  int n = 0,i = 0,j = 0,e = 0;
+  int cnt = 0,t = 0;
   unsigned char command[50] = {0};
-  Sensor *p;
-  uint8_t len;
+  Sensor *p = NULL;
+  uint8_t len = 0;
  
   
   for(i=0;i<5;i++){
@@ -93,7 +93,7 @@ void Sample_RS485(void)
                // Bit.i = n;
                 command[e] = (char)n;
             }
-            if(i == 3){
+            if(i == 4){
             //液位        
               if(command[1] == 0x30){
                 //模拟采集
