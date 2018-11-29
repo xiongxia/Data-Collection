@@ -143,7 +143,11 @@ int main(void)
     HAL_TIM_Base_Stop(&htimx);
   }
 
-
+  Close_Delay('1');
+  Close_Delay('2');
+  
+  Close_Delay('3');
+  Close_Delay('4');
   while (1)
   {
     
