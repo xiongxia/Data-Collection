@@ -19,6 +19,9 @@ typedef struct sensor_info{
     double min,max;//控制指标信息
     double up,down;//控制告警的正常范围
     int warn;//发出告警传感器的数量
+    float old_value;//之前的平均值
+    int save_num;
+    int control_delay;
     struct sensor_node *frist_node;//第一个传感器
 }Sensor_data;   //传感器
 typedef struct sensor_node{
@@ -51,35 +54,35 @@ typedef struct Delay_node{
     char port;//端口(1：端口1)
     int state;//状态（0：关 1：开）
     int num;//控制指标数量
-    int type[5];//监控类型(0表示PH)
-    int control;//控制类型
+    int type[6];//监控类型(0表示PH)
+    int control;//控制类型(1、从最小值加到最大值   2、从最大值加到最小值   3、当前时间定时加     4、系统时间加)
     char start_time[10];//开始时间
     char sustain_time[10];//持续时间
     char interval_time[10];//间隔时间
     int counter;//计时器
     int save_counter;//保存计时器
+    int error;//控制出现严重异常，强制关闭，不运行控制逻辑，等待处理
 }Delay;   //继电器节点
-extern Delay delay[4];  //port与下标对应
+extern Delay delay[5];  //port与下标对应
 
 //传感器配置
-extern Data sensor_data[5];//上传数据，type与下标对应
-extern Sensor_data sensor_array[5];
+extern Data sensor_data[6];//上传数据，type与下标对应
+extern Sensor_data sensor_array[6];
 extern uint8_t RS485_Rx_buf[50];
-extern uint8_t RS232_Rx_buf[50];//串口缓存
 extern uint8_t Android_Rx_buf[1000];
 extern uint8_t Rx_buf[1000];
 
 extern uint16_t Android_Rx_Count;
 extern uint16_t RS485_Rx_Count;
 extern uint16_t RS485_Rx_Count_Old;
-extern uint16_t RS232_Rx_Count;
 extern uint8_t Sample_flag;//采集标志
 extern uint8_t UpData_flag;//上传数据标志
-extern uint8_t Debug_flag;//调试标志
 extern uint8_t Reboot_flag;
 extern uint8_t Save_flag;
 extern uint8_t YiYe_pump_flag;//移液泵状态,0表示关，1表示开
 extern uint8_t YiYe_pump_control_flag;//移液泵控制状态
+extern uint8_t Error_flag;
+extern uint8_t RTC_Config_flag;
 
 //传感器量程****************************************************************************************************
 extern float LEVEL_Low; //液位      
@@ -93,9 +96,9 @@ extern float WCOND_High; //电导率
 extern float TEMP_Low; //温度
 extern float TEMP_High; //温度
 extern int LEVEL;
+extern float WEIGHT_Low; //重量 kg
+extern float WEIGHT_High;
 
-
-//******************其他变量********************
 extern uint16_t	RevComplete;					//接收完成标志位
 
 extern uint8_t Control_flag;//控制标志
@@ -111,10 +114,24 @@ extern char alarm_Clock[50];
 
 extern int SCM_state;
 
-
 extern uint8_t D0_Open[8];
 extern uint8_t D0_Close[8];
 extern uint8_t D1_Open[8];
 extern uint8_t D1_Close[8];
+
+extern uint8_t D2_Open[8];
+extern uint8_t D2_Close[8];
+extern uint8_t D3_Open[8];
+extern uint8_t D3_Close[8];
+
+extern uint8_t D4_Open[8];
+extern uint8_t D4_Close[8];
+extern uint8_t D5_Open[8];
+extern uint8_t D5_Close[8];
+
+extern uint8_t D6_Open[8];
+extern uint8_t D6_Close[8];
+extern uint8_t D7_Open[8];
+extern uint8_t D7_Close[8];
 
 #endif

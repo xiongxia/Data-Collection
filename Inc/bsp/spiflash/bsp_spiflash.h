@@ -29,7 +29,10 @@
 #define FLASH_SPI_MISO_PORT                        GPIOC
 #define FLASH_SPI_MISO_PIN                         GPIO_PIN_2
 
-#define  FLASH_WriteAddress     0x80FFF00
+//#define  FLASH_WriteAddress     0x80FFFF0
+//#define  FLASH_WriteAddress     0x8000000
+#define  FLASH_WriteAddress     0x00000000
+
 #define  FLASH_ReadAddress      FLASH_WriteAddress
 #define  FLASH_SectorToErase    FLASH_WriteAddress
 

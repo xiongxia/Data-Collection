@@ -11,6 +11,7 @@ extern RTC_HandleTypeDef hrtc;
 
 /* º¯ÊýÉùÃ÷ ------------------------------------------------------------------*/
 void MX_RTC_Init(void);
+void RTC_CalendarConfig(char *time);
 
 
 #endif  /* __BSP_RTC_H__ */

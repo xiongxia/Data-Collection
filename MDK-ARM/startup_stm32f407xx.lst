@@ -870,11 +870,10 @@ ARM Macro Assembler    Page 14
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=.\ys-f4pro\startup_stm32f407xx.d -o.\ys-f4pro\startup_stm32f407
-xx.o -I"G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\MDK-ARM\RTE" 
--IF:\Keil_v51\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F
-4xx\Include -IF:\Keil_v5\ARM\CMSIS\Include --predefine="__MICROLIB SETA 1" --pr
-edefine="__UVISION_VERSION SETA 518" --predefine="STM32F407xx SETA 1" --list=st
-artup_stm32f407xx.lst startup_stm32f407xx.s
+xx.o -I.\RTE\_YS-F4Pro -IE:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\
+CMSIS\Device\ST\STM32F4xx\Include -IE:\Keil_v5\ARM\CMSIS\Include --predefine="_
+_MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 525" --predefine="STM32F4
+07xx SETA 1" --list=startup_stm32f407xx.lst startup_stm32f407xx.s
 
 
 

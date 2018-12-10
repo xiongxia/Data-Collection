@@ -30,7 +30,7 @@ void Control_temer(int i);
 void Control_sys_temer(int i);
 void Chang_Start_time(int i);
 void Save_Device_Data(char* buf);
-void Get_Device_Data(char* buf);
+void Get_Device_Data(uint8_t* buf);
 void itoa (int n,char s[]);
 int Simulation_Level(int port);
 void Reboot();
@@ -38,6 +38,12 @@ void Open_Beep();
 void Close_Beep();
 void Open_Light();
 void Close_Light();
+void Open_YiYe_pupm();
+void Close_YiYe_pupm();
+void Alarm();
+void Find_Min_Max(float ar[],int num);
+void Open_Error(char port);
+void Close_Error(char port);
 
 
 #endif

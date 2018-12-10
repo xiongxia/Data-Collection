@@ -30,7 +30,7 @@ UART_HandleTypeDef husartx;
 static void MX_NVIC_USART1_Init(void)
 {
   /* USART1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DEBUG_USART_IRQn ,0, 2);
+  HAL_NVIC_SetPriority(DEBUG_USART_IRQn ,1, 0);
   HAL_NVIC_EnableIRQ(DEBUG_USART_IRQn);
 }
 

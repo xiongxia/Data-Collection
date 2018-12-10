@@ -92,17 +92,17 @@ typedef enum
 #define OUTPUT4_GPIO                     GPIOF
 
 
-#define OUTPUT1_GPIO_ON                       HAL_GPIO_WritePin(OUTPUT1_GPIO,OUTPUT1_GPIO_PIN,GPIO_PIN_SET)    // 输出高电平
-#define OUTPUT1_GPIO_OFF                      HAL_GPIO_WritePin(OUTPUT1_GPIO,OUTPUT1_GPIO_PIN,GPIO_PIN_RESET)    // 输出低电平
+#define OUTPUT1_GPIO_ON                       HAL_GPIO_WritePin(OUTPUT1_GPIO,OUTPUT1_GPIO_PIN,GPIO_PIN_RESET)    // 输出高电平
+#define OUTPUT1_GPIO_OFF                      HAL_GPIO_WritePin(OUTPUT1_GPIO,OUTPUT1_GPIO_PIN,GPIO_PIN_SET)    // 输出低电平
 
-#define OUTPUT2_GPIO_ON                       HAL_GPIO_WritePin(OUTPUT2_GPIO,OUTPUT1_GPIO_PIN,GPIO_PIN_SET)    // 输出高电平
-#define OUTPUT2_GPIO_OFF                      HAL_GPIO_WritePin(OUTPUT2_GPIO,OUTPUT1_GPIO_PIN,GPIO_PIN_RESET)    // 输出低电平
+#define OUTPUT2_GPIO_ON                       HAL_GPIO_WritePin(OUTPUT2_GPIO,OUTPUT2_GPIO_PIN,GPIO_PIN_RESET)    // 输出高电平
+#define OUTPUT2_GPIO_OFF                      HAL_GPIO_WritePin(OUTPUT2_GPIO,OUTPUT2_GPIO_PIN,GPIO_PIN_SET)    // 输出低电平
 
-#define OUTPUT3_GPIO_ON                       HAL_GPIO_WritePin(OUTPUT3_GPIO,OUTPUT1_GPIO_PIN,GPIO_PIN_SET)    // 输出高电平
-#define OUTPUT3_GPIO_OFF                      HAL_GPIO_WritePin(OUTPUT3_GPIO,OUTPUT1_GPIO_PIN,GPIO_PIN_RESET)    // 输出低电平
+#define OUTPUT3_GPIO_ON                       HAL_GPIO_WritePin(OUTPUT3_GPIO,OUTPUT3_GPIO_PIN,GPIO_PIN_RESET)    // 输出高电平
+#define OUTPUT3_GPIO_OFF                      HAL_GPIO_WritePin(OUTPUT3_GPIO,OUTPUT3_GPIO_PIN,GPIO_PIN_SET)    // 输出低电平
 
-#define OUTPUT4_GPIO_ON                       HAL_GPIO_WritePin(OUTPUT4_GPIO,OUTPUT1_GPIO_PIN,GPIO_PIN_SET)    // 输出高电平
-#define OUTPUT4_GPIO_OFF                      HAL_GPIO_WritePin(OUTPUT4_GPIO,OUTPUT1_GPIO_PIN,GPIO_PIN_RESET)    // 输出低电平
+#define OUTPUT4_GPIO_ON                       HAL_GPIO_WritePin(OUTPUT4_GPIO,OUTPUT4_GPIO_PIN,GPIO_PIN_RESET)    // 输出高电平
+#define OUTPUT4_GPIO_OFF                      HAL_GPIO_WritePin(OUTPUT4_GPIO,OUTPUT4_GPIO_PIN,GPIO_PIN_SET)    // 输出低电平
 
 /* 扩展变量 ------------------------------------------------------------------*/
 /* 函数声明 ------------------------------------------------------------------*/

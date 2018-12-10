@@ -108,7 +108,7 @@
 /*!< Uncomment the following line if you need to relocate your vector Table in
      Internal SRAM. */
 /* #define VECT_TAB_SRAM */
-#define VECT_TAB_OFFSET  0x10000 /*!< Vector Table base offset field. 
+#define VECT_TAB_OFFSET  0x10000/*!< Vector Table base offset field. 
                                    This value must be a multiple of 0x200. */
 /******************************************************************************/
 
@@ -127,7 +127,7 @@
 /** @addtogroup STM32F4xx_System_Private_Variables
   * @{
   */
-  /* This variable is updated in three ways:
+  /* This variable is updated in three ways:VECT_TAB_OFFSET
       1) by calling CMSIS function SystemCoreClockUpdate()
       2) by calling HAL API function HAL_RCC_GetHCLKFreq()
       3) each time HAL_RCC_ClockConfig() is called to configure the system clock frequency 

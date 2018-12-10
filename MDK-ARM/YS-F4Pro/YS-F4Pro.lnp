@@ -1,4 +1,4 @@
---cpu Cortex-M4.fp
+--cpu=Cortex-M4.fp
 ".\ys-f4pro\startup_stm32f407xx.o"
 ".\ys-f4pro\main.o"
 ".\ys-f4pro\stm32f4xx_hal_msp.o"
@@ -102,6 +102,6 @@
 ".\ys-f4pro\bsp_spiflash.o"
 ".\ys-f4pro\bsp_rtc.o"
 --library_type=microlib --strict --scatter ".\YS-F4Pro\YS-F4Pro.sct"
---diag_suppress=L6329 --summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--diag_suppress=L6329 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "YS-F4Pro.map" -o .\YS-F4Pro\YS-F4Pro.axf

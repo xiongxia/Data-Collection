@@ -7,7 +7,7 @@
 .\ys-f4pro\main.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 .\ys-f4pro\main.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h
 .\ys-f4pro\main.o: ../Drivers/CMSIS/Include/core_cm4.h
-.\ys-f4pro\main.o: F:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\ys-f4pro\main.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\ys-f4pro\main.o: ../Drivers/CMSIS/Include/core_cmInstr.h
 .\ys-f4pro\main.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 .\ys-f4pro\main.o: ../Drivers/CMSIS/Include/core_cmFunc.h
@@ -15,7 +15,7 @@
 .\ys-f4pro\main.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 .\ys-f4pro\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 .\ys-f4pro\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-.\ys-f4pro\main.o: F:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\ys-f4pro\main.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\ys-f4pro\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
 .\ys-f4pro\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
 .\ys-f4pro\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h
@@ -81,11 +81,11 @@
 .\ys-f4pro\main.o: ..\Inc\bsp\RS485/bsp_usartx_RS485.h
 .\ys-f4pro\main.o: ..\Inc\bsp\led/bsp_led.h
 .\ys-f4pro\main.o: ..\Inc\bsp\BasicTIM/bsp_BasicTIM.h
-.\ys-f4pro\main.o: F:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\ys-f4pro\main.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\ys-f4pro\main.o: ../Inc/function.h
 .\ys-f4pro\main.o: ../Inc/variable.h
 .\ys-f4pro\main.o: ../Inc/sample.h
 .\ys-f4pro\main.o: ..\Inc\bsp\gpio/bsp_gpio.h
 .\ys-f4pro\main.o: ..\Inc\bsp\rtc/bsp_rtc.h
 .\ys-f4pro\main.o: ..\Inc\bsp\spiflash/bsp_spiflash.h
-.\ys-f4pro\main.o: F:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\ys-f4pro\main.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

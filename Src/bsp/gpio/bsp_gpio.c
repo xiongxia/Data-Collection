@@ -113,7 +113,7 @@ void INPUT_GPIO_Init(void)
   HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
     /* 配置中断优先级 */
-  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 1, 0);
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn,0,2);
   HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
   
@@ -221,23 +221,23 @@ void OUTPUT_GPIO_Init(void)
   
   /* 配置OUTPUT GPIO:输入上拉模式 */
   GPIO_InitStruct.Pin = OUTPUT1_GPIO_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(OUTPUT1_GPIO, &GPIO_InitStruct);   
   
   GPIO_InitStruct.Pin = OUTPUT2_GPIO_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(OUTPUT2_GPIO, &GPIO_InitStruct);   
   
   GPIO_InitStruct.Pin = OUTPUT3_GPIO_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(OUTPUT3_GPIO, &GPIO_InitStruct);   
   
   
   GPIO_InitStruct.Pin = OUTPUT4_GPIO_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(OUTPUT4_GPIO, &GPIO_InitStruct);   
   

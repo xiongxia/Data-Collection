@@ -7,7 +7,7 @@
 .\ys-f4pro\stm32f4xx_hal_hcd.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 .\ys-f4pro\stm32f4xx_hal_hcd.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f407xx.h
 .\ys-f4pro\stm32f4xx_hal_hcd.o: ../Drivers/CMSIS/Include/core_cm4.h
-.\ys-f4pro\stm32f4xx_hal_hcd.o: F:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\ys-f4pro\stm32f4xx_hal_hcd.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\ys-f4pro\stm32f4xx_hal_hcd.o: ../Drivers/CMSIS/Include/core_cmInstr.h
 .\ys-f4pro\stm32f4xx_hal_hcd.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 .\ys-f4pro\stm32f4xx_hal_hcd.o: ../Drivers/CMSIS/Include/core_cmFunc.h
@@ -15,7 +15,7 @@
 .\ys-f4pro\stm32f4xx_hal_hcd.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h
 .\ys-f4pro\stm32f4xx_hal_hcd.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 .\ys-f4pro\stm32f4xx_hal_hcd.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
-.\ys-f4pro\stm32f4xx_hal_hcd.o: F:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\ys-f4pro\stm32f4xx_hal_hcd.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\ys-f4pro\stm32f4xx_hal_hcd.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
 .\ys-f4pro\stm32f4xx_hal_hcd.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
 .\ys-f4pro\stm32f4xx_hal_hcd.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h

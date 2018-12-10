@@ -12,6 +12,7 @@
 #include "rtc/bsp_rtc.h"
 #include "usart/bsp_debug_usart.h"
 
+
 /* 私有类型定义 --------------------------------------------------------------*/
 /* 私有宏定义 ----------------------------------------------------------------*/
 /* 私有变量 ------------------------------------------------------------------*/
@@ -22,96 +23,123 @@ RTC_HandleTypeDef hrtc;
 /* 函数体 --------------------------------------------------------------------*/
 
 /**
+  * 函数功能: 把ASCII码转换为数字,把字符串转成十六进制
+  * 输入参数: value 用户在超级终端中输入的数值
+  * 返 回 值: 输入字符的ASCII码对应的数值
+  * 说    明：本函数专用于RTC获取时间
+  */
+int StringToArray(char *str, unsigned char *out)
+{
+
+    char *p = str;
+
+    char high = 0, low = 0;
+
+    int tmplen = strlen(p), cnt = 0;
+
+    tmplen = strlen(p);
+
+    if(tmplen % 2 != 0) return -1;
+
+    while(cnt < tmplen / 2)
+
+    {
+
+        high = ((*p > '9') && ((*p <= 'F') || (*p <= 'f'))) ? *p - 48 - 7 : *p - 48;
+
+        low = (*(++ p) > '9' && ((*p <= 'F') || (*p <= 'f'))) ? *(p) - 48 - 7 : *(p) - 48;
+
+        out[cnt] = ((high & 0x0f) << 4 | (low & 0x0f));
+
+        p++;
+
+        cnt ++;
+
+    }
+
+
+    return tmplen / 2;
+
+}
+/**
   * 函数功能: 配置当前时间和日期
   * 输入参数: 无
   * 返 回 值: 无
   * 说    明: 无
   */
-static void RTC_CalendarConfig(void)
+void RTC_CalendarConfig(char *time)
 {
   RTC_TimeTypeDef sTime;
   RTC_DateTypeDef DateToUpdate;
-#if 1           //该处选择是否自己配置时钟，如果想自己配置，那么设置成0 
+  int outlen = 0;
+  uint8_t out[10] = {0};
+  
+  outlen = StringToArray(time, out);
+  
+  if(outlen != 7)
+  {
+    //printf("RTC_CalendarConfig:配置时间错误,字段数量为%d，请求重发时间\n",outlen);
+    HAL_UART_Transmit(&husart_debug,"+",1,1000);
+    return;
+  }
+  
   /* 配置日期 */
-  /* 设置日期：2018年09月05日 星期三 */
-  DateToUpdate.WeekDay = RTC_WEEKDAY_WEDNESDAY;
-  DateToUpdate.Month = RTC_MONTH_SEPTEMBER;
-  DateToUpdate.Date = 0x05;
-  DateToUpdate.Year = 0x18;  
+  /* 设置日期：2018年11月28日 星期二*/
+  if(out[0] < 0x18 || out[0] > 0x40)
+  {
+    //printf("RTC_CalendarConfig:配置年份错误%02x，请求重发\n",out[0]);
+    HAL_UART_Transmit(&husart_debug,"+",1,1000);
+    return;
+  }
+  
+  if(out[1] < 0x00 || out[1] > 0x12)
+  {
+    //printf("RTC_CalendarConfig:配置月份错误%02x，请求重发\n",out[1]);
+    HAL_UART_Transmit(&husart_debug,"+",1,1000);
+    return;
+  }
+  if(out[2] < 0x00 || out[2] > 0x31)
+  {
+    //printf("RTC_CalendarConfig:配置日期错误%02x，请求重发\n",out[2]);
+    HAL_UART_Transmit(&husart_debug,"+",1,1000);
+    return;
+  }
+  if(out[3] < 0x00 || out[3] > 0x07)
+  {
+    //printf("RTC_CalendarConfig:配置星期错误%02x，请求重发\n",out[3]);
+    HAL_UART_Transmit(&husart_debug,"+",1,1000);
+    return;
+  }
+  if(out[4] < 0x00 || out[4] > 0x24)
+  {
+    //printf("RTC_CalendarConfig:配置小时错误%02x，请求重发\n",out[4]);
+    HAL_UART_Transmit(&husart_debug,"+",1,1000);
+    return;
+  }
+  if(out[5] < 0x00 || out[5] > 0x60)
+  {
+    //printf("RTC_CalendarConfig:配置分钟错误%02x，请求重发\n",out[5]);
+    HAL_UART_Transmit(&husart_debug,"+",1,1000);
+    return;
+  }
+  if(out[6] < 0x00 || out[6] > 0x60)
+  {
+    //printf("RTC_CalendarConfig:配置秒数错误%02x，请求重发\n",out[6]);
+    HAL_UART_Transmit(&husart_debug,"+",1,1000);
+    return;
+  }
+  DateToUpdate.Year = out[0];  
+  DateToUpdate.Month = out[1];
+  DateToUpdate.Date = out[2];
+  DateToUpdate.WeekDay = out[3];
   HAL_RTC_SetDate(&hrtc,&DateToUpdate,RTC_FORMAT_BCD);
   
-  /* 配置时间 */
+    /* 配置时间 */
   /* 时钟时间：10:15:46 */
-  sTime.Hours = 0x19;
-  sTime.Minutes = 0x16;
-  sTime.Seconds = 0x00;
+  sTime.Hours = out[4];
+  sTime.Minutes = out[5];
+  sTime.Seconds = out[6];
   HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD);
-#else
-  __IO uint32_t Tmp_YY = 0xFF, Tmp_MM = 0xFF, Tmp_DD = 0xFF, Tmp_XX = 0xFF, Tmp_HH = 0xFF, Tmp_MI = 0xFF, Tmp_SS = 0xFF;
-
-  printf("=========================时间设置==================\n");
-  printf("请输入年份: 20\n");
-  while (Tmp_YY == 0xFF)
-  {
-    Tmp_YY = USART_Scanf(99);
-  }
-  printf("年份被设置为:  20%0.2d\n", Tmp_YY);
-
-  DateToUpdate.Year = Tmp_YY;
-  
-  printf("请输入月份:  \n");
-  while (Tmp_MM == 0xFF)
-  {
-    Tmp_MM = USART_Scanf(12);
-  }
-  printf("月份被设置为:  %d\n", Tmp_MM);
-
-  DateToUpdate.Month= Tmp_MM;
-
-  printf("请输入日期:  \n");
-  while (Tmp_DD == 0xFF)
-  {
-    Tmp_DD = USART_Scanf(31);
-  }
-  printf("日期被设置为:  %d\n", Tmp_DD);
-  DateToUpdate.Date= Tmp_DD;
-  
-  printf("请输入星期:  \n");
-  while (Tmp_XX == 0xFF)
-  {
-    Tmp_XX = USART_Scanf(36);
-  }
-  printf("星期被设置为:  %d\n", Tmp_XX);
-  DateToUpdate.WeekDay= Tmp_XX;
-    
-  HAL_RTC_SetDate(&hrtc,&DateToUpdate,RTC_FORMAT_BIN);
-  
-  printf("请输入时钟:  \n");
-  while (Tmp_HH == 0xFF)
-  {
-    Tmp_HH = USART_Scanf(23);
-  }
-  printf("时钟被设置为:  %d\n", Tmp_HH );
-  sTime.Hours= Tmp_HH;
-
-
-  printf("请输入分钟:  \n");
-  while (Tmp_MI == 0xFF)
-  {
-    Tmp_MI = USART_Scanf(59);
-  }
-  printf("分钟被设置为:  %d\n", Tmp_MI);
-  sTime.Minutes= Tmp_MI;
-
-  printf("请输入秒钟:  \n");
-  while (Tmp_SS == 0xFF)
-  {
-    Tmp_SS = USART_Scanf(59);
-  }
-  printf("秒钟被设置为:  %d\n", Tmp_SS);
-  sTime.Seconds= Tmp_SS;
-  HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
-#endif
 
   /* 写入一个数值：0x32F1到RTC备份数据寄存器1 */
   HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR1, 0x32F1);
@@ -135,33 +163,29 @@ void MX_RTC_Init(void)
   hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;     //RTC_ALARM输出类型为开漏输出
   HAL_RTC_Init(&hrtc);
 
-#if 0
-  /* 配置RTC万年历：时间和日期 */
-  RTC_CalendarConfig();
-#else
+  char *strCom = "18121704121700";
   /* 检测数据是否保存在RTC备份寄存器1：如果已经保存就不需要运行日期和时间设置 */
   /* 读取备份寄存器1数据 */
   if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1) != 0x32F1)
   {
     /* 配置RTC万年历：时间和日期 */
-    RTC_CalendarConfig();
+    RTC_CalendarConfig(strCom);
   }
   else
   {
     /* 检查上电复位标志位是否为：SET */
     if (__HAL_RCC_GET_FLAG(RCC_FLAG_PORRST) != RESET)
     {
-      printf("发生上电复位！！！\n");
+      //printf("发生上电复位！！！\n");
     }
     /* 检测引脚复位标志位是否为：SET */
     if (__HAL_RCC_GET_FLAG(RCC_FLAG_PINRST) != RESET)
     {
-      printf("发生外部引脚复位！！！\n");
+      //printf("发生外部引脚复位！！！\n");
     }
     /* 清楚复位源标志位 */
     __HAL_RCC_CLEAR_RESET_FLAGS();
   }
-#endif
 }
 
 /**

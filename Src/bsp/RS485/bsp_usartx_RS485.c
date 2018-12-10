@@ -30,7 +30,7 @@ UART_HandleTypeDef husartx_rs485;
 static void MX_NVIC_USART3_Init(void)
 {
   /* USART1_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(RS485_USARTx_IRQn,1,0);
+  HAL_NVIC_SetPriority(RS485_USARTx_IRQn,2,0);
   HAL_NVIC_EnableIRQ(RS485_USARTx_IRQn);
 }
 
@@ -67,6 +67,7 @@ void RS485_USARTx_Init(void)
   */
 void RS485_Send_Data(uint8_t *buf,uint8_t len){
     //int i = 0;
+    HAL_Delay(10);
     /* 进入发送模式 */
     TX_MODE();
     /* 发送数据,轮询直到发送数据完毕 */
@@ -75,13 +76,14 @@ void RS485_Send_Data(uint8_t *buf,uint8_t len){
       while(__HAL_UART_GET_FLAG(&husartx_rs485,UART_FLAG_TC)!=1);
       /* 进入接收模式 */
         RX_MODE();
-        Show_Data(RS485_Rx_buf,20);  
+        //Show_Data(RS485_Rx_buf,20);  
       //  Sample_flag = 1;
       /* 使用调试串口打印调试信息到串口调试助手 */
      // Show_Data(buf,8);  
-        printf("\nRS485发送数据成功:"); 
-        Show_Data(buf,len); 
+        //printf("\nRS485发送数据成功:"); 
+       // Show_Data(buf,len); 
     }
+   HAL_Delay(10);
 }
 /**
   * 函数功能: RS485查询接收到的数据
@@ -95,18 +97,19 @@ void RS485_Receive_Data(uint8_t *len){
 	
     //if(Sample_flag == 1){
    // while(1){
-        printf("数据采集中\n");
-        HAL_Delay(500);//20ms接收
+        //printf("数据采集中\n");
+        HAL_Delay(100);//20ms接收
         //if(RS485_Rx_Count == RS485_Rx_Count_Old){
         printf("传感器接收完成\n");
-        Show_Data(RS485_Rx_buf,20);  
-        printf("接收长度：%d\n",RS485_Rx_Count);
+        //Show_Data(RS485_Rx_buf,10);  
+        //printf("接收长度：%d\n",RS485_Rx_Count);
         *len = RS485_Rx_Count;
         if(*len == 0){
-            printf("数据采集失败\n");
+            //printf("数据采集失败\n");
         }
         RS485_Rx_Count_Old = RS485_Rx_Count;
         RS485_Rx_Count = 0; 
+        HAL_Delay(10);
         //Sample_flag = 0;    
  //}//while
 }
