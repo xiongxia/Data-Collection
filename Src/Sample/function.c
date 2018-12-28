@@ -13,9 +13,6 @@
 #include "spiflash/bsp_spiflash.h"
 #include "led/bsp_led.h"
 
-
-
-
 /**
   * 函数功能: 回退传感器信息
   * 输入参数: 无
@@ -23,10 +20,22 @@
   * 说    明：无
   */
 void Backups_Data(){
+
+  printf("Backups_Data：清空配置信息\n");
+  Clean_Data(0);
+  Clean_Data(1);
+  Clean_Data(2);
+  Clean_Data(3);
+  Clean_Data(4);
+  Clean_Data(5); 
+  Clean_Data(6); 
+  Clean_Data(7); 
+  time_Control_flag = 0;
+  sys_time_Control_flag = 0;
+  index_time_control_flag = 0;
+  Sensor_Cfg_Mode = 0; 
+  HAL_UART_Transmit(&husart_debug,"[",1,1000);
   
-  //printf("Backups_Data：回退配置信息\n");
-  strcpy(Android_Rx_buf,Rx_buf);
-  Save_Data();
 }
 
 
@@ -38,28 +47,26 @@ void Backups_Data(){
   */
 void Command_Data()
 {
-  //printf("Command_Data：开始执行命令\n");
+  printf("Command_Data：开始执行命令\n");
   char *port = NULL;
   char *cmd = NULL;
-
   port = strtok(Android_Rx_buf, ",");
-  
   cmd = strtok( NULL,",");
   if(port[0] > '5' || port[0] < '1')
   {
-    //printf("Command_Data：命令端口%c错误!!!\n",port[0]);
+    printf("Command_Data：命令端口%c错误!!!\n",port[0]);
   }
-  if(cmd[0] == '0')
+  if(!strcmp(cmd,"0"))
   {
     Close_Delay(port[0]);
   }
-  else if(cmd[0] == '1')
+  else if(!strcmp(cmd,"1"))
   {
     Open_Delay(port[0]);
   }
   else
   {
-    //printf("Command_Data：命令错误,错误参数%s!!!\n",cmd);
+    printf("Command_Data：命令错误,错误参数%s!!!\n",cmd);
   }
 }
 /**
@@ -70,7 +77,7 @@ void Command_Data()
   */
 void Save_Data()
 {
-  //printf("Save_Data：开始保存配置信息\n");
+  printf("Save_Data：开始保存配置信息\n");
   char temp[500] = {0};//暂存信息
   char *p = NULL;
   int error = 0;
@@ -93,21 +100,26 @@ void Save_Data()
   Clean_Data(4);
   Clean_Data(5); 
   Clean_Data(6); 
+  Clean_Data(7); 
+  time_Control_flag = 0;
+  sys_time_Control_flag = 0;
+  index_time_control_flag = 0;
+  Sensor_Cfg_Mode = 0; 
+
   p = strtok(buf, ";");
   
   while (p != NULL) 
   {
     n++;
-    //printf("ptr=%s\n",p);
     strcpy(temp,p);
     c = temp[0]; 
     len += strlen(p);
-    //printf("%d\n",len+n);
     len = len + 1;
     p = &buf[len];
     p = strtok(p, ";");
     if(len >= data_len)
       p = NULL;
+
     switch(c)
     {
         case '0':
@@ -139,24 +151,31 @@ void Save_Data()
             //重量
             error = Get_Data(6,temp);
             break;
+        case '7':
+            //锆
+            error = Get_Data(7,temp);
+            break;
         default:
         //错误
             flag = 0;
-            //printf("Save_Data：%d 配置信息错误!!!\n",c);
+            printf("Save_Data：%d 配置信息错误!!!\n",c);
             break;
     }
     if(error == -1)
     {
-      //printf("%c类别配置错误，导致数据回退\n",c);
+      printf("%c类别配置错误，导致数据回退\n",c);
       Backups_Data();
+      save_data_flag = 1;
       return;
     }
   }
   if(n > 0 && flag)
   {
    //只要有配置信息就设置标志位,并且配置成功
-    //printf("Save_Data：配置信息完成!!!");
+    printf("Save_Data：配置信息完成!!!\n");
     Sensor_Cfg_Mode = 1;//串口接收传感器配置文件标志
+    save_data_flag = 0;
+    Save_Device_Data(Android_Rx_buf);
   }
 }
 /**
@@ -170,39 +189,36 @@ void Clean_Data(int type)
 {
   Sensor *p = NULL;
   Sensor *q = NULL;
+  char num ;
       
   if(type == 5)
   {
     //继电器
     for(int i=0;i<5;i++)
     {
+        num = i + 49;
+        Close_Delay(num);
         delay[i].devices[0] = '\0';
         delay[i].port = 0;
         delay[i].state = 0;
         delay[i].type[0] = -1;
         delay[i].num = 0;
         delay[i].control = 0;
-        delay[i].counter = 0;
+        delay[i].counter = 1000;
         delay[i].interval_time[0] = '\0';
         delay[i].save_counter = 0;
         delay[i].start_time[0] = '\0';
         delay[i].sustain_time[0] = '\0' ;
         delay[i].error = 0;
+        delay[i].volume = 0;
+        delay[i].dosage = 0;
     }
-    //printf("Clean_Data：继电器信息清除完毕\n");
+    printf("Clean_Data：继电器信息清除完毕\n");
     return ;
   }
-  if(type == 6)
+  if(type >= 6)
   {
-    type = 5;
-  }
-  p = sensor_array[type].frist_node;
-  q = p;
-  for(int j=1;j<sensor_array[type].num;j++)
-  {
-    q = p->next;
-    free(p);
-    p = q;
+    type--;
   }
   sensor_array[type].max = 0;
   sensor_array[type].min = 0;
@@ -213,8 +229,23 @@ void Clean_Data(int type)
   sensor_array[type].frist_node = NULL;
   sensor_array[type].old_value = 0;
   sensor_array[type].save_num = 0;
-  sensor_array[type].control_delay = 5;//初始大于5，表示没有继电器控制该指标
-  //printf("Clean_Data：%d 传感器信息清除完毕\n",type);
+  sensor_array[type].control_delay = 6;//初始大于5，表示没有继电器控制该指标
+  
+  p = sensor_array[type].frist_node;
+  q = p;
+  if(!p){
+    return;
+  }
+  for(int j=1;j<sensor_array[type].num;j++)
+  {
+    q = p->next;
+    free(p);
+    if(!q){
+      return;
+    }
+    p = q;
+  }
+  printf("Clean_Data：%d 传感器信息清除完毕\n",type);
   return;
 }
 /**
@@ -225,7 +256,7 @@ void Clean_Data(int type)
   */
 void UpData()
 {
-  //printf("UpData：开始上传数据\n");
+  printf("UpData：开始上传数据\n");
   char devicesID[20] = {0};
   float value = 0.0;
   int type = 0,i = 0,j = 0;
@@ -233,7 +264,7 @@ void UpData()
   Sensor *p = NULL;
   //打包数据 
   HAL_UART_Transmit(&husart_debug,"#",1,1000);
-  for(i=0;i<6;i++)
+  for(i=0;i<7;i++)
   {
     //上传存在的传感器
    if(sensor_array[i].num >0){
@@ -265,14 +296,15 @@ void UpData()
   */
 void Get_Average()
 {
-  Sensor *p = NULL,*q = NULL;//q记录error次数最大的传感器
+  Sensor *p = NULL;
+  Sensor *q = NULL;//q记录error次数最大的传感器
   float temp_value = 0;//暂存数据
   int e = 0;
   int error = 0;//e记录最大错误次数,error为累加错误次数
   char data[20] = {0};
   
   printf("Get_Average：开始计算数据均值\n");
-  for(int i=0;i<6;i++)
+  for(int i=0;i<7;i++)
   {
     temp_value = 0;
     p = sensor_array[i].frist_node;
@@ -282,6 +314,7 @@ void Get_Average()
     }
     while(p)
     {
+       printf("Get_Average: 类别：%s  value = %.2f 错误次数：%d,采集次数：%d\n",p->devices,p->value,p->error,p->amount);
       //考虑全错的情况,全错的设备不进行平均值计算或者错误次数过多
         if(p->amount == 0 || p->error >30)
         {
@@ -294,6 +327,8 @@ void Get_Average()
         else
         {
             p->value = (float)p->value / p->amount;
+           // p->amount = 0;
+            //p->error = 0;
         }
         temp_value = temp_value + p->value;
         if(p->error > e)
@@ -324,6 +359,7 @@ void Get_Average()
       sensor_array[i].old_value = temp_value; 
     }
     sensor_array[i].save_num = (sensor_array[i].save_num + 1) % 3;
+    error = 0;
   }//for
 }
 /**
@@ -336,7 +372,7 @@ int Get_Data(int type,char * data)
 {
     char *result = NULL;
     Sensor *q = NULL;
-    char *temp_data[50] = NULL;
+    char *temp_data[30] = {0};
     uint8_t i = 0;
     uint8_t num = 0;
     uint8_t n = 0;
@@ -348,7 +384,7 @@ int Get_Data(int type,char * data)
     int port = 0;
     
     result = strtok(data,",");
-    //result = strtok( NULL,",");
+    
     //提取数据
     while( result != NULL ) 
     {
@@ -371,40 +407,72 @@ int Get_Data(int type,char * data)
         n = atoi(temp_data[0]);
         for(i=0;i<n;i++)
         {
-            port = temp_data[4*i+2][0] - 49;
-            strcpy(delay[port].devices,temp_data[4*i+1]);
-            delay[port].port = temp_data[4*i+2][0];
+            
+            port = temp_data[5*i+2][0] - 49;
+            strcpy(delay[port].devices,temp_data[5*i+1]);
+            delay[port].port = temp_data[5*i+2][0];
             if(delay[port].port < '1' || delay[port].port > '4')
             {
               printf("Get_Data:%d 配置端口信息错误,错误码%d\n",type,delay[port].port);
               return -1;
             }
-            delay[port].control = atoi(temp_data[4*i+3]);
+            //每小时加药信息
+            delay[port].dosage = atof(temp_data[5*i+5]);
+            if(delay[port].dosage < 0 || delay[port].dosage > 10000){
+              printf("Get_Data:%d 配置加药信息错误,错误码%d\n",type,delay[port].dosage);
+              return -1;
+            }
+           
+            delay[port].control = atoi(temp_data[5*i+3]);
             //控制5模式不需要，单片机控制，安卓进行控制
             if(delay[port].control == 5)
             {
               continue;
             }
-            if(delay[port].control < 1 || delay[port].control > 4)
+            if(delay[port].control < 1 || delay[port].control > 7)
             {
               printf("Get_Data:%d 配置控制模式信息错误,错误码%d\n",type,delay[port].control);
               return -1;
             }
+            
             if(delay[port].control == 4)
             {   
-                    temp_data[4*i+4][5] = '\0';
-                    strcpy(delay[port].start_time,temp_data[4*i+4]); 
-                    strcpy(delay[port].sustain_time,&temp_data[4*i+4][6]); 
+                    temp_data[5*i+4][5] = '\0';
+                    strcpy(delay[port].start_time,temp_data[5*i+4]); 
+                    strcpy(delay[port].sustain_time,&temp_data[5*i+4][6]); 
             }
             else if(delay[port].control == 3)
             {
-                temp_data[4*i+4][5] = '\0';
-                strcpy(delay[port].interval_time,temp_data[4*i+4]); 
-                strcpy(delay[port].sustain_time,&temp_data[4*i+4][6]); 
+                temp_data[5*i+4][5] = '\0';
+                strcpy(delay[port].interval_time,temp_data[5*i+4]); 
+                strcpy(delay[port].sustain_time,&temp_data[5*i+4][6]); 
+            }
+            else if(delay[port].control == 6)
+            {
+               result = strtok(temp_data[5*i+4],"|");
+               m = strlen(result);
+               if(m < 0 || m > 7)
+               {
+                  printf("Get_Data:%d 配置控制传感器信息错误,错误码%d\n",type,m);
+                  return -1;
+               }
+               delay[port].num = m;
+               for(int j=0;j<m;j++)
+               {
+                   delay[port].type[j] = result[j] - '0';
+                   if(delay[port].type[j] >= 6)
+                   {
+                        delay[port].type[j]-- ;
+                   }
+                    //绑定对应传感器
+                   sensor_array[delay[port].type[j]].control_delay = port;
+               }
+               result = strtok( NULL,"|");
+               delay[port].volume = atof(result);   
             }
             else
             {
-                m = strlen(temp_data[4*i+4]);
+                m = strlen(temp_data[5*i+4]);
                 if(m < 0 || m > 7)
                 {
                   printf("Get_Data:%d 配置控制传感器信息错误,错误码%d\n",type,m);
@@ -413,10 +481,10 @@ int Get_Data(int type,char * data)
                 delay[port].num = m;
                 for(int j=0;j<m;j++)
                 {
-                    delay[port].type[j] = temp_data[4*i+4][j] - 48;
-                    if(delay[port].type[j] == 6)
+                    delay[port].type[j] = temp_data[5*i+4][j] - '0';
+                    if(delay[port].type[j] >= 6)
                     {
-                        delay[port].type[j] = 5;
+                        delay[port].type[j]--;
                     }
                     //绑定对应传感器
                     sensor_array[delay[port].type[j]].control_delay = port;
@@ -427,9 +495,9 @@ int Get_Data(int type,char * data)
        }
        return 0;
     }
-    if(type == 6)
+    if(type >= 6)
     {
-      type = 5;
+      type --;
     }
     sensor_array[type].type = type;
     sensor_array[type].num = atoi(temp_data[0]);
@@ -540,7 +608,7 @@ void Detection()
   int normal = 0;//正常数据的个数
   printf("Detection：开始检测传感器异常\n");
   
-  for(i=0;i<6;i++)
+  for(i=0;i<7;i++)
   {
     j = sensor_array[i].control_delay;
     p = sensor_array[i].frist_node;
@@ -653,7 +721,7 @@ void Detection()
     //对于每个类别数据检测，如果药泵打开但是数据变化没有按照正常变化，关闭继电器
     //有继电器控制对应类别
     //printf("%d  %d",delay[j].state,sensor_array[i].save_num);
-    if(delay[j].state == 1 && sensor_array[i].save_num >= 2)
+    if(delay[j].state == 1 && sensor_array[i].save_num >= 2 && delay[j].control <= 4)
     { 
        //3分钟判断一次
        if(fabs(sensor_array[i].value-sensor_array[i].old_value) < 0.1)
@@ -711,6 +779,8 @@ void Open_Error(char port)
   if(port > '0' && port < '6' && delay[p].error == 0)
   {
     printf("Error:出现异常,%c号继电器停止工作\n",port);
+    //sprintf(Data_Anroid,"[Error:出现异常,%c号继电器停止工作]",port);
+    //Send_Data_To_Android();
     Close_Delay(port);
     delay[p].error = 1;
     sprintf(data,"$%c\n",port);
@@ -733,6 +803,8 @@ void Close_Error(char port)
   if(port > '0' && port < '6' && delay[p].error == 1)
   {
     printf("Close_Erro:%c号继电器正常工作\n",port);
+   // sprintf(Data_Anroid,"[Close_Erro:%c号继电器正常工作]",port);
+    //Send_Data_To_Android();
     delay[p].error = 0;
   }
 
@@ -749,13 +821,14 @@ void Close_Error(char port)
   */
 void Open_Delay(char port)
 {  
-  printf("打开继电器:%c\n",port);
+ // printf("打开继电器:%c\n",port);
   RTC_CalendarShow();
   char data[50] = {0};
   int flag = 1;
   int int_port = port - 48;
   uint8_t len = 0;
   int num = 0;
+  RTC_CalendarShow();
 
   while(1){
     switch(port)
@@ -778,6 +851,8 @@ void Open_Delay(char port)
       default:
         flag = 0;
         printf("Open_Delay:打开继电器失败，继电器端口错误%c!\n",port);
+       // sprintf(Data_Anroid,"[Open_Delay:打开继电器失败，继电器端口错误%c]",port);
+        //Send_Data_To_Android();
         break;
     }
     if(!flag)
@@ -790,7 +865,8 @@ void Open_Delay(char port)
        //确定继电器在工作，且状态正确
       if(delay[int_port - 1].state == 1)
       {
-        return;
+        printf("Open_Delay:继电器端口%c已经打开!\n",port);
+       // return;
       }
       break;
     }
@@ -800,8 +876,10 @@ void Open_Delay(char port)
     }
     if(num >= 3)
     {
-      printf("Close_Delay:关闭%c端口继电器失败\n",port);
-      
+      printf("Open_Delay:%c端口继电器失败\n",port);
+     // sprintf(Data_Anroid,"[Open_Delay:关闭%c端口继电器失败]",port);
+      //Send_Data_To_Android();
+      return;
     }
   }//while
   if(flag)
@@ -810,7 +888,7 @@ void Open_Delay(char port)
       sprintf(data,"*%s,%c,%d",delay[int_port - 1].devices,port,1);
       HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
       delay[int_port-1].state = 1;
-      printf("Open_Delay:发送继电器数据:%s\n",data);
+      //printf("Open_Delay:发送继电器数据:%s\n",data);
       printf("Open_Delay:打开%c端口继电器\n",port);
   }
 }
@@ -903,20 +981,22 @@ void Close_Delay(char port)
     default:
       flag = 0;
       printf("Close_Delay:关闭继电器失败，端口错误:%c\n",port);
+      //sprintf(Data_Anroid,"[Close_Delay:关闭继电器失败，端口错误:%c]",port);
+      //Send_Data_To_Android();
       break;
     }
-    RS485_Receive_Data(&len);
     if(!flag)
     {
       return;
     }
+    RS485_Receive_Data(&len);
     if(len > 0 && RS485_Rx_buf[4] == 0x00)
     {
       //确定继电器在工作，且状态正确
       if(delay[int_port - 1].state == 0)
       {
         printf("Close_Delay:继电器已经关闭:%c\n",port);
-        return;
+        //return;
       }
       break;
     }
@@ -927,6 +1007,8 @@ void Close_Delay(char port)
     if(num >= 3)
     {
       printf("Close_Delay:关闭%c端口继电器失败\n",port);
+     // sprintf(Data_Anroid,"[Close_Delay:关闭%c端口继电器失败]",port);
+     // Send_Data_To_Android();
       return;
     }
   }//while
@@ -935,7 +1017,7 @@ void Close_Delay(char port)
       sprintf(data,"*%s,%c,%d",delay[int_port - 1].devices,port,0);
       HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
       delay[int_port - 1].state = 0;
-      printf("Close_Delay:发送继电器数据:%s\n",data);
+     // printf("Close_Delay:发送继电器数据:%s\n",data);
       printf("Close_Delay:关闭%c端口继电器\n",port);      
   }
 }
@@ -981,13 +1063,13 @@ void Control_min_from_max(int i)
   for(j=0;j<n;j++)
   {
     type = delay[i].type[j];
-    if(sensor_array[type].value < sensor_array[type].min)
+    if(sensor_array[type].value < sensor_array[type].min && delay[i].state == 0)
      //小于最小值
      {
         //控制对应端口继电器
           Open_Delay(delay[i].port);
      }
-    if(sensor_array[type].value > sensor_array[type].max)
+    if(sensor_array[type].value > sensor_array[type].max && delay[i].state == 1)
           //大于最大值
     {
             //控制对应端口继电器
@@ -1015,13 +1097,13 @@ void Control_max_from_min(int i)
   //查询指标
   for(j=0;j<n;j++){
     type = delay[i].type[j];
-    if(sensor_array[type].value < sensor_array[type].min)
+    if(sensor_array[type].value < sensor_array[type].min && delay[i].state == 1)
      //小于最小值
      {
          //控制对应端口继电器
         Close_Delay(delay[i].port);
      }
-    if(sensor_array[type].value > sensor_array[type].max)
+    if(sensor_array[type].value > sensor_array[type].max && delay[i].state == 0)
           //大于最大值
     {
            
@@ -1062,7 +1144,6 @@ void Control_temer(int i)
        result = strtok(NULL,":");
        n++;
     }
-     
     if(n == 0)
     {
       printf("Control_temer：输入异常!\n");
@@ -1122,6 +1203,92 @@ void Control_sys_temer(int i)
 
 }
 /**
+  * 函数功能: 控制继电器方式六：指标最小值范围下，定时加(只能控制锆)
+  * 输入参数: 无
+  * 返 回 值: 无
+  * 说    明：无
+  */
+void Control_index_time(int i)
+{
+  
+  int j = 0;
+  int n = 0;
+  int type = 0;
+  char start_time[50] = {0};
+  char sustain_time[50] ={0};
+  char temp_data[5][10] ={0};
+  char *result = NULL;
+  int m = 0;
+  double differ = 0.0;
+  RTC_TimeTypeDef stimestructureget;
+  
+  
+  if(!index_time_control_flag){
+ 
+    printf("Control_index_time:继电器控制端口%d,开始控制\n",i);
+    n = delay[i].num;
+    //查询指标
+    for(j=0;j<n;j++)
+    {
+      type = delay[i].type[j];
+      //sensor_array[type].value = 5.98;
+      if(sensor_array[type].value < sensor_array[type].min && delay[i].state == 0)
+       //小于最小值
+      {
+           //计算需要加药的时间
+            differ = sensor_array[type].min - sensor_array[type].value;
+            differ = delay[i].volume * differ;
+            if(delay[i].dosage < 0){
+              printf("Control_index_time:每小时加药量出现问题\n");
+              return;
+            }
+            differ = differ / (delay[i].dosage * 100);
+            differ = differ * 60;
+            if(differ <= 0){
+              printf("Control_index_time:采集数据小于指标,但是设定加药量过小导致问题\n");
+              return;
+            }
+            delay[i].counter = differ * 60000;
+            delay[i].save_counter = delay[i].counter;
+            time_Control_flag = 1;
+            printf("Control_index_time:采集数据小于指标，开始加药，加%.2f分钟\n",i,differ);
+            /* 获取当前时间 */
+            HAL_RTC_GetTime(&hrtc, &stimestructureget, RTC_FORMAT_BIN);
+            sprintf(start_time,"%02d:%02d", stimestructureget.Hours, stimestructureget.Minutes);
+            strcpy(delay[i].start_time,start_time);
+            time_num = 0;
+      }
+      if(sensor_array[type].value > sensor_array[type].max && delay[i].state == 1)
+            //大于最大值
+      {
+          //控制对应端口继电器
+         Close_Delay(delay[i].port);
+      }
+          
+    }
+    index_time_control_flag = 1;
+  }
+  if(!index_time_control_flag_assist){
+    
+    printf("Control_index_time:继电器实时控制端口%d,开始控制\n",i);
+    n = delay[i].num;
+    //查询指标
+    for(j=0;j<n;j++)
+    {
+      type = delay[i].type[j];
+      if(sensor_array[type].value > sensor_array[type].max && delay[i].state == 1)
+            //大于最大值
+      {
+          //控制对应端口继电器
+         Close_Delay(delay[i].port);
+      }
+          
+    }
+    
+  }
+}
+
+/**
   * 函数功能: 控制继电器
   * 输入参数: 对应端口的继电器
   * 返 回 值: 无
@@ -1156,6 +1323,10 @@ void Control()
               {
                 Control_sys_temer(i);
               }
+              break;
+           case 6:
+             if(!index_time_control_flag || !index_time_control_flag_assist)
+                Control_index_time(i);
               break;
             default:
               break;
@@ -1264,7 +1435,9 @@ void Modbusprocess(uint8_t * data,Sensor *sensor,int type)
    }
    else
    {
-        printf("Modbusprocess：传感器接收数据错误\n");
+        printf("Modbusprocess：传感器接收数据错误:%s\n",sensor->devices);
+       // sprintf(Data_Anroid,"[Modbusprocess：传感器接收数据错误]");
+        //Send_Data_To_Android();
         sensor->error++;
         Clear_RS485Buf();
         return;
@@ -1323,11 +1496,13 @@ void Modbusprocess(uint8_t * data,Sensor *sensor,int type)
     }
    
    printf("Modbusprocess采集数据 value:%.2f\n",value);
+   //sprintf(Data_Anroid,"[Modbusprocess采集数据 value:%.2f]",value);
+  // Send_Data_To_Android();
 
    if(sensor->elec_4ma != 0 || sensor->elec_20ma != 0)
    {
       value = ((float)value / (float)20000) * abs(sensor->elec_20ma - sensor->elec_4ma);
-      printf("value:%.2f\n",value);
+      printf("Modbusprocess:value:%.2f\n",value);
    }
     switch(type)
     {
@@ -1416,13 +1591,29 @@ void Modbusprocess(uint8_t * data,Sensor *sensor,int type)
               }
           
             break;
+        case 6:
+            //锆
+   
+              //判断是否在正常范围
+              if(value >= 0)
+              {
+                sensor->value = sensor->value + value;
+                sensor->amount++;
+              }
+              else
+              {
+                sensor->error++;
+              }
+          
+            break;
         default:
         //错误
-          printf("传感器参数错误！\n");
+          printf("Modbusprocess:传感器参数错误！\n");
+          //sprintf(Data_Anroid,"[Modbusprocess:传感器参数错误]");
+          //Send_Data_To_Android();
           break;
     }//switch
    Clear_RS485Buf();
-
 }
 
 //16进制数复制
@@ -1525,35 +1716,41 @@ void Show_Data(uint8_t *bit,int len)
   */
 void Save_Device_Data(char* buf)
 {
-  
-  int size = strlen(buf);
-  size = size + 1;
-  char c[20] = {0};
+  if(!save_data_flag){ 
+    int size = strlen(buf);
+    size = size + 1;
+    char c[20] = {0};
     
-  uint8_t buffer[1000];
+    uint8_t buffer[1000];
   
-  itoa(size,c);
+    itoa(size,c);
+    if(size < 70){
+      printf("Save_Device_Data：保存配置失败：%s\n大小：%d\n",buf,size);
+      return;
+    }
 
-  strcpy(Rx_buf,buf);
-  strcpy(buffer,buf);
+   // strcpy(Rx_buf,buf);
+    strcpy(buffer,buf);
   
-  //printf("Get_Device_Data:地址 %s",FLASH_WriteAddress);
+    buffer[size - 1] = '#';
+    if(SCM_state == SCM_RUN)
+      buffer[size] = '1';
+    else
+      buffer[size] = '0';
   
-  buffer[size - 1] = '#';
-  if(SCM_state == SCM_RUN)
-    buffer[size] = '1';
-  else
-    buffer[size] = '0';
-  
-  buffer[size + 1] = '\0';
-  buffer[size + 2] = '\0';
-   size++;
+    buffer[size + 1] = '\0';
+    buffer[size + 2] = '\0';
+    size++;
   
     /* 擦除SPI的扇区以写入 */
-  SPI_FLASH_SectorErase(FLASH_SectorToErase);	
-  SPI_FLASH_BufferWrite(c, FLASH_WriteAddress+10,strlen(c));
-  SPI_FLASH_BufferWrite(buffer, FLASH_WriteAddress+20,strlen(buffer));
-  printf("Save_Device_Data：保存配置：%s\n大小：%d\n",buffer,size);
+    SPI_FLASH_SectorErase(FLASH_SectorToErase);	
+    SPI_FLASH_BufferWrite(c, FLASH_WriteAddress+10,strlen(c));
+    SPI_FLASH_BufferWrite(buffer, FLASH_WriteAddress+20,strlen(buffer));
+    printf("Save_Device_Data：保存配置：%s\n大小：%d\n",buffer,size);
+  }
+  else{
+    save_data_flag = 0;
+  }
 }
 
 /**
@@ -1621,6 +1818,8 @@ void Get_Device_Data(uint8_t* buf)
   {
     SCM_state = SCM_STOP;
     printf("Get_Device_Data:读取系统状态失败，系统处于停止状态\n");
+    //sprintf(Data_Anroid,"[Get_Device_Data:读取系统状态失败，系统处于停止状态]");
+    //Send_Data_To_Android();
   }
   if(buffer[n-2] == '#')
   {
@@ -1631,7 +1830,11 @@ void Get_Device_Data(uint8_t* buf)
   }
   else
   {
+    
     printf("Get_Device_Data：本地获取配置失败\n");
+   // sprintf(Data_Anroid,"[Get_Device_Data：本地获取配置失败]");
+   // Send_Data_To_Android();
+    
   }
     
 }
@@ -1666,7 +1869,7 @@ int Simulation_Level(int port)
   */
 void Reboot()
 {
-    HAL_UART_Transmit(&husart_debug,"{",1,1000);
+    HAL_UART_Transmit(&husart_debug,"}",1,1000);
     __set_FAULTMASK(1);//关闭总中断
     NVIC_SystemReset();//请求单片机重启
 }
@@ -1788,4 +1991,15 @@ void Find_Min_Max(float ar[],int num)
 }
 
 
+void Send_Data_To_Android(){
+  HAL_UART_Transmit(&husart_debug,Data_Anroid,strlen(Data_Anroid),1000);
+}
+
+void Clear_FLASH_Data(){
+     printf("Clear_FLASH_Data:开始清除flash数据\n");
+     SPI_FLASH_SectorErase(0x0000);
+     printf("Clear_FLASH_Data:清除flash数据完成\n");
+}
+
+          
 

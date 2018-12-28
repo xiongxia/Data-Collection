@@ -78,7 +78,7 @@ void RTC_CalendarConfig(char *time)
   
   if(outlen != 7)
   {
-    //printf("RTC_CalendarConfig:配置时间错误,字段数量为%d，请求重发时间\n",outlen);
+    printf("RTC_CalendarConfig:配置时间错误,字段数量为%d，请求重发时间\n",outlen);
     HAL_UART_Transmit(&husart_debug,"+",1,1000);
     return;
   }
@@ -87,44 +87,44 @@ void RTC_CalendarConfig(char *time)
   /* 设置日期：2018年11月28日 星期二*/
   if(out[0] < 0x18 || out[0] > 0x40)
   {
-    //printf("RTC_CalendarConfig:配置年份错误%02x，请求重发\n",out[0]);
+    printf("RTC_CalendarConfig:配置年份错误%02x，请求重发\n",out[0]);
     HAL_UART_Transmit(&husart_debug,"+",1,1000);
     return;
   }
   
   if(out[1] < 0x00 || out[1] > 0x12)
   {
-    //printf("RTC_CalendarConfig:配置月份错误%02x，请求重发\n",out[1]);
+    printf("RTC_CalendarConfig:配置月份错误%02x，请求重发\n",out[1]);
     HAL_UART_Transmit(&husart_debug,"+",1,1000);
     return;
   }
   if(out[2] < 0x00 || out[2] > 0x31)
   {
-    //printf("RTC_CalendarConfig:配置日期错误%02x，请求重发\n",out[2]);
+    printf("RTC_CalendarConfig:配置日期错误%02x，请求重发\n",out[2]);
     HAL_UART_Transmit(&husart_debug,"+",1,1000);
     return;
   }
   if(out[3] < 0x00 || out[3] > 0x07)
   {
-    //printf("RTC_CalendarConfig:配置星期错误%02x，请求重发\n",out[3]);
+    printf("RTC_CalendarConfig:配置星期错误%02x，请求重发\n",out[3]);
     HAL_UART_Transmit(&husart_debug,"+",1,1000);
     return;
   }
   if(out[4] < 0x00 || out[4] > 0x24)
   {
-    //printf("RTC_CalendarConfig:配置小时错误%02x，请求重发\n",out[4]);
+    printf("RTC_CalendarConfig:配置小时错误%02x，请求重发\n",out[4]);
     HAL_UART_Transmit(&husart_debug,"+",1,1000);
     return;
   }
   if(out[5] < 0x00 || out[5] > 0x60)
   {
-    //printf("RTC_CalendarConfig:配置分钟错误%02x，请求重发\n",out[5]);
+    printf("RTC_CalendarConfig:配置分钟错误%02x，请求重发\n",out[5]);
     HAL_UART_Transmit(&husart_debug,"+",1,1000);
     return;
   }
   if(out[6] < 0x00 || out[6] > 0x60)
   {
-    //printf("RTC_CalendarConfig:配置秒数错误%02x，请求重发\n",out[6]);
+    printf("RTC_CalendarConfig:配置秒数错误%02x，请求重发\n",out[6]);
     HAL_UART_Transmit(&husart_debug,"+",1,1000);
     return;
   }
@@ -169,7 +169,7 @@ void MX_RTC_Init(void)
   if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR1) != 0x32F1)
   {
     /* 配置RTC万年历：时间和日期 */
-    RTC_CalendarConfig(strCom);
+   // RTC_CalendarConfig(strCom);
   }
   else
   {

@@ -62,15 +62,16 @@ typedef struct Delay_node{
     int counter;//计时器
     int save_counter;//保存计时器
     int error;//控制出现严重异常，强制关闭，不运行控制逻辑，等待处理
+    double volume;//对应药泵的体积
+    double dosage;//加药泵每小时加药量
 }Delay;   //继电器节点
 extern Delay delay[5];  //port与下标对应
 
 //传感器配置
-extern Data sensor_data[6];//上传数据，type与下标对应
-extern Sensor_data sensor_array[6];
+extern Data sensor_data[7];//上传数据，type与下标对应
+extern Sensor_data sensor_array[7];
 extern uint8_t RS485_Rx_buf[50];
 extern uint8_t Android_Rx_buf[1000];
-extern uint8_t Rx_buf[1000];
 
 extern uint16_t Android_Rx_Count;
 extern uint16_t RS485_Rx_Count;
@@ -83,6 +84,9 @@ extern uint8_t YiYe_pump_flag;//移液泵状态,0表示关，1表示开
 extern uint8_t YiYe_pump_control_flag;//移液泵控制状态
 extern uint8_t Error_flag;
 extern uint8_t RTC_Config_flag;
+extern uint8_t index_time_control_flag;
+extern uint8_t index_time_control_flag_assist;
+extern __IO uint32_t time_num;
 
 //传感器量程****************************************************************************************************
 extern float LEVEL_Low; //液位      
@@ -133,5 +137,11 @@ extern uint8_t D6_Open[8];
 extern uint8_t D6_Close[8];
 extern uint8_t D7_Open[8];
 extern uint8_t D7_Close[8];
+
+extern char Data_Anroid[100];
+extern uint8_t FLAG;
+extern uint8_t FLAG_REC;
+extern uint8_t save_data_flag;
+extern uint8_t clear_flag;
 
 #endif

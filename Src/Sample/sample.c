@@ -76,7 +76,7 @@ void Sample_RS485(void)
   Sensor *p = NULL;
   uint8_t len = 0;
  
-  for(i=0;i<6;i++)
+  for(i=0;i<7;i++)
   {
     //有传感器
    // if(sensor_array[i].num > 0){
@@ -122,6 +122,7 @@ void Sample_RS485(void)
             RS485_Send_Data(command,cnt);
             RS485_Receive_Data(&len);
             //printf("Send num:%d\n ",cnt);
+            
             if(len > 0)
             {
               //处理数据

@@ -27,11 +27,10 @@ uint8_t Sensor_Cfg_Mode = 0;//串口接收传感器配置文件标志
 uint8_t Delay_Cfg_Mode = 0;//继电器配置文件标志
  
 //传感器配置
-Data sensor_data[6];//上传数据
-Sensor_data sensor_array[6];
+Data sensor_data[7];//上传数据
+Sensor_data sensor_array[7];
 uint8_t RS485_Rx_buf[50];
 uint8_t Android_Rx_buf[1000];
-uint8_t Rx_buf[1000];//掉电保持最新数据
 
 uint16_t Android_Rx_Count = 0;
 uint16_t RS485_Rx_Count = 0;
@@ -53,6 +52,8 @@ uint8_t YiYe_pump_control_flag = 0;//移液泵控制状态
 uint8_t Reboot_flag = 0;
 uint8_t Error_flag = 0;
 uint8_t RTC_Config_flag = 0;
+uint8_t index_time_control_flag_assist = 0;
+__IO uint32_t time_num = 0;
 /*
 
 台控1012模块采集命令
@@ -151,9 +152,14 @@ D7
 开：01 05 00 17 FF 00 3C 3E
 关：01 05 00 17 00 00 7D CE
 */
+char Data_Anroid[100] = {0};
 
 
-
+uint8_t clear_flag = 0;
+uint8_t FLAG = 0;
+uint8_t FLAG_REC = 0;
+uint8_t index_time_control_flag = 0;
+uint8_t save_data_flag = 0;
 
 
 

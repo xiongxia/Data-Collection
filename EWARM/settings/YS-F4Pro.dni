@@ -13,7 +13,7 @@ CStepIntDis=_ 0
 stlinkserialNo=A7D81CEE
 stlinkfoundProbes=
 [DebugChecksum]
-Checksum=-1990210040
+Checksum=2115005588
 [Exceptions]
 StopOnUncaught=_ 0
 StopOnThrow=_ 0
@@ -100,27 +100,6 @@ ShowTimeLog=1
 SumEnabled=0
 ShowTimeSum=1
 SumSortOrder=0
-[Disassemble mode]
-mode=0
-[Breakpoints2]
-Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\YS-F4Pro\Exe}.123.1" 0 0 1 "" 0 "" 0
-Bp1=_ 0 "EMUL_CODE" "{$PROJ_DIR$\YS-F4Pro\Exe}.123.1" 0 0 1 "" 0 "" 0
-Bp2=_ 1 "EMUL_DATA" "Save_Data" 0 0 0 0 4294967295
-Bp3=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\variable.c}.160.1" 0 0 1 "" 0 "" 0
-Bp4=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.532.1" 0 0 1 "" 0 "" 0
-Bp5=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.532.1" 0 0 1 "" 0 "" 0
-Bp6=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.532.1" 0 0 1 "" 0 "" 0
-Bp7=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.532.1" 0 0 1 "" 0 "" 0
-Bp8=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.532.1" 0 0 1 "" 0 "" 0
-Bp9=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.532.1" 0 0 1 "" 0 "" 0
-Bp10=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\Sample\function.c}.1787.5" 0 0 1 "" 0 "" 0
-Bp11=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.532.1" 0 0 1 "" 0 "" 0
-Bp12=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\Sample\function.c}.1787.5" 0 0 1 "" 0 "" 0
-Bp13=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\Sample\function.c}.1787.5" 0 0 1 "" 0 "" 0
-Bp14=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\Sample\function.c}.1787.5" 0 0 1 "" 0 "" 0
-Bp15=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.117.7" 0 0 1 "" 0 "" 0
-Bp16=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\Sample\function.c}.1594.7" 0 0 1 "" 0 "" 0
-Count=17
 [Log file]
 LoggingEnabled=_ 0
 LogFile=_ ""
@@ -128,15 +107,6 @@ Category=_ 0
 [TermIOLog]
 LoggingEnabled=_ 0
 LogFile=_ ""
-[Aliases]
-A0=_ "C:\Users\admin\Desktop\RS485-主机端\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c" ""
-A1=_ "C:\Users\admin\Desktop\RS485-主机端\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma.c" ""
-A2=_ "C:\Users\admin\Desktop\RS485-主机端\Src\bsp\usart\bsp_debug_usart.c" ""
-A3=_ "E:\STM32F407-RS485数据采集-V2\RS485-主机端\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c" ""
-A4=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c" ""
-A5=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Src\bsp\usart\bsp_debug_usart.c" ""
-Count=6
-SuppressDialog=1
 [DriverProfiling]
 Enabled=0
 Mode=3
@@ -147,3 +117,28 @@ Exclusions=
 Enabled=0
 [CallStackStripe]
 ShowTiming=1
+[Disassemble mode]
+mode=0
+[Breakpoints2]
+Bp0=_ 0 "EMUL_CODE" "{$PROJ_DIR$\YS-F4Pro\Exe}.123.1" 0 0 1 "" 0 "" 0
+Bp1=_ 0 "EMUL_CODE" "{$PROJ_DIR$\YS-F4Pro\Exe}.123.1" 0 0 1 "" 0 "" 0
+Bp2=_ 1 "EMUL_DATA" "Save_Data" 0 0 0 0 4294967295
+Bp3=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\variable.c}.166.1" 0 0 1 "" 0 "" 0
+Bp4=_ 0 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.629.1" 0 0 1 "" 0 "" 0
+Bp5=_ 1 "EMUL_DATA" "Control" 0 0 0 0 4294967295
+Bp6=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.526.8" 0 0 1 "" 0 "" 0
+Bp7=_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\Sample\function.c}.1242.15" 0 0 1 "" 0 "" 0
+Count=8
+[Aliases]
+A0=_ "C:\Users\admin\Desktop\RS485-主机端\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c" ""
+A1=_ "C:\Users\admin\Desktop\RS485-主机端\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma.c" ""
+A2=_ "C:\Users\admin\Desktop\RS485-主机端\Src\bsp\usart\bsp_debug_usart.c" ""
+A3=_ "E:\STM32F407-RS485数据采集-V2\RS485-主机端\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c" ""
+A4=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal.c" ""
+A5=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_dma.c" ""
+A6=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_spi.c" ""
+A7=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c" ""
+A8=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Src\bsp\BasicTIM\bsp_BasicTIM.c" ""
+A9=_ "G:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\Src\bsp\usart\bsp_debug_usart.c" ""
+Count=10
+SuppressDialog=1

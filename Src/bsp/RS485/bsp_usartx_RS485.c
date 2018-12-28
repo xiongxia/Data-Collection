@@ -97,15 +97,15 @@ void RS485_Receive_Data(uint8_t *len){
 	
     //if(Sample_flag == 1){
    // while(1){
-        //printf("数据采集中\n");
+        printf("数据采集中\n");
         HAL_Delay(100);//20ms接收
         //if(RS485_Rx_Count == RS485_Rx_Count_Old){
-        printf("传感器接收完成\n");
-        //Show_Data(RS485_Rx_buf,10);  
+        printf("485接收完成\n");
+        Show_Data(RS485_Rx_buf,10);  
         //printf("接收长度：%d\n",RS485_Rx_Count);
         *len = RS485_Rx_Count;
         if(*len == 0){
-            //printf("数据采集失败\n");
+            printf("数据采集失败\n");
         }
         RS485_Rx_Count_Old = RS485_Rx_Count;
         RS485_Rx_Count = 0; 

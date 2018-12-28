@@ -44,6 +44,7 @@ void Alarm();
 void Find_Min_Max(float ar[],int num);
 void Open_Error(char port);
 void Close_Error(char port);
-
+void Send_Data_To_Android();
+void Clear_FLASH_Data();
 
 #endif
