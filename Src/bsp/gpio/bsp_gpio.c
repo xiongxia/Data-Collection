@@ -109,11 +109,11 @@ void INPUT_GPIO_Init(void)
   HAL_GPIO_Init(INPUT12_GPIO, &GPIO_InitStruct);   
   
     /* 配置中断优先级 */
-  HAL_NVIC_SetPriority(EXTI15_10_IRQn,0,1);
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn,0,4);
   HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
     /* 配置中断优先级 */
-  HAL_NVIC_SetPriority(EXTI9_5_IRQn,0,2);
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn,0,5);
   HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
   

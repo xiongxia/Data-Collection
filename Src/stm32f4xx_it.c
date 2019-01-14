@@ -70,7 +70,7 @@ void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
   printf("HardFault_Handler “Ï≥££¨µº÷¬÷ÿ∆Ù\n");
-	Reboot();
+  Reboot();
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
   {

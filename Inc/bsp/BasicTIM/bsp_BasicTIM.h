@@ -18,7 +18,7 @@
 // 定义定时器预分频，定时器实际时钟频率为：84MHz/（BASIC_TIMx_PRESCALER+1）
 #define BASIC_TIMx_PRESCALER           83  // 实际时钟频率为：1MHz
 // 定义定时器周期，当定时器开始计数到BASIC_TIMx_PERIOD值是更新定时器并生成对应事件和中断
-#define BASIC_TIMx_PERIOD              (1000-1)  // 定时器产生中断频率为：1MHz/1000=1KHz，即1ms定时周期
+#define BASIC_TIMx_PERIOD              (10000-1)  // 定时器产生中断频率为：1MHz/1000=1KHz，即1ms定时周期
 
 // 最终定时器频率计算为： 84MHz/（BASIC_TIMx_PRESCALER+1）/(BASIC_TIMx_PERIOD+1)
 // 比如需要产生1ms周期定时，可以设置为： 84MHz/（83+1）/1000=1kHz，即1ms周期

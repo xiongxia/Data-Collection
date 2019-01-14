@@ -79,3 +79,4 @@
 .\ys-f4pro\bsp_debug_usart.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dfsdm.h
 .\ys-f4pro\bsp_debug_usart.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_lptim.h
 .\ys-f4pro\bsp_debug_usart.o: ..\Inc\bsp\RS485/bsp_usartx_RS485.h
+.\ys-f4pro\bsp_debug_usart.o: E:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

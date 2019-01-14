@@ -1,4 +1,7 @@
-SET PATH=E:\Keil_v5\ARM\ARMCC\Bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;D:\Notepad++;D:\Python\Python35;D:\LuDaShi;E:\jdk1.8.0_191\bin;E:\jdk1.8.0_191\jre;E:\PyCharm Community Edition 2018.3\bin;E:\UltraEdit;C:\Windows\system32\config\systemprofile\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;C:\Users\Administrator\AppData\Local\GitHubDesktop\bin
+SET PATH=E:\Keil_v5\ARM\ARMCC\Bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;D:\Notepad++;D:\Python\Python35;D:\LuDaShi;E:\jdk1.8.0_191\bin;E:\jdk1.8.0_191\jre;E:\PyCharm Community Edition 2018.3\bin;E:\UltraEdit;C:\Windows\system32\config\systemprofile\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;E:\Git\cmd;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;C:\Users\Administrator\AppData\Local\GitHubDesktop\bin
+SET ARMCC5_ASMOPT=--diag_suppress=9931
+SET ARMCC5_CCOPT=--diag_suppress=9931
+SET ARMCC5_LINKOPT=--diag_suppress=9931
 SET CPU_TYPE=STM32F407IGTx
 SET CPU_VENDOR=STMicroelectronics
 SET UV2_TARGET=YS-F4Pro
@@ -107,4 +110,4 @@ SET CPU_CLOCK=0x0A037A00
 "E:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via ".\ys-f4pro\bsp_rtc.__i"
 "E:\Keil_v5\ARM\ARMCC\Bin\ArmLink" --Via ".\YS-F4Pro\YS-F4Pro.lnp"
 "E:\Keil_v5\ARM\ARMCC\Bin\fromelf.exe" ".\YS-F4Pro\YS-F4Pro.axf" --i32combined --output ".\YS-F4Pro\YS-F4Pro.hex"
-E:\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin -o YCXZ1.bin  YS-F4Pro\YS-F4Pro.axf
+E:\Keil_v5\ARM\ARMCC\bin\fromelf.exe  --bin -o YCXZ23.bin  YS-F4Pro\YS-F4Pro.axf

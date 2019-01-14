@@ -1,8 +1,6 @@
 #ifndef _VARIABLE_H_
 #define _VARIABLE_H_
-
 #include "stm32f4xx_hal.h"
-
 
 #define FALSE                                 0
 #define TRUE                                  1
@@ -11,6 +9,8 @@
 #define SCM_STOP                              0 // 系统状态
 
 
+
+extern __IO uint16_t warn_timer_count;
 //传感器数据结构(0:PH，1:电导率，2:温度，3:压力，4:液位)
 typedef struct sensor_info{
     int num; //传感器数量
@@ -22,6 +22,7 @@ typedef struct sensor_info{
     float old_value;//之前的平均值
     int save_num;
     int control_delay;
+    uint8_t warningFlag;//告警标志（为1 的时候表示 每个传感器异常都告警）
     struct sensor_node *frist_node;//第一个传感器
 }Sensor_data;   //传感器
 typedef struct sensor_node{
@@ -35,8 +36,8 @@ typedef struct sensor_node{
     int datanum;
     int keep;
     char mode[10];
-    int elec_4ma;
-    int elec_20ma;
+    double elec_4ma;
+    double elec_20ma;
     struct sensor_node *next;
 }Sensor;   //传感器节点
 
@@ -47,18 +48,21 @@ typedef struct data{
     float value;//返回-10000表示错误信息
 }Data;  
 
-//控制方式：1、从最小值加到最大值           2、从最大值加到最小值           3、当前时间定时加      4、系统时间加
+//控制方式：1、从最小值加到最大值           2、从最大值加到最小值           3、当前时间定时加      4、系统时间加   5:安卓控制  6：锆指标辅助控制
 //继电器数据结构（5：继电器）
 typedef struct Delay_node{
     char devices[30];//设备ID
-    char port;//端口(1：端口1)
+    char port;//端口(1：端口1)（1-5 对应）
     int state;//状态（0：关 1：开）
     int num;//控制指标数量
     int type[6];//监控类型(0表示PH)
     int control;//控制类型(1、从最小值加到最大值   2、从最大值加到最小值   3、当前时间定时加     4、系统时间加)
+    char start_save_time[12][10];//开始时间
+    char sustain_save_time[12][10];//持续时间
     char start_time[10];//开始时间
     char sustain_time[10];//持续时间
     char interval_time[10];//间隔时间
+    int nowControlTime;//记录当前控制时间
     int counter;//计时器
     int save_counter;//保存计时器
     int error;//控制出现严重异常，强制关闭，不运行控制逻辑，等待处理
@@ -71,7 +75,7 @@ extern Delay delay[5];  //port与下标对应
 extern Data sensor_data[7];//上传数据，type与下标对应
 extern Sensor_data sensor_array[7];
 extern uint8_t RS485_Rx_buf[50];
-extern uint8_t Android_Rx_buf[1000];
+extern char Android_Rx_buf[1000];
 
 extern uint16_t Android_Rx_Count;
 extern uint16_t RS485_Rx_Count;

@@ -1,18 +1,17 @@
 #ifndef _FUNCTION_H_
 #define _FUNCTION_H_
 
-
 #include "stm32f4xx_hal.h"
 #include "variable.h"
 void Backups_Data();
-void Modbusprocess(uint8_t * cmd,Sensor *sensor,int type);
+int Modbusprocess(Sensor *sensor,int type);
 void Open_Delay(char port);
 void Close_Delay(char port);
+void delay_ms2(int32_t nms);
 int BitToInt(uint8_t *bit);
 uint8_t CharToBit(char c);
 void Command_Data(void);
 void Clear_RS485Buf();
-void Hex_Copy(uint8_t * a,uint8_t * b,char num);//16进制数复制
 float BitToFloat(uint8_t *bit);
 void Show_Data(uint8_t *bit,int len);
 void Save_Data();
@@ -29,10 +28,9 @@ void Control_max_from_min(int i);
 void Control_temer(int i);
 void Control_sys_temer(int i);
 void Chang_Start_time(int i);
-void Save_Device_Data(char* buf);
-void Get_Device_Data(uint8_t* buf);
+void Save_Device_Data();
+void Get_Device_Data(char* buf);
 void itoa (int n,char s[]);
-int Simulation_Level(int port);
 void Reboot();
 void Open_Beep();
 void Close_Beep();
@@ -41,10 +39,8 @@ void Close_Light();
 void Open_YiYe_pupm();
 void Close_YiYe_pupm();
 void Alarm();
-void Find_Min_Max(float ar[],int num);
 void Open_Error(char port);
 void Close_Error(char port);
-void Send_Data_To_Android();
 void Clear_FLASH_Data();
 
 #endif

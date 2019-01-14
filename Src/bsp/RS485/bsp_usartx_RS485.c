@@ -18,6 +18,9 @@
 /* 私有变量 ------------------------------------------------------------------*/
 UART_HandleTypeDef husartx_rs485;
 
+//test
+int static h = 0;
+
 /* 扩展变量 ------------------------------------------------------------------*/
 /* 私有函数原形 --------------------------------------------------------------*/
 /* 函数体 --------------------------------------------------------------------*/
@@ -67,7 +70,9 @@ void RS485_USARTx_Init(void)
   */
 void RS485_Send_Data(uint8_t *buf,uint8_t len){
     //int i = 0;
-    HAL_Delay(10);
+   // HAL_Delay(100);
+    delay_ms2(100);
+   
     /* 进入发送模式 */
     TX_MODE();
     /* 发送数据,轮询直到发送数据完毕 */
@@ -75,6 +80,7 @@ void RS485_Send_Data(uint8_t *buf,uint8_t len){
     {
       while(__HAL_UART_GET_FLAG(&husartx_rs485,UART_FLAG_TC)!=1);
       /* 进入接收模式 */
+        RS485_Rx_Count = 0; 
         RX_MODE();
         //Show_Data(RS485_Rx_buf,20);  
       //  Sample_flag = 1;
@@ -83,7 +89,8 @@ void RS485_Send_Data(uint8_t *buf,uint8_t len){
         //printf("\nRS485发送数据成功:"); 
        // Show_Data(buf,len); 
     }
-   HAL_Delay(10);
+    //HAL_Delay(10);
+    delay_ms2(5);
 }
 /**
   * 函数功能: RS485查询接收到的数据
@@ -91,27 +98,48 @@ void RS485_Send_Data(uint8_t *buf,uint8_t len){
   * 返 回 值: 无
   * 说    明：
   */
-void RS485_Receive_Data(uint8_t *len){
+uint16_t RS485_Receive_Data(){
   
-	*len=0;				//默认为0
+	uint16_t len = 0;				//默认为0
 	
-    //if(Sample_flag == 1){
-   // while(1){
-        printf("数据采集中\n");
-        HAL_Delay(100);//20ms接收
-        //if(RS485_Rx_Count == RS485_Rx_Count_Old){
+        delay_ms2(100);
+	
+	if(h % 2 == 0){
+          RS485_Rx_buf[0] = 0x02;
+          RS485_Rx_buf[1] = 0x03;
+          RS485_Rx_buf[2] = 0x02;
+          RS485_Rx_buf[3] = 0x00;
+          RS485_Rx_buf[4] = 0x00;
+          RS485_Rx_buf[5] = 0xfc;
+          RS485_Rx_buf[6] = 0x44;
+        }
+    
+        else{
+          RS485_Rx_buf[0] = 0x02;
+          RS485_Rx_buf[1] = 0x03;
+          RS485_Rx_buf[2] = 0x02;
+          RS485_Rx_buf[3] = 0x03;
+          RS485_Rx_buf[4] = 0x00;
+          RS485_Rx_buf[5] = 0xfc;
+          RS485_Rx_buf[6] = 0xb4;
+        }
+        h++;
+        RS485_Rx_Count = 7;
+	
         printf("485接收完成\n");
         Show_Data(RS485_Rx_buf,10);  
-        //printf("接收长度：%d\n",RS485_Rx_Count);
-        *len = RS485_Rx_Count;
-        if(*len == 0){
+        len = RS485_Rx_Count;
+        if(len == 0){
             printf("数据采集失败\n");
         }
         RS485_Rx_Count_Old = RS485_Rx_Count;
         RS485_Rx_Count = 0; 
-        HAL_Delay(10);
-        //Sample_flag = 0;    
+        //HAL_Delay(10);
+        delay_ms2(5);
+        //Sample_flag = 0;  
+        printf("接收长度：%d\n",len);
  //}//while
+        return len;
 }
 
 

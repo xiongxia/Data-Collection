@@ -7,8 +7,6 @@
 #include <ctype.h>
 
 
-
-
 /**
   * 函数功能: 将str字符以spl分割,存于dst中，并返回
   * 输入参数: 目标字符串 dst，源字符串 str 分割字符串 spl 
@@ -70,9 +68,9 @@ int htoi(char s[])
 void Sample_RS485(void)
 {
   char dst[20][80] = {0};
-  int n = 0,i = 0,j = 0,e = 0;
-  int cnt = 0,t = 0;
-  unsigned char command[50] = {0};
+  int n = 0,i = 0,e = 0;
+  int cnt = 0;
+  uint8_t command[50] = {0};
   Sensor *p = NULL;
   uint8_t len = 0;
  
@@ -82,62 +80,44 @@ void Sample_RS485(void)
    // if(sensor_array[i].num > 0){
     //采集的时候判断液位，采集模式（液位采集模式分为模拟采集和数字采集）
     //根据功能码判断，如果为30则为模拟采集
-
+    p = NULL;
     p = sensor_array[i].frist_node;
-    for(j=0;j<sensor_array[i].num;j++)
+    while(p)
     {
-      printf("Sample_RS485:collection cmd:%s\n",p->command);
-
-        if(strlen(p->command)>0)
-        {
-            strcpy(command,p->command);
-            cnt = split(dst,command, ".");
-            for (e = 0; e < cnt; e++)
-            {
-                n = htoi(dst[e]);
-               // Bit.i = n;
-                command[e] = (char)n;
-            }
-            if(i == 4)
-            {
-            //液位        
-              if(command[1] == 0x30)
+         printf("Sample_RS485:collection cmd:%s!\n",p->command);
+         RS485_Rx_Count = 0;
+         memset(command,'\0',50);
+         if(strlen(p->command)>5)
+         {
+              strcpy(command,p->command);
+              cnt = split(dst,command, ".");
+              for (e = 0; e < cnt; e++)
               {
-                //模拟采集
-                t = (int)command[0];
-                if(Simulation_Level(t))
-                {
-                  p->amount++;
-                  p->value++;
-                  
-                }
-                else
-                {
-                  p->error++;
-                } 
-                continue;
+                  n = htoi(dst[e]);
+                  command[e] = (char)n;
               }
-    
-            }
-            RS485_Send_Data(command,cnt);
-            RS485_Receive_Data(&len);
-            //printf("Send num:%d\n ",cnt);
-            
-            if(len > 0)
-            {
-              //处理数据
-                Modbusprocess(RS485_Rx_buf,p,sensor_array[i].type);
-            }
-            else
-            {
-                p->error++;
-            }
-        
-        }//if
+              if(Android_Rx_Count >= 100){
+                return;
+              }
+              RS485_Send_Data(command,cnt);
+              len = RS485_Receive_Data();  
+              if(len > 0)
+              {
+                //处理数据
+                  Modbusprocess(p,sensor_array[i].type);
+              }
+              else
+              {
+                  p->error++;
+              }
+          
+          }//if
         p = p->next; 
-    }//for
+      }//while
     //采集结束
   }//for
+  
+  return;
 }
 
 

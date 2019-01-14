@@ -37,7 +37,7 @@ extern UART_HandleTypeDef husartx_rs485;
 /* º¯ÊýÉùÃ÷ ------------------------------------------------------------------*/
 void RS485_USARTx_Init(void);
 void RS485_Send_Data(uint8_t *buf,uint8_t len);
-void RS485_Receive_Data(uint8_t *len);
+uint16_t RS485_Receive_Data();
 
 
 #endif  /* __BSP_USARTX_RS485_H__ */

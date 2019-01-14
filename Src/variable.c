@@ -3,23 +3,20 @@
 //全局标志位***************************************************************************************************
 Delay delay[5];
 
-long Invalid_Value = -10000; 
-
-
 //传感器量程****************************************************************************************************
 float LEVEL_Low = 0; //液位   mm
-float LEVEL_High = 2000;
+float LEVEL_High = 200000;
 float STREES_Low = 0; //压力  
-float STREES_High = 400; //压力(kpa)
+float STREES_High = 40000; //压力(kpa)
 float WPH_Low = 0; //PH
 float WPH_High = 14; //PH
 float WCOND_Low = 0.0; //电导率
-float WCOND_High = 20000.0; //电导率(m)
+float WCOND_High = 20000000.0; //电导率(m)
 float TEMP_Low = -20; //温度
 float TEMP_High = 100; //温度
 int LEVEL = 0;//0 感应到液体  1没有感应
 float WEIGHT_Low = 0; //重量 kg
-float WEIGHT_High = 100;
+float WEIGHT_High = 10000;
 
 //******************其他变量********************
 uint16_t RevComplete = 0;  //接收完成标志位
@@ -30,7 +27,7 @@ uint8_t Delay_Cfg_Mode = 0;//继电器配置文件标志
 Data sensor_data[7];//上传数据
 Sensor_data sensor_array[7];
 uint8_t RS485_Rx_buf[50];
-uint8_t Android_Rx_buf[1000];
+char Android_Rx_buf[1000];
 
 uint16_t Android_Rx_Count = 0;
 uint16_t RS485_Rx_Count = 0;
@@ -54,6 +51,7 @@ uint8_t Error_flag = 0;
 uint8_t RTC_Config_flag = 0;
 uint8_t index_time_control_flag_assist = 0;
 __IO uint32_t time_num = 0;
+__IO uint16_t warn_timer_count = 0;
 /*
 
 台控1012模块采集命令
