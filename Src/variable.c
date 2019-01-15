@@ -52,6 +52,12 @@ uint8_t RTC_Config_flag = 0;
 uint8_t index_time_control_flag_assist = 0;
 __IO uint32_t time_num = 0;
 __IO uint16_t warn_timer_count = 0;
+
+uint8_t saveRS485Adder = 0x00;
+int overWeightNum = 0;
+float overWeightNumSave = 0.0;
+
+uint8_t ErrorNum = 0;
 /*
 
 台控1012模块采集命令

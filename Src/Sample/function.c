@@ -251,6 +251,7 @@ void Clean_Data(int type)
   sensor_array[type].save_num = 0;
   sensor_array[type].control_delay = 6;//初始大于5，表示没有继电器控制该指标
   sensor_array[type].warningFlag = 0;
+  sensor_array[type].errorNum = 0;
   
   p = sensor_array[type].frist_node;
   if(p){
@@ -291,12 +292,31 @@ void UpData()
     if(type >= 5){
       type++;
     }
-    value = sensor_data[i].value;
-    sprintf(data,"%.2f,%d;",value,type);
-    printf("UpData：上传数据：%.2f,%d\n",value,type);
-    HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
+    if(sensor_array[i].errorNum == 0){
+      value = sensor_data[i].value;
+      sprintf(data,"%.2f,%d;",value,type);
+      printf("UpData：上传数据：%.2f,%d\n",value,type);
+      HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
+    }
+    else{
+      printf("UpData：数据出现异常，次数为%d，不进行上传\n",sensor_array[i].errorNum);
+      //sensor_array[i].errorNum = 0;
+      continue;
+    }
+    
+    if(i == 5){
+        
+      if(value <= sensor_array[i].min)
+      {
+          //发出告警
+          printf("移液泵发出告警\n");
+          Alarm();
+      }
+    }
+    
     for(j=0;j<sensor_array[i].num;j++)
     {
+      if(p->errorNum == 0){
         value = p->value;
         strcpy(devicesID,p->devices);
         sprintf(data,"%.2f,%d,%s;",value,type,devicesID);
@@ -304,6 +324,11 @@ void UpData()
         HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
         p->value = 0.0;
         p = p->next;
+      }
+      else{
+        printf("UpData：%s数据出现异常，次数为%d，不进行上传\n",p->devices,p->errorNum);
+        continue;
+      }
     }
    } 
   }
@@ -343,10 +368,17 @@ void Get_Average()
         if(((p->amount + p->error) > 0) && (p->amount == 0 || p->error > 20))
         {
             p->value = -0.01;
-            //告警
-            sprintf(data,"!%s",p->devices);
-            HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
-            printf("Get_Average：%d号传感器%s错误\n",i,p->devices);
+            //告警次数累加
+            if(p->errorNum > 2){
+              sprintf(data,"!%s",p->devices);
+              HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
+              printf("Get_Average：%d号传感器%s错误，,次数大于三次，上传告警\n",i,p->devices);
+              p->errorNum = 0;
+            }
+            else{
+              p->errorNum ++;
+              printf("Get_Average：%d号传感器%s错误，累计次数%d\n",i,p->devices,p->errorNum );
+            }
             error_num ++;
         }
         //正常情况
@@ -393,11 +425,20 @@ void Get_Average()
     }
     else if(error_num == sensor_array[i].num)
     {
-        //发出告警
-        printf("Detection：%d号传感器全部出现异常\n",i);
-        Alarm();
-        //Reboot();
-        Open_Error(delay[sensor_array[i].control_delay].port);
+      
+        //告警次数累加
+            if(sensor_array[i].errorNum > 2){
+              //发出告警
+              printf("Detection：%d号传感器全部出现异常,次数大于三次，上传告警\n",i);
+              Alarm();
+              Open_Error(delay[sensor_array[i].control_delay].port);
+              sensor_array[i].errorNum = 0;
+            }
+            else{
+              sensor_array[i].errorNum ++;
+              printf("Detection：%d号传感器全部出现异常，异常次数%d\n",i,sensor_array[i].errorNum);
+            }
+        
     }
     else
     {
@@ -607,6 +648,9 @@ int Get_Data(int type,char *data)
     sensor_array[type].max = max;
     up = strtod(temp_data[4],NULL);
     down = strtod(temp_data[3],NULL);
+    //保存移液泵大范围
+    overWeightNumSave = max;
+    
     if(up < down)
     {
       printf("Get_Data:%d 配置传感器告警信息错误,最大值为%.2f,最小值为%.2f,\n",type,up,down);
@@ -623,6 +667,7 @@ int Get_Data(int type,char *data)
     sensor_array[type].frist_node = NULL;
     sensor_array[type].old_value = 0;
     sensor_array[type].save_num = 0;
+    sensor_array[type].errorNum = 0;
 
     //建立传感器链表
     for(i=0;i<sensor_array[type].num;i++)
@@ -679,6 +724,7 @@ int Get_Data(int type,char *data)
         q->error = 0;
         q->value = 0;
         q->amount = 0;
+        q->errorNum = 0;
         q->next = NULL;
         //插入链表
         if(sensor_array[type].frist_node == NULL)
@@ -715,7 +761,7 @@ void Detection()
     //对于每个类别数据检测，如果药泵打开但是数据变化没有按照正常变化，关闭继电器
     //有继电器控制对应类别
     //printf("%d  %d",delay[j].state,sensor_array[i].save_num);
-    if(delay[j].state == 1 && sensor_array[i].save_num >= 2 && delay[j].control <= 2)
+    if(delay[j].state == 1 && sensor_array[i].save_num >= 2 && delay[j].control <= 2 && sensor_array[i].errorNum < 2)
     { 
        //3分钟判断一次
        if(fabs(sensor_array[i].value-sensor_array[i].old_value) < 0.1)
@@ -1664,8 +1710,21 @@ int Modbusprocess(Sensor *sensor,int type)
             break;
         case 5:
             //重量
-   
+              
               //判断是否在正常范围
+              if(value >= sensor_array[type].max && overWeightNumSave >= sensor_array[type].max){
+                //连续三次超过，关闭移液泵
+                overWeightNum++;
+                if(overWeightNum >= 3){
+                  Close_YiYe_pupm();
+                  printf("连续三次超过最大值，关闭移液泵\n");
+                  overWeightNum = 0;
+                }
+              }
+              else{
+                overWeightNum = 0;
+              }
+
               if(WEIGHT_Low <= value && WEIGHT_High >= value)
               {
                 sensor->value = sensor->value + value;
@@ -1675,11 +1734,12 @@ int Modbusprocess(Sensor *sensor,int type)
               {
                 sensor->error++;
               }
+              overWeightNumSave = value;
           
             break;
         case 6:
             //锆
-   
+              value = value * 2;
               //判断是否在正常范围
               if(value >= 0)
               {
@@ -1824,6 +1884,25 @@ void Save_Device_Data()
     SPI_FLASH_BufferWrite(c, FLASH_WriteAddress+10,strlen(c));
     SPI_FLASH_BufferWrite(buffer, FLASH_WriteAddress+20,strlen(buffer));
     printf("Save_Device_Data：保存配置：%s\n大小：%d\n",buffer,size);
+    
+    //验证写入成功
+    uint8_t sizeRead[10] = {0};
+    SPI_FLASH_BufferRead(sizeRead, FLASH_WriteAddress,10);
+    SPI_FLASH_BufferRead(sizeRead, FLASH_WriteAddress+10,10);
+    int n = atoi(sizeRead);
+    if(n > 1000)
+    {
+      n = n / 10;
+    }
+    n++;
+    if(n == size){
+      printf("Save_Device_Data：写入成功\n");
+      
+    }
+    else{
+      printf("Save_Device_Data：写入失败,再次写入\n");
+      Backups_Data();
+    }
   }
   else{
     save_data_flag = 0;
@@ -1874,7 +1953,7 @@ void Get_Device_Data(char* buf)
 
   SPI_FLASH_BufferRead(size, FLASH_WriteAddress,10);
   SPI_FLASH_BufferRead(size, FLASH_WriteAddress+10,10);
-  printf("Get_Device_Data:地址 %s  \nsize:%s \n",FLASH_WriteAddress,size);
+  //printf("Get_Device_Data:地址 %s  \nsize:%s \n",FLASH_WriteAddress,size);
   n = atoi(size);
   if(n > 1000)
   {
@@ -1944,10 +2023,12 @@ void Reboot()
 void Open_Beep()
 {
   //HAL_Delay(10);
+  int len = 0;
   RS485_Send_Data(D1_Open,(uint8_t)8);
   //HAL_Delay(10);
-  delay_ms2(5);
-  RS485_Rx_Count = 0;
+  
+  Clear_RS485Buf();
+ 
   return;
 }
 
@@ -1959,11 +2040,10 @@ void Open_Beep()
   */
 void Close_Beep()
 {
-   //HAL_Delay(10);
+   int len = 0;
    RS485_Send_Data(D1_Close,(uint8_t)8);
-   //HAL_Delay(10);
-   delay_ms2(5);
-   RS485_Rx_Count = 0;
+   Clear_RS485Buf();
+   
    return;
 }
 
@@ -1975,11 +2055,10 @@ void Close_Beep()
   */
 void Open_Light()
 {
- // HAL_Delay(10);
+  int len = 0;
+  
   RS485_Send_Data(D0_Open,(uint8_t)8);
-  //HAL_Delay(10);
-  delay_ms2(5);
-  RS485_Rx_Count = 0;
+  Clear_RS485Buf();
   return;
 }
 
@@ -1991,11 +2070,10 @@ void Open_Light()
   */
 void Close_Light()
 {
-   // HAL_Delay(10);
+    int len = 0;
+    
     RS485_Send_Data(D0_Close,(uint8_t)8);
-    //HAL_Delay(10);
-    delay_ms2(5);
-    RS485_Rx_Count = 0;
+    Clear_RS485Buf();
     return;
 }
 
@@ -2008,10 +2086,11 @@ void Close_Light()
   */
 void Open_YiYe_pupm()
 {
-  //HAL_Delay(10);
+  
+  int len = 0;
   RS485_Send_Data(D2_Open,(uint8_t)8);
-  //HAL_Delay(10);
-  RS485_Rx_Count = 0;
+  
+  Clear_RS485Buf();
   return;
 }
 
@@ -2023,10 +2102,10 @@ void Open_YiYe_pupm()
   */
 void Close_YiYe_pupm()
 {
-   // HAL_Delay(10);
+    int len = 0;
     RS485_Send_Data(D2_Close,(uint8_t)8);
-   // HAL_Delay(10);
-    RS485_Rx_Count = 0;
+   
+    Clear_RS485Buf();
     return;
 }
 

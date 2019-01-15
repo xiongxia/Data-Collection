@@ -72,9 +72,12 @@ void RS485_Send_Data(uint8_t *buf,uint8_t len){
     //int i = 0;
    // HAL_Delay(100);
     delay_ms2(100);
+    //保存发送地址
+    saveRS485Adder = buf[0];
    
     /* 进入发送模式 */
     TX_MODE();
+    
     /* 发送数据,轮询直到发送数据完毕 */
     if(HAL_UART_Transmit(&husartx_rs485,buf,len,0xFFFF)==HAL_OK)
     {
@@ -102,9 +105,10 @@ uint16_t RS485_Receive_Data(){
   
 	uint16_t len = 0;				//默认为0
 	
-        delay_ms2(100);
-	
-	if(h % 2 == 0){
+        delay_ms2(1000);
+        /*
+        
+	if(h % 3 == 0){
           RS485_Rx_buf[0] = 0x02;
           RS485_Rx_buf[1] = 0x03;
           RS485_Rx_buf[2] = 0x02;
@@ -114,7 +118,7 @@ uint16_t RS485_Receive_Data(){
           RS485_Rx_buf[6] = 0x44;
         }
     
-        else{
+        else if(h % 2 == 0){
           RS485_Rx_buf[0] = 0x02;
           RS485_Rx_buf[1] = 0x03;
           RS485_Rx_buf[2] = 0x02;
@@ -123,8 +127,20 @@ uint16_t RS485_Receive_Data(){
           RS485_Rx_buf[5] = 0xfc;
           RS485_Rx_buf[6] = 0xb4;
         }
+        else{
+              RS485_Rx_buf[0] = 0x02;
+            RS485_Rx_buf[1] = 0x03;
+            RS485_Rx_buf[2] = 0x02;
+            RS485_Rx_buf[3] = 0xF3;
+            RS485_Rx_buf[4] = 0x00;
+            RS485_Rx_buf[5] = 0xb8;
+            RS485_Rx_buf[6] = 0xb4;
+        }
         h++;
+       
         RS485_Rx_Count = 7;
+         
+    */
 	
         printf("485接收完成\n");
         Show_Data(RS485_Rx_buf,10);  

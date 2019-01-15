@@ -76,7 +76,7 @@ int main(void)
     //基本定时器初始化：1ms中断一次 
     BASIC_TIMx_Init();
     MX_DEBUG_USART_Init();
-    printf("远创新智——测试5.9\n");
+    printf("远创新智——测试5.11\n");
       
     //使能接收，进入中断回调函数 
     HAL_UART_Receive_IT(&husart_debug,&aRxBuffer_Android,1);
@@ -87,7 +87,7 @@ int main(void)
     //显示开始时间
     RTC_CalendarShow();
     //发送版本号
-    sprintf(info,"|23");
+    sprintf(info,"|24");
     HAL_UART_Transmit(&husart_debug,info,strlen((char *)info),1000); 
     //关闭灯、移液泵
     Close_YiYe_pupm();
@@ -104,10 +104,6 @@ int main(void)
     
     //在中断模式下启动定时器 
     HAL_TIM_Base_Start_IT(&htimx);
-    //系统启动开始采集
-    Sample_flag = 1;
-    
-   //RTC_CalendarConfig("19011307181251");
     
     //进入主程序循环
     while (1)
@@ -259,7 +255,7 @@ int main(void)
         //接收到安卓数据时候不进行采集等操作
         if(Android_Rx_Count <= 5){
             //3s钟采集一次
-            if(second_timer_count % 395 >= 392)
+            if(second_timer_count % 395 >= 390)
             {
                 //有配置信息采集
                 if(Sensor_Cfg_Mode)
@@ -520,9 +516,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
   else if(UartHandle->Instance == RS485_USARTx)
   {
     //printf("\n485:%02x\n",aRxBuffer);
-    RS485_Rx_buf[RS485_Rx_Count] = aRxBuffer_485;
-    RS485_Rx_Count ++;
-    
+    if(aRxBuffer_485 == saveRS485Adder && RS485_Rx_Count == 1){
+      RS485_Rx_buf[RS485_Rx_Count] = aRxBuffer_485;
+      RS485_Rx_Count ++;
+    }
+    else{
+      RS485_Rx_Count = 0;
+    }
     do{
           if(UartHandle->RxState == HAL_UART_STATE_READY){
             HAL_UART_Receive_IT(&husartx_rs485,&aRxBuffer_485,1);

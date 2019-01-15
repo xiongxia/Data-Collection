@@ -21,7 +21,7 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.1.0
 Dialog DLL:      TCM.DLL V1.35.1.0
  
 <h2>Project:</h2>
-F:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev\MDK-ARM\YS-F4Pro.uvprojx
+F:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev - 副本\MDK-ARM\YS-F4Pro.uvprojx
 Project File Date:  01/14/2019
 
 <h2>Output:</h2>
@@ -66,8 +66,8 @@ compiling main.c...
 ../Inc/function.h(44): warning:  #1295-D: Deprecated declaration Clear_FLASH_Data - give arg types
   void Clear_FLASH_Data();
 ../Src/main.c(90): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
-      sprintf(info,"|23");
-../Src/main.c(278): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
+      sprintf(info,"|24");
+../Src/main.c(274): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
                   sprintf(info,"@%d",SCM_state);
 ../Src/main.c: 20 warnings, 0 errors
 compiling stm32f4xx_hal_msp.c...
@@ -241,7 +241,9 @@ compiling bsp_usartx_RS485.c...
   void Alarm();
 ../Inc/function.h(44): warning:  #1295-D: Deprecated declaration Clear_FLASH_Data - give arg types
   void Clear_FLASH_Data();
-..\Src\bsp\RS485\bsp_usartx_RS485.c: 18 warnings, 0 errors
+..\Src\bsp\RS485\bsp_usartx_RS485.c(22): warning:  #177-D: variable "h"  was declared but never referenced
+  int static h = 0;
+..\Src\bsp\RS485\bsp_usartx_RS485.c: 19 warnings, 0 errors
 compiling function.c...
 ../Inc/function.h(6): warning:  #1295-D: Deprecated declaration Backups_Data - give arg types
   void Backups_Data();
@@ -279,59 +281,71 @@ compiling function.c...
   void Clear_FLASH_Data();
 ..\Inc\bsp\RS485/bsp_usartx_RS485.h(40): warning:  #1295-D: Deprecated declaration RS485_Receive_Data - give arg types
   uint16_t RS485_Receive_Data();
-..\Src\Sample\function.c(295): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
-      sprintf(data,"%.2f,%d;",value,type);
-..\Src\Sample\function.c(302): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
+..\Src\Sample\function.c(297): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
+        sprintf(data,"%.2f,%d;",value,type);
+..\Src\Sample\function.c(322): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
           sprintf(data,"%.2f,%d,%s;",value,type,devicesID);
-..\Src\Sample\function.c(348): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
-              HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
-..\Src\Sample\function.c(373): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(374): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+                HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
+..\Src\Sample\function.c(405): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           if(p->value > 0.0)
-..\Src\Sample\function.c(788): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+..\Src\Sample\function.c(834): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
       HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
-..\Src\Sample\function.c(879): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+..\Src\Sample\function.c(925): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
         HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
-..\Src\Sample\function.c(1001): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+..\Src\Sample\function.c(1047): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
         HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
-..\Src\Sample\function.c(1464): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1510): warning:  #1035-D: single-precision operand implicitly converted to double-precision
         f = f * 0.1;
-..\Src\Sample\function.c(1467): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1513): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.01;
-..\Src\Sample\function.c(1470): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1516): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.001;
-..\Src\Sample\function.c(1473): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1519): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.0001;
-..\Src\Sample\function.c(1476): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1522): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.00001;
-..\Src\Sample\function.c(1479): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1525): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.000001;
-..\Src\Sample\function.c(1482): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1528): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.0000001;
-..\Src\Sample\function.c(1485): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1531): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.00000001;
-..\Src\Sample\function.c(1488): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1534): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.000000001;
-..\Src\Sample\function.c(1589): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1635): warning:  #1035-D: single-precision operand implicitly converted to double-precision
        value = f / 20000.0;
-..\Src\Sample\function.c(1753): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1813): warning:  #1035-D: single-precision operand implicitly converted to double-precision
       jie = jie * 2.;
-..\Src\Sample\function.c(1755): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1815): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           jie += 1.;
-..\Src\Sample\function.c(1757): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1817): warning:  #1035-D: single-precision operand implicitly converted to double-precision
       jie -= 127.;
-..\Src\Sample\function.c(1810): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
+..\Src\Sample\function.c(1870): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
       strcpy(buffer,Android_Rx_buf);
-..\Src\Sample\function.c(1824): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+..\Src\Sample\function.c(1884): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
       SPI_FLASH_BufferWrite(c, FLASH_WriteAddress+10,strlen(c));
-..\Src\Sample\function.c(1825): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+..\Src\Sample\function.c(1885): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
       SPI_FLASH_BufferWrite(buffer, FLASH_WriteAddress+20,strlen(buffer));
-..\Src\Sample\function.c(1877): warning:  #181-D: argument is incompatible with corresponding format string conversion
-    printf("Get_Device_Data:地址 %s  \nsize:%s \n",FLASH_WriteAddress,size);
-..\Src\Sample\function.c(1878): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+..\Src\Sample\function.c(1892): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+      int n = atoi(sizeRead);
+..\Src\Sample\function.c(1957): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
     n = atoi(size);
-..\Src\Sample\function.c(1907): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *restrict"
+..\Src\Sample\function.c(1986): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *restrict"
       strcpy(buf,buffer);
-..\Src\Sample\function.c: 44 warnings, 0 errors
+..\Src\Sample\function.c(2026): warning:  #177-D: variable "len"  was declared but never referenced
+    int len = 0;
+..\Src\Sample\function.c(2043): warning:  #177-D: variable "len"  was declared but never referenced
+     int len = 0;
+..\Src\Sample\function.c(2058): warning:  #177-D: variable "len"  was declared but never referenced
+    int len = 0;
+..\Src\Sample\function.c(2073): warning:  #177-D: variable "len"  was declared but never referenced
+      int len = 0;
+..\Src\Sample\function.c(2090): warning:  #177-D: variable "len"  was declared but never referenced
+    int len = 0;
+..\Src\Sample\function.c(2105): warning:  #177-D: variable "len"  was declared but never referenced
+      int len = 0;
+..\Src\Sample\function.c: 50 warnings, 0 errors
 compiling sample.c...
 ../Inc/function.h(6): warning:  #1295-D: Deprecated declaration Backups_Data - give arg types
   void Backups_Data();
@@ -386,10 +400,10 @@ compiling bsp_rtc.c...
     Show_Data(out,7); 
 ..\Src\bsp\rtc\bsp_rtc.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=38860 RO-data=800 RW-data=264 ZI-data=16376  
+Program Size: Code=39524 RO-data=800 RW-data=272 ZI-data=16376  
 FromELF: creating hex file...
-After Build - User command #1: E:\Keil_v5\ARM\ARMCC\bin\fromelf.exe  --bin -o YCXZ23.bin  YS-F4Pro\YS-F4Pro.axf
-".\YS-F4Pro\YS-F4Pro.axf" - 0 Error(s), 124 Warning(s).
+After Build - User command #1: E:\Keil_v5\ARM\ARMCC\bin\fromelf.exe  --bin -o YCXZ24.bin  YS-F4Pro\YS-F4Pro.axf
+".\YS-F4Pro\YS-F4Pro.axf" - 0 Error(s), 131 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -403,7 +417,7 @@ Package Vendor: Keil
   E:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:03:07
+Build Time Elapsed:  00:03:16
 </pre>
 </body>
 </html>

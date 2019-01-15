@@ -8,8 +8,6 @@
 #define SCM_RUN                               1 
 #define SCM_STOP                              0 // 系统状态
 
-
-
 extern __IO uint16_t warn_timer_count;
 //传感器数据结构(0:PH，1:电导率，2:温度，3:压力，4:液位)
 typedef struct sensor_info{
@@ -23,6 +21,7 @@ typedef struct sensor_info{
     int save_num;
     int control_delay;
     uint8_t warningFlag;//告警标志（为1 的时候表示 每个传感器异常都告警）
+    uint8_t errorNum;//异常次数，超过三次才上传
     struct sensor_node *frist_node;//第一个传感器
 }Sensor_data;   //传感器
 typedef struct sensor_node{
@@ -38,6 +37,7 @@ typedef struct sensor_node{
     char mode[10];
     double elec_4ma;
     double elec_20ma;
+    uint8_t errorNum;//异常次数，超过三次才上传
     struct sensor_node *next;
 }Sensor;   //传感器节点
 
@@ -91,6 +91,11 @@ extern uint8_t RTC_Config_flag;
 extern uint8_t index_time_control_flag;
 extern uint8_t index_time_control_flag_assist;
 extern __IO uint32_t time_num;
+extern uint8_t saveRS485Adder;
+extern int overWeightNum;
+extern float overWeightNumSave;
+extern uint8_t ErrorNum;
+
 
 //传感器量程****************************************************************************************************
 extern float LEVEL_Low; //液位      
