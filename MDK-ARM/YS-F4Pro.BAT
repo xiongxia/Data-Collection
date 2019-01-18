@@ -107,4 +107,4 @@ SET CPU_CLOCK=0x0A037A00
 "E:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via ".\ys-f4pro\bsp_rtc.__i"
 "E:\Keil_v5\ARM\ARMCC\Bin\ArmLink" --Via ".\YS-F4Pro\YS-F4Pro.lnp"
 "E:\Keil_v5\ARM\ARMCC\Bin\fromelf.exe" ".\YS-F4Pro\YS-F4Pro.axf" --i32combined --output ".\YS-F4Pro\YS-F4Pro.hex"
-E:\Keil_v5\ARM\ARMCC\bin\fromelf.exe  --bin -o YCXZ24.bin  YS-F4Pro\YS-F4Pro.axf
+E:\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin -o YCXZ26.bin  YS-F4Pro\YS-F4Pro.axf

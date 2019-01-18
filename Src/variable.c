@@ -31,7 +31,7 @@ char Android_Rx_buf[1000];
 
 uint16_t Android_Rx_Count = 0;
 uint16_t RS485_Rx_Count = 0;
-uint16_t RS485_Rx_Count_Old = -1;
+uint16_t RS485_Rx_Count_Old = 1;
 
 uint8_t Sample_flag = 0;//采集标志
 uint8_t UpData_flag = 0;//上传数据标志

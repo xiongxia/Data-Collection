@@ -22,7 +22,7 @@ Dialog DLL:      TCM.DLL V1.35.1.0
  
 <h2>Project:</h2>
 F:\STM32F407-RS485数据采集-V2\RS485-主机端 - 删减版 - dev - 副本\MDK-ARM\YS-F4Pro.uvprojx
-Project File Date:  01/14/2019
+Project File Date:  01/15/2019
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'E:\Keil_v5\ARM\ARMCC\Bin'
@@ -66,7 +66,7 @@ compiling main.c...
 ../Inc/function.h(44): warning:  #1295-D: Deprecated declaration Clear_FLASH_Data - give arg types
   void Clear_FLASH_Data();
 ../Src/main.c(90): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
-      sprintf(info,"|24");
+      sprintf(info,"|26");
 ../Src/main.c(274): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
                   sprintf(info,"@%d",SCM_state);
 ../Src/main.c: 20 warnings, 0 errors
@@ -111,9 +111,6 @@ compiling stm32f4xx_it.c...
 ../Src/stm32f4xx_it.c: 18 warnings, 0 errors
 compiling stm32f4xx_assert.c...
 compiling variable.c...
-..\Src\variable.c(34): warning:  #68-D: integer conversion resulted in a change of sign
-  uint16_t RS485_Rx_Count_Old = -1;
-..\Src\variable.c: 1 warning, 0 errors
 compiling stm32f4xx_hal_flash_ramfunc.c...
 compiling stm32f4xx_hal_dma_ex.c...
 compiling stm32f4xx_hal_pwr.c...
@@ -295,57 +292,49 @@ compiling function.c...
         HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
 ..\Src\Sample\function.c(1047): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
         HAL_UART_Transmit(&husart_debug,data,strlen((char *)data),1000);
-..\Src\Sample\function.c(1510): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1514): warning:  #1035-D: single-precision operand implicitly converted to double-precision
         f = f * 0.1;
-..\Src\Sample\function.c(1513): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1517): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.01;
-..\Src\Sample\function.c(1516): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1520): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.001;
-..\Src\Sample\function.c(1519): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1523): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.0001;
-..\Src\Sample\function.c(1522): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1526): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.00001;
-..\Src\Sample\function.c(1525): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1529): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.000001;
-..\Src\Sample\function.c(1528): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1532): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.0000001;
-..\Src\Sample\function.c(1531): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1535): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.00000001;
-..\Src\Sample\function.c(1534): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1538): warning:  #1035-D: single-precision operand implicitly converted to double-precision
           f = f * 0.000000001;
-..\Src\Sample\function.c(1635): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+..\Src\Sample\function.c(1639): warning:  #1035-D: single-precision operand implicitly converted to double-precision
        value = f / 20000.0;
-..\Src\Sample\function.c(1813): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-      jie = jie * 2.;
-..\Src\Sample\function.c(1815): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-          jie += 1.;
 ..\Src\Sample\function.c(1817): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      jie = jie * 2.;
+..\Src\Sample\function.c(1819): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+          jie += 1.;
+..\Src\Sample\function.c(1821): warning:  #1035-D: single-precision operand implicitly converted to double-precision
       jie -= 127.;
-..\Src\Sample\function.c(1870): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
+..\Src\Sample\function.c(1874): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "char *restrict"
       strcpy(buffer,Android_Rx_buf);
-..\Src\Sample\function.c(1884): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+..\Src\Sample\function.c(1888): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
       SPI_FLASH_BufferWrite(c, FLASH_WriteAddress+10,strlen(c));
-..\Src\Sample\function.c(1885): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+..\Src\Sample\function.c(1889): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
       SPI_FLASH_BufferWrite(buffer, FLASH_WriteAddress+20,strlen(buffer));
-..\Src\Sample\function.c(1892): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+..\Src\Sample\function.c(1896): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
       int n = atoi(sizeRead);
-..\Src\Sample\function.c(1957): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
+..\Src\Sample\function.c(1961): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
     n = atoi(size);
-..\Src\Sample\function.c(1986): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *restrict"
+..\Src\Sample\function.c(1990): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *restrict"
       strcpy(buf,buffer);
-..\Src\Sample\function.c(2026): warning:  #177-D: variable "len"  was declared but never referenced
+..\Src\Sample\function.c(2030): warning:  #177-D: variable "len"  was declared but never referenced
     int len = 0;
-..\Src\Sample\function.c(2043): warning:  #177-D: variable "len"  was declared but never referenced
+..\Src\Sample\function.c(2047): warning:  #177-D: variable "len"  was declared but never referenced
      int len = 0;
-..\Src\Sample\function.c(2058): warning:  #177-D: variable "len"  was declared but never referenced
-    int len = 0;
-..\Src\Sample\function.c(2073): warning:  #177-D: variable "len"  was declared but never referenced
-      int len = 0;
-..\Src\Sample\function.c(2090): warning:  #177-D: variable "len"  was declared but never referenced
-    int len = 0;
-..\Src\Sample\function.c(2105): warning:  #177-D: variable "len"  was declared but never referenced
-      int len = 0;
-..\Src\Sample\function.c: 50 warnings, 0 errors
+..\Src\Sample\function.c: 46 warnings, 0 errors
 compiling sample.c...
 ../Inc/function.h(6): warning:  #1295-D: Deprecated declaration Backups_Data - give arg types
   void Backups_Data();
@@ -400,10 +389,10 @@ compiling bsp_rtc.c...
     Show_Data(out,7); 
 ..\Src\bsp\rtc\bsp_rtc.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=39524 RO-data=800 RW-data=272 ZI-data=16376  
+Program Size: Code=39612 RO-data=800 RW-data=272 ZI-data=16376  
 FromELF: creating hex file...
-After Build - User command #1: E:\Keil_v5\ARM\ARMCC\bin\fromelf.exe  --bin -o YCXZ24.bin  YS-F4Pro\YS-F4Pro.axf
-".\YS-F4Pro\YS-F4Pro.axf" - 0 Error(s), 131 Warning(s).
+After Build - User command #1: E:\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin -o YCXZ26.bin  YS-F4Pro\YS-F4Pro.axf
+".\YS-F4Pro\YS-F4Pro.axf" - 0 Error(s), 126 Warning(s).
 
 <h2>Software Packages used:</h2>
 

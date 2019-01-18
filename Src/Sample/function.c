@@ -1485,9 +1485,13 @@ uint8_t CharToBit(char c)
 }
 void Clear_RS485Buf()
 {
-  for(int i=0;i<RS485_Rx_Count_Old;i++)
+  //printf("Clear_RS485Buf %d\n",RS485_Rx_Count);
+  for(int i=0;i<RS485_Rx_Count_Old;i++){
     RS485_Rx_buf[i] = 0x00;
+		//printf("Clear_RS485Buf %d\n",RS485_Rx_Count_Old);
+	}
   RS485_Rx_Count = 0;
+  //printf("Clear_RS485Buf\n");
   return;
 }
 
@@ -1739,7 +1743,7 @@ int Modbusprocess(Sensor *sensor,int type)
             break;
         case 6:
             //锆
-              value = value * 2;
+             // value = value * 2;
               //判断是否在正常范围
               if(value >= 0)
               {
@@ -2055,7 +2059,6 @@ void Close_Beep()
   */
 void Open_Light()
 {
-  int len = 0;
   
   RS485_Send_Data(D0_Open,(uint8_t)8);
   Clear_RS485Buf();
@@ -2070,8 +2073,7 @@ void Open_Light()
   */
 void Close_Light()
 {
-    int len = 0;
-    
+ 
     RS485_Send_Data(D0_Close,(uint8_t)8);
     Clear_RS485Buf();
     return;
@@ -2086,8 +2088,7 @@ void Close_Light()
   */
 void Open_YiYe_pupm()
 {
-  
-  int len = 0;
+ 
   RS485_Send_Data(D2_Open,(uint8_t)8);
   
   Clear_RS485Buf();
@@ -2102,7 +2103,6 @@ void Open_YiYe_pupm()
   */
 void Close_YiYe_pupm()
 {
-    int len = 0;
     RS485_Send_Data(D2_Close,(uint8_t)8);
    
     Clear_RS485Buf();
